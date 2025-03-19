@@ -27,11 +27,7 @@ uname -v = #1 SMP Tue Nov 5 00:21:55 UTC 2024
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /home/lior/.vscode-server/extensions/ms-python.python-2024.22.2-linux-x64/python_files/deactivate/bash/
-PATH: /home/lior/simulator/venv/bin/
-PATH: /home/lior/.vscode-server/extensions/ms-python.python-2024.22.2-linux-x64/python_files/deactivate/bash/
-PATH: /home/lior/simulator/venv/bin/
-PATH: /home/lior/.vscode-server/bin/cd4ee3b1c348a13bafd8f9ad8060705f6d4b9cba/bin/remote-cli/
+PATH: /home/lior/.vscode-server/bin/ddc367ed5c8936efe395cffeec279b04ffd7db78/bin/remote-cli/
 PATH: /usr/local/sbin/
 PATH: /usr/local/bin/
 PATH: /usr/sbin/
@@ -51,6 +47,7 @@ PATH: /mnt/c/Users/חייםליאורבראון/AppData/Local/Microsoft/WindowsA
 PATH: /mnt/c/Users/חייםליאורבראון/AppData/Local/Programs/Microsoft VS Code/bin/
 PATH: /mnt/c/shorts/
 PATH: /snap/bin/
+PATH: /home/lior/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand/
 
 
 ## ----------- ##
@@ -327,8 +324,8 @@ configure:12369: checking how to hardcode library paths into programs
 configure:12394: result: immediate
 configure:12496: checking for shl_load
 configure:12496: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccCPJgtm.o: in function `main':
-/home/lior/squid-6.12/libltdl/conftest.c:50:(.text.startup+0xb): undefined reference to `shl_load'
+/usr/bin/ld: /tmp/ccZEqhqL.o: in function `main':
+/home/lior/squid/libltdl/conftest.c:50:(.text.startup+0xb): undefined reference to `shl_load'
 collect2: error: ld returned 1 exit status
 configure:12496: $? = 1
 configure: failed program was:
@@ -437,8 +434,8 @@ configure:12782: $? = 0
 configure:12800: result: yes
 configure:12805: checking whether a statically linked program can dlopen itself
 configure:12886: gcc -o conftest -g -O2  -DHAVE_DLFCN_H  -Wl,--export-dynamic -static conftest.c   >&5
-/usr/bin/ld: /tmp/ccH4tFtQ.o: in function `main':
-/home/lior/squid-6.12/libltdl/conftest.c:12865:(.text.startup+0xd): warning: Using 'dlopen' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
+/usr/bin/ld: /tmp/ccuXkBFL.o: in function `main':
+/home/lior/squid/libltdl/conftest.c:12865:(.text.startup+0xd): warning: Using 'dlopen' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
 configure:12889: $? = 0
 conftest: undefined symbol: _fnord
 configure:12907: result: no
@@ -1158,7 +1155,7 @@ lt_cv_truncate_bin='/usr/bin/dd bs=4096 count=1'
 ## Output variables. ##
 ## ----------------- ##
 
-ACLOCAL='${SHELL} '\''/home/lior/squid-6.12/cfgaux/missing'\'' aclocal-1.16'
+ACLOCAL='${SHELL} '\''/home/lior/squid/cfgaux/missing'\'' aclocal-1.16'
 AMDEPBACKSLASH='\'
 AMDEP_FALSE='#'
 AMDEP_TRUE=''
@@ -1169,9 +1166,9 @@ AM_DEFAULT_VERBOSITY='0'
 AM_V='$(V)'
 AR='ar'
 AS='as'
-AUTOCONF='${SHELL} '\''/home/lior/squid-6.12/cfgaux/missing'\'' autoconf'
-AUTOHEADER='${SHELL} '\''/home/lior/squid-6.12/cfgaux/missing'\'' autoheader'
-AUTOMAKE='${SHELL} '\''/home/lior/squid-6.12/cfgaux/missing'\'' automake-1.16'
+AUTOCONF='${SHELL} '\''/home/lior/squid/cfgaux/missing'\'' autoconf'
+AUTOHEADER='${SHELL} '\''/home/lior/squid/cfgaux/missing'\'' autoheader'
+AUTOMAKE='${SHELL} '\''/home/lior/squid/cfgaux/missing'\'' automake-1.16'
 AWK='gawk'
 CC='gcc'
 CCDEPMODE='depmode=gcc3'
@@ -1220,7 +1217,7 @@ LT_CONFIG_H='config.h'
 LT_DLLOADERS=' dlopen.la'
 LT_DLPREOPEN='-dlpreopen dlopen.la '
 LT_SYS_LIBRARY_PATH=''
-MAKEINFO='${SHELL} '\''/home/lior/squid-6.12/cfgaux/missing'\'' makeinfo'
+MAKEINFO='${SHELL} '\''/home/lior/squid/cfgaux/missing'\'' makeinfo'
 MANIFEST_TOOL=':'
 MKDIR_P='/usr/bin/mkdir -p'
 NM='/usr/bin/nm -B'
@@ -1276,7 +1273,7 @@ host_vendor='pc'
 htmldir='${docdir}'
 includedir='${prefix}/include'
 infodir='${datarootdir}/info'
-install_sh='${SHELL} /home/lior/squid-6.12/cfgaux/install-sh'
+install_sh='${SHELL} /home/lior/squid/cfgaux/install-sh'
 libdir='${exec_prefix}/lib'
 libexecdir='/lib/squid'
 localedir='${datarootdir}/locale'

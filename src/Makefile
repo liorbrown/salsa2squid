@@ -302,18 +302,18 @@ am__squid_SOURCES_DIST = AclRegs.cc AuthReg.cc BandwidthBucket.cc \
 	mem_node.h mime.cc mime.h mime_header.cc mime_header.h \
 	multicast.cc multicast.h neighbors.cc neighbors.h pconn.cc \
 	pconn.h peer_digest.cc peer_proxy_negotiate_auth.cc \
-	peer_proxy_negotiate_auth.h peer_select.cc peer_sourcehash.cc \
-	peer_sourcehash.h peer_userhash.cc peer_userhash.h protos.h \
-	redirect.cc redirect.h refresh.cc refresh.h repl_modules.h \
-	sbuf/StringConvert.h stat.cc stat.h stmem.cc stmem.h store.cc \
-	store_client.cc store_digest.cc store_digest.h store_io.cc \
-	store_key_md5.cc store_key_md5.h store_log.cc store_log.h \
-	store_rebuild.cc store_rebuild.h store_swapin.cc \
-	store_swapin.h store_swapout.cc swap_log_op.h tools.cc tools.h \
-	tunnel.cc tunnel.h typedefs.h urn.cc urn.h wccp.cc wccp.h \
-	wccp2.cc wccp2.h whois.cc whois.h wordlist.cc wordlist.h \
-	LoadableModule.cc LoadableModule.h LoadableModules.cc \
-	LoadableModules.h
+	peer_proxy_negotiate_auth.h peer_select.cc salsa2.cc \
+	peer_sourcehash.cc peer_sourcehash.h peer_userhash.cc \
+	peer_userhash.h protos.h redirect.cc redirect.h refresh.cc \
+	refresh.h repl_modules.h sbuf/StringConvert.h stat.cc stat.h \
+	stmem.cc stmem.h store.cc store_client.cc store_digest.cc \
+	store_digest.h store_io.cc store_key_md5.cc store_key_md5.h \
+	store_log.cc store_log.h store_rebuild.cc store_rebuild.h \
+	store_swapin.cc store_swapin.h store_swapout.cc swap_log_op.h \
+	tools.cc tools.h tunnel.cc tunnel.h typedefs.h urn.cc urn.h \
+	wccp.cc wccp.h wccp2.cc wccp2.h whois.cc whois.h wordlist.cc \
+	wordlist.h LoadableModule.cc LoadableModule.h \
+	LoadableModules.cc LoadableModules.h
 am__objects_1 = AclRegs.$(OBJEXT) AuthReg.$(OBJEXT)
 am__objects_2 = BandwidthBucket.$(OBJEXT) delay_pools.$(OBJEXT) \
 	DelayId.$(OBJEXT) DelayBucket.$(OBJEXT) DelayConfig.$(OBJEXT) \
@@ -373,11 +373,12 @@ am_squid_OBJECTS = $(am__objects_1) $(am__objects_3) $(am__objects_4) \
 	mem_node.$(OBJEXT) mime.$(OBJEXT) mime_header.$(OBJEXT) \
 	multicast.$(OBJEXT) neighbors.$(OBJEXT) pconn.$(OBJEXT) \
 	peer_digest.$(OBJEXT) peer_proxy_negotiate_auth.$(OBJEXT) \
-	peer_select.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
-	peer_userhash.$(OBJEXT) redirect.$(OBJEXT) refresh.$(OBJEXT) \
-	stat.$(OBJEXT) stmem.$(OBJEXT) store.$(OBJEXT) \
-	store_client.$(OBJEXT) store_digest.$(OBJEXT) \
-	store_io.$(OBJEXT) store_key_md5.$(OBJEXT) store_log.$(OBJEXT) \
+	peer_select.$(OBJEXT) salsa2.$(OBJEXT) \
+	peer_sourcehash.$(OBJEXT) peer_userhash.$(OBJEXT) \
+	redirect.$(OBJEXT) refresh.$(OBJEXT) stat.$(OBJEXT) \
+	stmem.$(OBJEXT) store.$(OBJEXT) store_client.$(OBJEXT) \
+	store_digest.$(OBJEXT) store_io.$(OBJEXT) \
+	store_key_md5.$(OBJEXT) store_log.$(OBJEXT) \
 	store_rebuild.$(OBJEXT) store_swapin.$(OBJEXT) \
 	store_swapout.$(OBJEXT) tools.$(OBJEXT) tunnel.$(OBJEXT) \
 	urn.$(OBJEXT) wccp.$(OBJEXT) wccp2.$(OBJEXT) whois.$(OBJEXT) \
@@ -538,7 +539,7 @@ am__tests_testCacheManager_SOURCES_DIST = BandwidthBucket.cc \
 	mime_header.cc mime_header.h multicast.cc multicast.h \
 	neighbors.cc neighbors.h pconn.cc peer_digest.cc \
 	peer_proxy_negotiate_auth.cc peer_proxy_negotiate_auth.h \
-	peer_select.cc peer_sourcehash.cc peer_sourcehash.h \
+	peer_select.cc salsa2.cc peer_sourcehash.cc peer_sourcehash.h \
 	peer_userhash.cc peer_userhash.h tests/stub_redirect.cc \
 	redirect.h refresh.cc refresh.h repl_modules.h stat.cc stat.h \
 	stmem.cc store.cc store_client.cc tests/stub_store_digest.cc \
@@ -594,9 +595,10 @@ am_tests_testCacheManager_OBJECTS = $(am__objects_3) $(am__objects_4) \
 	mime_header.$(OBJEXT) multicast.$(OBJEXT) neighbors.$(OBJEXT) \
 	pconn.$(OBJEXT) peer_digest.$(OBJEXT) \
 	peer_proxy_negotiate_auth.$(OBJEXT) peer_select.$(OBJEXT) \
-	peer_sourcehash.$(OBJEXT) peer_userhash.$(OBJEXT) \
-	tests/stub_redirect.$(OBJEXT) refresh.$(OBJEXT) stat.$(OBJEXT) \
-	stmem.$(OBJEXT) store.$(OBJEXT) store_client.$(OBJEXT) \
+	salsa2.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
+	peer_userhash.$(OBJEXT) tests/stub_redirect.$(OBJEXT) \
+	refresh.$(OBJEXT) stat.$(OBJEXT) stmem.$(OBJEXT) \
+	store.$(OBJEXT) store_client.$(OBJEXT) \
 	tests/stub_store_digest.$(OBJEXT) store_io.$(OBJEXT) \
 	store_key_md5.$(OBJEXT) store_log.$(OBJEXT) \
 	store_rebuild.$(OBJEXT) tests/stub_store_stats.$(OBJEXT) \
@@ -945,7 +947,7 @@ am__tests_testHttpRequest_SOURCES_DIST = BandwidthBucket.cc \
 	mime.cc mime.h mime_header.cc mime_header.h multicast.cc \
 	multicast.h neighbors.cc neighbors.h pconn.cc peer_digest.cc \
 	peer_proxy_negotiate_auth.cc peer_proxy_negotiate_auth.h \
-	peer_select.cc peer_sourcehash.cc peer_sourcehash.h \
+	peer_select.cc salsa2.cc peer_sourcehash.cc peer_sourcehash.h \
 	peer_userhash.cc peer_userhash.h tests/stub_redirect.cc \
 	redirect.h refresh.cc refresh.h repl_modules.h stat.cc stat.h \
 	stmem.cc store.cc store_client.cc tests/stub_store_digest.cc \
@@ -1001,9 +1003,10 @@ am_tests_testHttpRequest_OBJECTS = $(am__objects_3) $(am__objects_4) \
 	mime_header.$(OBJEXT) multicast.$(OBJEXT) neighbors.$(OBJEXT) \
 	pconn.$(OBJEXT) peer_digest.$(OBJEXT) \
 	peer_proxy_negotiate_auth.$(OBJEXT) peer_select.$(OBJEXT) \
-	peer_sourcehash.$(OBJEXT) peer_userhash.$(OBJEXT) \
-	tests/stub_redirect.$(OBJEXT) refresh.$(OBJEXT) stat.$(OBJEXT) \
-	stmem.$(OBJEXT) store.$(OBJEXT) store_client.$(OBJEXT) \
+	salsa2.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
+	peer_userhash.$(OBJEXT) tests/stub_redirect.$(OBJEXT) \
+	refresh.$(OBJEXT) stat.$(OBJEXT) stmem.$(OBJEXT) \
+	store.$(OBJEXT) store_client.$(OBJEXT) \
 	tests/stub_store_digest.$(OBJEXT) store_io.$(OBJEXT) \
 	store_key_md5.$(OBJEXT) store_log.$(OBJEXT) \
 	store_rebuild.$(OBJEXT) tests/stub_store_stats.$(OBJEXT) \
@@ -1718,7 +1721,7 @@ am__tests_test_http_range_SOURCES_DIST = BandwidthBucket.cc \
 	mime.cc mime.h mime_header.cc mime_header.h multicast.cc \
 	multicast.h neighbors.cc neighbors.h pconn.cc peer_digest.cc \
 	peer_proxy_negotiate_auth.cc peer_proxy_negotiate_auth.h \
-	peer_select.cc peer_sourcehash.cc peer_sourcehash.h \
+	peer_select.cc salsa2.cc peer_sourcehash.cc peer_sourcehash.h \
 	peer_userhash.cc peer_userhash.h tests/stub_redirect.cc \
 	redirect.h refresh.cc refresh.h repl_modules.h stat.cc stat.h \
 	stmem.cc store.cc store_client.cc tests/stub_store_digest.cc \
@@ -1773,9 +1776,10 @@ am_tests_test_http_range_OBJECTS = $(am__objects_3) $(am__objects_4) \
 	mime_header.$(OBJEXT) multicast.$(OBJEXT) neighbors.$(OBJEXT) \
 	pconn.$(OBJEXT) peer_digest.$(OBJEXT) \
 	peer_proxy_negotiate_auth.$(OBJEXT) peer_select.$(OBJEXT) \
-	peer_sourcehash.$(OBJEXT) peer_userhash.$(OBJEXT) \
-	tests/stub_redirect.$(OBJEXT) refresh.$(OBJEXT) stat.$(OBJEXT) \
-	stmem.$(OBJEXT) store.$(OBJEXT) store_client.$(OBJEXT) \
+	salsa2.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
+	peer_userhash.$(OBJEXT) tests/stub_redirect.$(OBJEXT) \
+	refresh.$(OBJEXT) stat.$(OBJEXT) stmem.$(OBJEXT) \
+	store.$(OBJEXT) store_client.$(OBJEXT) \
 	tests/stub_store_digest.$(OBJEXT) store_io.$(OBJEXT) \
 	store_key_md5.$(OBJEXT) store_log.$(OBJEXT) \
 	store_rebuild.$(OBJEXT) tests/stub_store_stats.$(OBJEXT) \
@@ -1892,8 +1896,9 @@ am__depfiles_remade = ./$(DEPDIR)/AccessLogEntry.Po \
 	./$(DEPDIR)/peer_select.Po ./$(DEPDIR)/peer_sourcehash.Po \
 	./$(DEPDIR)/peer_userhash.Po ./$(DEPDIR)/redirect.Po \
 	./$(DEPDIR)/refresh.Po ./$(DEPDIR)/repl_modules.Po \
-	./$(DEPDIR)/snmp_agent.Po ./$(DEPDIR)/snmp_core.Po \
-	./$(DEPDIR)/stat.Po ./$(DEPDIR)/stmem.Po ./$(DEPDIR)/store.Po \
+	./$(DEPDIR)/salsa2.Po ./$(DEPDIR)/snmp_agent.Po \
+	./$(DEPDIR)/snmp_core.Po ./$(DEPDIR)/stat.Po \
+	./$(DEPDIR)/stmem.Po ./$(DEPDIR)/store.Po \
 	./$(DEPDIR)/store_client.Po ./$(DEPDIR)/store_digest.Po \
 	./$(DEPDIR)/store_io.Po ./$(DEPDIR)/store_key_md5.Po \
 	./$(DEPDIR)/store_log.Po ./$(DEPDIR)/store_rebuild.Po \
@@ -2389,7 +2394,7 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-ACLOCAL = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' aclocal-1.16
+ACLOCAL = ${SHELL} '/home/lior/squid/cfgaux/missing' aclocal-1.16
 ADAPTATION_LIBS = adaptation/libadaptation.la
 AIOLIB = -lrt
 ALLOCA = 
@@ -2400,9 +2405,9 @@ AR_R = /usr/bin/ar r
 ATOMICLIB = 
 AUTH_LIBS_TO_BUILD =  basic/libbasic.la digest/libdigest.la negotiate/libnegotiate.la ntlm/libntlm.la
 AUTH_MODULES =  basic digest negotiate ntlm
-AUTOCONF = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' autoconf
-AUTOHEADER = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' autoheader
-AUTOMAKE = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' automake-1.16
+AUTOCONF = ${SHELL} '/home/lior/squid/cfgaux/missing' autoconf
+AUTOHEADER = ${SHELL} '/home/lior/squid/cfgaux/missing' autoheader
+AUTOMAKE = ${SHELL} '/home/lior/squid/cfgaux/missing' automake-1.16
 AWK = gawk
 BASIC_AUTH_HELPERS =  DB NCSA POP3 RADIUS SMB fake getpwnam
 BUILDCXX = g++ -std=c++17
@@ -2456,7 +2461,7 @@ FILECMD = file
 GIT = 
 GREP = /usr/bin/grep
 HAVE_CXX17 = 1
-INCLTDL = -I$(top_srcdir)/libltdl
+INCLTDL = 
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -2482,7 +2487,7 @@ LIBGNUTLS_CFLAGS =
 LIBGNUTLS_LIBS = 
 LIBLDAP_CFLAGS = 
 LIBLDAP_LIBS = 
-LIBLTDL = $(top_build_prefix)libltdl/libltdlc.la
+LIBLTDL = -lltdl
 LIBNETTLE_CFLAGS = 
 LIBNETTLE_LIBS = 
 LIBOBJS = 
@@ -2505,8 +2510,8 @@ LIPO =
 LN = /usr/bin/ln
 LN_S = ln -s
 LOG_DAEMON_HELPERS =  DB file
-LTDLDEPS = $(top_build_prefix)libltdl/libltdlc.la
-LTDLINCL = -I$(top_srcdir)/libltdl
+LTDLDEPS = 
+LTDLINCL = 
 LTDLOPEN = libltdl
 LTLIBOBJS = 
 LT_ARGZ_H = 
@@ -2515,7 +2520,7 @@ LT_DLLOADERS =  libltdl/dlopen.la
 LT_DLPREOPEN = -dlpreopen libltdl/dlopen.la 
 LT_SYS_LIBRARY_PATH = 
 MAINT = #
-MAKEINFO = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' makeinfo
+MAKEINFO = ${SHELL} '/home/lior/squid/cfgaux/missing' makeinfo
 MANIFEST_TOOL = :
 MINGW_LIBS = 
 MKDIR = /usr/bin/mkdir
@@ -2575,10 +2580,10 @@ WBINFO =
 WIN32_PSAPI = 
 XTRA_LIBS = -lm -ldl
 XTRA_OBJS = 
-abs_builddir = /home/lior/squid-6.12/src
-abs_srcdir = /home/lior/squid-6.12/src
-abs_top_builddir = /home/lior/squid-6.12
-abs_top_srcdir = /home/lior/squid-6.12
+abs_builddir = /home/lior/squid/src
+abs_srcdir = /home/lior/squid/src
+abs_top_builddir = /home/lior/squid
+abs_top_srcdir = /home/lior/squid
 ac_ct_AR = 
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -2608,7 +2613,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/lior/squid-6.12/cfgaux/install-sh
+install_sh = ${SHELL} /home/lior/squid/cfgaux/install-sh
 krb5_config = no
 libdir = ${exec_prefix}/lib
 libexecdir = /lib/squid
@@ -2830,17 +2835,17 @@ squid_SOURCES = $(ACL_REGISTRATION_SOURCES) $(DELAY_POOL_SOURCE) \
 	mem_node.h mime.cc mime.h mime_header.cc mime_header.h \
 	multicast.cc multicast.h neighbors.cc neighbors.h pconn.cc \
 	pconn.h peer_digest.cc peer_proxy_negotiate_auth.cc \
-	peer_proxy_negotiate_auth.h peer_select.cc peer_sourcehash.cc \
-	peer_sourcehash.h peer_userhash.cc peer_userhash.h protos.h \
-	redirect.cc redirect.h refresh.cc refresh.h repl_modules.h \
-	sbuf/StringConvert.h stat.cc stat.h stmem.cc stmem.h store.cc \
-	store_client.cc store_digest.cc store_digest.h store_io.cc \
-	store_key_md5.cc store_key_md5.h store_log.cc store_log.h \
-	store_rebuild.cc store_rebuild.h store_swapin.cc \
-	store_swapin.h store_swapout.cc swap_log_op.h tools.cc tools.h \
-	tunnel.cc tunnel.h typedefs.h urn.cc urn.h wccp.cc wccp.h \
-	wccp2.cc wccp2.h whois.cc whois.h wordlist.cc wordlist.h \
-	$(am__append_8)
+	peer_proxy_negotiate_auth.h peer_select.cc salsa2.cc \
+	peer_sourcehash.cc peer_sourcehash.h peer_userhash.cc \
+	peer_userhash.h protos.h redirect.cc redirect.h refresh.cc \
+	refresh.h repl_modules.h sbuf/StringConvert.h stat.cc stat.h \
+	stmem.cc stmem.h store.cc store_client.cc store_digest.cc \
+	store_digest.h store_io.cc store_key_md5.cc store_key_md5.h \
+	store_log.cc store_log.h store_rebuild.cc store_rebuild.h \
+	store_swapin.cc store_swapin.h store_swapout.cc swap_log_op.h \
+	tools.cc tools.h tunnel.cc tunnel.h typedefs.h urn.cc urn.h \
+	wccp.cc wccp.h wccp2.cc wccp2.h whois.cc whois.h wordlist.cc \
+	wordlist.h $(am__append_8)
 EXTRA_squid_SOURCES = \
 	$(DELAY_POOL_ALL_SOURCE) \
 	$(LOADABLE_MODULES_SOURCES) \
@@ -4139,6 +4144,7 @@ tests_test_http_range_SOURCES = \
 	peer_proxy_negotiate_auth.cc \
 	peer_proxy_negotiate_auth.h \
 	peer_select.cc \
+	salsa2.cc \
 	peer_sourcehash.cc \
 	peer_sourcehash.h \
 	peer_userhash.cc \
@@ -4529,6 +4535,7 @@ tests_testHttpRequest_SOURCES = \
 	peer_proxy_negotiate_auth.cc \
 	peer_proxy_negotiate_auth.h \
 	peer_select.cc \
+	salsa2.cc \
 	peer_sourcehash.cc \
 	peer_sourcehash.h \
 	peer_userhash.cc \
@@ -4824,6 +4831,7 @@ tests_testCacheManager_SOURCES = \
 	peer_proxy_negotiate_auth.cc \
 	peer_proxy_negotiate_auth.h \
 	peer_select.cc \
+	salsa2.cc \
 	peer_sourcehash.cc \
 	peer_sourcehash.h \
 	peer_userhash.cc \
@@ -5049,9 +5057,9 @@ $(srcdir)/Makefile.in: # $(srcdir)/Makefile.am $(top_srcdir)/src/Common.am $(src
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/Makefile
+	  $(AUTOMAKE) --gnu src/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -5768,6 +5776,7 @@ include ./$(DEPDIR)/peer_userhash.Po # am--include-marker
 include ./$(DEPDIR)/redirect.Po # am--include-marker
 include ./$(DEPDIR)/refresh.Po # am--include-marker
 include ./$(DEPDIR)/repl_modules.Po # am--include-marker
+include ./$(DEPDIR)/salsa2.Po # am--include-marker
 include ./$(DEPDIR)/snmp_agent.Po # am--include-marker
 include ./$(DEPDIR)/snmp_core.Po # am--include-marker
 include ./$(DEPDIR)/stat.Po # am--include-marker
@@ -6771,6 +6780,7 @@ distclean: distclean-recursive
 	-rm -f ./$(DEPDIR)/redirect.Po
 	-rm -f ./$(DEPDIR)/refresh.Po
 	-rm -f ./$(DEPDIR)/repl_modules.Po
+	-rm -f ./$(DEPDIR)/salsa2.Po
 	-rm -f ./$(DEPDIR)/snmp_agent.Po
 	-rm -f ./$(DEPDIR)/snmp_core.Po
 	-rm -f ./$(DEPDIR)/stat.Po
@@ -7089,6 +7099,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f ./$(DEPDIR)/redirect.Po
 	-rm -f ./$(DEPDIR)/refresh.Po
 	-rm -f ./$(DEPDIR)/repl_modules.Po
+	-rm -f ./$(DEPDIR)/salsa2.Po
 	-rm -f ./$(DEPDIR)/snmp_agent.Po
 	-rm -f ./$(DEPDIR)/snmp_core.Po
 	-rm -f ./$(DEPDIR)/stat.Po

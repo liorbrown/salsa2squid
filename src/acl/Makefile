@@ -603,7 +603,7 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-ACLOCAL = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' aclocal-1.16
+ACLOCAL = ${SHELL} '/home/lior/squid/cfgaux/missing' aclocal-1.16
 ADAPTATION_LIBS = adaptation/libadaptation.la
 AIOLIB = -lrt
 ALLOCA = 
@@ -614,9 +614,9 @@ AR_R = /usr/bin/ar r
 ATOMICLIB = 
 AUTH_LIBS_TO_BUILD =  basic/libbasic.la digest/libdigest.la negotiate/libnegotiate.la ntlm/libntlm.la
 AUTH_MODULES =  basic digest negotiate ntlm
-AUTOCONF = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' autoconf
-AUTOHEADER = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' autoheader
-AUTOMAKE = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' automake-1.16
+AUTOCONF = ${SHELL} '/home/lior/squid/cfgaux/missing' autoconf
+AUTOHEADER = ${SHELL} '/home/lior/squid/cfgaux/missing' autoheader
+AUTOMAKE = ${SHELL} '/home/lior/squid/cfgaux/missing' automake-1.16
 AWK = gawk
 BASIC_AUTH_HELPERS =  DB NCSA POP3 RADIUS SMB fake getpwnam
 BUILDCXX = g++ -std=c++17
@@ -670,7 +670,7 @@ FILECMD = file
 GIT = 
 GREP = /usr/bin/grep
 HAVE_CXX17 = 1
-INCLTDL = -I$(top_srcdir)/libltdl
+INCLTDL = 
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -696,7 +696,7 @@ LIBGNUTLS_CFLAGS =
 LIBGNUTLS_LIBS = 
 LIBLDAP_CFLAGS = 
 LIBLDAP_LIBS = 
-LIBLTDL = $(top_build_prefix)libltdl/libltdlc.la
+LIBLTDL = -lltdl
 LIBNETTLE_CFLAGS = 
 LIBNETTLE_LIBS = 
 LIBOBJS = 
@@ -719,8 +719,8 @@ LIPO =
 LN = /usr/bin/ln
 LN_S = ln -s
 LOG_DAEMON_HELPERS =  DB file
-LTDLDEPS = $(top_build_prefix)libltdl/libltdlc.la
-LTDLINCL = -I$(top_srcdir)/libltdl
+LTDLDEPS = 
+LTDLINCL = 
 LTDLOPEN = libltdl
 LTLIBOBJS = 
 LT_ARGZ_H = 
@@ -729,7 +729,7 @@ LT_DLLOADERS =  libltdl/dlopen.la
 LT_DLPREOPEN = -dlpreopen libltdl/dlopen.la 
 LT_SYS_LIBRARY_PATH = 
 MAINT = #
-MAKEINFO = ${SHELL} '/home/lior/squid-6.12/cfgaux/missing' makeinfo
+MAKEINFO = ${SHELL} '/home/lior/squid/cfgaux/missing' makeinfo
 MANIFEST_TOOL = :
 MINGW_LIBS = 
 MKDIR = /usr/bin/mkdir
@@ -789,10 +789,10 @@ WBINFO =
 WIN32_PSAPI = 
 XTRA_LIBS = -lm -ldl
 XTRA_OBJS = 
-abs_builddir = /home/lior/squid-6.12/src/acl
-abs_srcdir = /home/lior/squid-6.12/src/acl
-abs_top_builddir = /home/lior/squid-6.12
-abs_top_srcdir = /home/lior/squid-6.12
+abs_builddir = /home/lior/squid/src/acl
+abs_srcdir = /home/lior/squid/src/acl
+abs_top_builddir = /home/lior/squid
+abs_top_srcdir = /home/lior/squid
 ac_ct_AR = 
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -822,7 +822,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/lior/squid-6.12/cfgaux/install-sh
+install_sh = ${SHELL} /home/lior/squid/cfgaux/install-sh
 krb5_config = no
 libdir = ${exec_prefix}/lib
 libexecdir = /lib/squid
@@ -969,9 +969,9 @@ $(srcdir)/Makefile.in: # $(srcdir)/Makefile.am $(top_srcdir)/src/Common.am $(top
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/acl/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/acl/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/acl/Makefile
+	  $(AUTOMAKE) --gnu src/acl/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \

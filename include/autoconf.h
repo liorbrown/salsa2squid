@@ -591,7 +591,7 @@
 #define HAVE_LINUX_TYPES_H 1
 
 /* Define this if a modern libltdl is already installed */
-/* #undef HAVE_LTDL */
+#define HAVE_LTDL 1
 
 /* Define to 1 if you have the <machine/byte_swap.h> header file. */
 /* #undef HAVE_MACHINE_BYTE_SWAP_H */

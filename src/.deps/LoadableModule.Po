@@ -221,8 +221,8 @@ LoadableModule.o: LoadableModule.cc /usr/include/stdc-predef.h \
  /usr/include/c++/13/bits/memory_resource.h /usr/include/c++/13/cstddef \
  /usr/include/c++/13/bits/uses_allocator.h \
  /usr/include/c++/13/bits/uses_allocator_args.h /usr/include/c++/13/tuple \
- ../libltdl/ltdl.h ../libltdl/libltdl/lt_system.h \
- ../libltdl/libltdl/lt_error.h ../libltdl/libltdl/lt_dlloader.h \
+ ../libltdl/ltdl.h /usr/include/libltdl/lt_system.h \
+ /usr/include/libltdl/lt_error.h /usr/include/libltdl/lt_dlloader.h \
  LoadableModule.h SquidString.h debug/Stream.h \
  ../src/mem/AllocatorProxy.h /usr/include/c++/13/iostream \
  /usr/include/c++/13/ostream /usr/include/c++/13/ios \
@@ -557,9 +557,9 @@ base/TextException.h:
 /usr/include/c++/13/bits/uses_allocator_args.h:
 /usr/include/c++/13/tuple:
 ../libltdl/ltdl.h:
-../libltdl/libltdl/lt_system.h:
-../libltdl/libltdl/lt_error.h:
-../libltdl/libltdl/lt_dlloader.h:
+/usr/include/libltdl/lt_system.h:
+/usr/include/libltdl/lt_error.h:
+/usr/include/libltdl/lt_dlloader.h:
 LoadableModule.h:
 SquidString.h:
 debug/Stream.h:
