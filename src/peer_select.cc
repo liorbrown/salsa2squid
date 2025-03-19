@@ -36,6 +36,7 @@
 #include "SquidConfig.h"
 #include "Store.h"
 #include "time/gadgets.h"
+#include "salsa2.h"
 
 /**
  * A CachePeer which has been selected as a possible destination.
@@ -610,6 +611,10 @@ PeerSelector::selectMore()
         return;
 
     debugs(44, 3, request->method << ' ' << request->url.host());
+
+    if (Config.salsa2){
+        Salsa2::peerSelection();
+    }
 
     /** If we don't know whether DIRECT is permitted ... */
     if (direct == DIRECT_UNKNOWN) {

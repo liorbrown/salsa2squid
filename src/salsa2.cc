@@ -1,9 +1,7 @@
 #include "salsa2.h"
 #include <iostream>
 
-using namespace std;
-
 void Salsa2::peerSelection(){
-    cout << "Check";
+    std::cout << "Starting salsa2 algorithm" << std::endl;    
 }
 

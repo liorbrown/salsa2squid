@@ -9468,3 +9468,10 @@ refresh_pattern .		0	20%	4320
 #Default:
 # no artificial limit on the number of concurrent spare attempts
 
+#  TAG: salsa2
+#	Sets the level of salsa2 algorithm to use:
+#	0 - off
+#	1 - on
+#Default:
+# salsa2 0
+

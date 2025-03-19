@@ -10946,4 +10946,14 @@ DOC_START
 	happy_eyeballs_connect_gap. See the former for related terminology.
 DOC_END
 
+NAME: salsa2
+DEFAULT: 0
+LOC: Config.salsa2
+TYPE: int
+DOC_START
+	Sets the level of salsa2 algorithm to use:
+	0 - off
+	1 - on
+DOC_END
+
 EOF

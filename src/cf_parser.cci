@@ -508,6 +508,7 @@ default_all(void)
     default_line("happy_eyeballs_connect_timeout 250");
     default_line("happy_eyeballs_connect_gap -1");
     default_line("happy_eyeballs_connect_limit -1");
+    default_line("salsa2 0");
     cfg_filename = nullptr;
 }
 
@@ -3750,6 +3751,12 @@ parse_line(char *buff)
         cfg_directive = nullptr;
         return 1;
     };
+    if (!strcmp(token, "salsa2")) {
+        cfg_directive = "salsa2";
+        parse_int(&Config.salsa2);
+        cfg_directive = nullptr;
+        return 1;
+    };
 	return 0; /* failure */
 }
 
@@ -4320,6 +4327,7 @@ dump_config(StoreEntry *entry)
     dump_int(entry, "happy_eyeballs_connect_timeout", Config.happyEyeballs.connect_timeout);
     dump_int(entry, "happy_eyeballs_connect_gap", Config.happyEyeballs.connect_gap);
     dump_int(entry, "happy_eyeballs_connect_limit", Config.happyEyeballs.connect_limit);
+    dump_int(entry, "salsa2", Config.salsa2);
 }
 
 static void
@@ -4889,5 +4897,6 @@ free_all(void)
     free_int(&Config.happyEyeballs.connect_timeout);
     free_int(&Config.happyEyeballs.connect_gap);
     free_int(&Config.happyEyeballs.connect_limit);
+    free_int(&Config.salsa2);
 }
 

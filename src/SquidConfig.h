@@ -76,6 +76,8 @@ public:
 class SquidConfig
 {
 public:
+    int salsa2;
+    
     struct {
         /* These should be for the Store::Root instance.
         * this needs pluggable parsing to be done smoothly.
