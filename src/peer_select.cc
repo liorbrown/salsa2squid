@@ -613,7 +613,7 @@ PeerSelector::selectMore()
     debugs(44, 3, request->method << ' ' << request->url.host());
 
     if (Config.salsa2){
-        Salsa2::peerSelection();
+        Salsa2::peerSelection(this, &servers);
     }
 
     /** If we don't know whether DIRECT is permitted ... */
