@@ -5,6 +5,8 @@
         "cstdlib": "cpp",
         "format": "cpp",
         "numeric": "cpp",
-        "streambuf": "cpp"
+        "streambuf": "cpp",
+        "type_traits": "cpp",
+        "cstdint": "cpp"
     }
 }

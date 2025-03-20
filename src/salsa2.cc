@@ -1,7 +1,8 @@
+#include "squid.h"
+#include "debug/Stream.h"
 #include "salsa2.h"
-#include <iostream>
 
 void Salsa2::peerSelection(){
-    std::cout << "Starting salsa2 algorithm" << std::endl;    
+    debugs(96,0,"Starting salsa2 peer selection");
 }
 
