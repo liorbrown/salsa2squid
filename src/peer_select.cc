@@ -613,90 +613,92 @@ PeerSelector::selectMore()
     debugs(44, 3, request->method << ' ' << request->url.host());
 
     if (Config.salsa2){
-        Salsa2::peerSelection(this, &servers);
-    }
+        Salsa2 mySalsa{this, &servers};
+        mySalsa.peerSelection();
+    } else {
 
-    /** If we don't know whether DIRECT is permitted ... */
-    if (direct == DIRECT_UNKNOWN) {
-        if (always_direct == ACCESS_DUNNO) {
-            debugs(44, 3, "direct = " << DirectStr[direct] << " (always_direct to be checked)");
-            /** check always_direct; */
-            ACLFilledChecklist *ch = new ACLFilledChecklist(Config.accessList.AlwaysDirect, request, nullptr);
-            ch->al = al;
-            acl_checklist = ch;
-            acl_checklist->syncAle(request, nullptr);
-            acl_checklist->nonBlockingCheck(CheckAlwaysDirectDone, this);
-            return;
-        } else if (never_direct == ACCESS_DUNNO) {
-            debugs(44, 3, "direct = " << DirectStr[direct] << " (never_direct to be checked)");
-            /** check never_direct; */
-            ACLFilledChecklist *ch = new ACLFilledChecklist(Config.accessList.NeverDirect, request, nullptr);
-            ch->al = al;
-            acl_checklist = ch;
-            acl_checklist->syncAle(request, nullptr);
-            acl_checklist->nonBlockingCheck(CheckNeverDirectDone, this);
-            return;
-        } else if (request->flags.noDirect) {
-            /** if we are accelerating, direct is not an option. */
-            direct = DIRECT_NO;
-            debugs(44, 3, "direct = " << DirectStr[direct] << " (forced non-direct)");
-        } else if (request->flags.loopDetected) {
-            /** if we are in a forwarding-loop, direct is not an option. */
-            direct = DIRECT_YES;
-            debugs(44, 3, "direct = " << DirectStr[direct] << " (forwarding loop detected)");
-        } else if (checkNetdbDirect()) {
-            direct = DIRECT_YES;
-            debugs(44, 3, "direct = " << DirectStr[direct] << " (checkNetdbDirect)");
-        } else {
-            direct = DIRECT_MAYBE;
-            debugs(44, 3, "direct = " << DirectStr[direct] << " (default)");
+        /** If we don't know whether DIRECT is permitted ... */
+        if (direct == DIRECT_UNKNOWN) {
+            if (always_direct == ACCESS_DUNNO) {
+                debugs(44, 3, "direct = " << DirectStr[direct] << " (always_direct to be checked)");
+                /** check always_direct; */
+                ACLFilledChecklist *ch = new ACLFilledChecklist(Config.accessList.AlwaysDirect, request, nullptr);
+                ch->al = al;
+                acl_checklist = ch;
+                acl_checklist->syncAle(request, nullptr);
+                acl_checklist->nonBlockingCheck(CheckAlwaysDirectDone, this);
+                return;
+            } else if (never_direct == ACCESS_DUNNO) {
+                debugs(44, 3, "direct = " << DirectStr[direct] << " (never_direct to be checked)");
+                /** check never_direct; */
+                ACLFilledChecklist *ch = new ACLFilledChecklist(Config.accessList.NeverDirect, request, nullptr);
+                ch->al = al;
+                acl_checklist = ch;
+                acl_checklist->syncAle(request, nullptr);
+                acl_checklist->nonBlockingCheck(CheckNeverDirectDone, this);
+                return;
+            } else if (request->flags.noDirect) {
+                /** if we are accelerating, direct is not an option. */
+                direct = DIRECT_NO;
+                debugs(44, 3, "direct = " << DirectStr[direct] << " (forced non-direct)");
+            } else if (request->flags.loopDetected) {
+                /** if we are in a forwarding-loop, direct is not an option. */
+                direct = DIRECT_YES;
+                debugs(44, 3, "direct = " << DirectStr[direct] << " (forwarding loop detected)");
+            } else if (checkNetdbDirect()) {
+                direct = DIRECT_YES;
+                debugs(44, 3, "direct = " << DirectStr[direct] << " (checkNetdbDirect)");
+            } else {
+                direct = DIRECT_MAYBE;
+                debugs(44, 3, "direct = " << DirectStr[direct] << " (default)");
+            }
+
+            debugs(44, 3, "direct = " << DirectStr[direct]);
         }
 
-        debugs(44, 3, "direct = " << DirectStr[direct]);
-    }
+        if (!entry || entry->ping_status == PING_NONE)
+            selectPinned();
+        if (entry == nullptr) {
+            (void) 0;
+        } else if (entry->ping_status == PING_NONE) {
+            selectSomeNeighbor();
 
-    if (!entry || entry->ping_status == PING_NONE)
-        selectPinned();
-    if (entry == nullptr) {
-        (void) 0;
-    } else if (entry->ping_status == PING_NONE) {
-        selectSomeNeighbor();
+            if (entry->ping_status == PING_WAITING)
+                return;
+        } else if (entry->ping_status == PING_WAITING) {
+            selectSomeNeighborReplies();
+            cancelPingTimeoutMonitoring();
+            entry->ping_status = PING_DONE;
+        }
 
-        if (entry->ping_status == PING_WAITING)
-            return;
-    } else if (entry->ping_status == PING_WAITING) {
-        selectSomeNeighborReplies();
-        cancelPingTimeoutMonitoring();
-        entry->ping_status = PING_DONE;
-    }
+        switch (direct) {
 
-    switch (direct) {
-
-    case DIRECT_YES:
-        selectSomeDirect();
-        break;
-
-    case DIRECT_NO:
-        selectSomeParent();
-        selectAllParents();
-        break;
-
-    default:
-
-        if (Config.onoff.prefer_direct)
+        case DIRECT_YES:
             selectSomeDirect();
+            break;
 
-        if (request->flags.hierarchical || !Config.onoff.nonhierarchical_direct) {
+        case DIRECT_NO:
             selectSomeParent();
             selectAllParents();
+            break;
+
+        default:
+
+            if (Config.onoff.prefer_direct)
+                selectSomeDirect();
+
+            if (request->flags.hierarchical || !Config.onoff.nonhierarchical_direct) {
+                selectSomeParent();
+                selectAllParents();
+            }
+
+            if (!Config.onoff.prefer_direct)
+                selectSomeDirect();
+
+            break;
         }
-
-        if (!Config.onoff.prefer_direct)
-            selectSomeDirect();
-
-        break;
     }
-
+    
     // end peer selection; start resolving selected peers
     resolveSelected();
 }

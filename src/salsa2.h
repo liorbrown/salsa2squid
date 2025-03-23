@@ -1,11 +1,20 @@
 #pragma once
 
 #include "PeerSelectState.h"
+#include "CachePeer.h"
 
 class Salsa2{
-    static void checkDigestsHits(FwdServer** severs);
-    static void selectPeers(FwdServer** severs);
+    static CachePeer* currentPeer;
+    PeerSelector* selector;
+    FwdServer** servers;
+    FwdServer* tail;
+
+    void checkDigestsHits();
+    void selectPeers();
+    void addRoundRobin();
+    void addPeer(CachePeer*, hier_code);
     
     public:
-        static void peerSelection(PeerSelector*, FwdServer**);
+        Salsa2(PeerSelector*, FwdServer**);
+        void peerSelection();
 };

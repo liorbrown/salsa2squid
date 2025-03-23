@@ -411,7 +411,17 @@ salsa2.o: salsa2.cc /usr/include/stdc-predef.h ../include/squid.h \
  eui/Eui48.h eui/Eui64.h salsa2.h PeerSelectState.h AccessLogEntry.h \
  acl/Checklist.h ../src/acl/InnerNode.h ../src/acl/Acl.h \
  ../src/acl/forward.h ../src/acl/Options.h ip/Address.h ipcache.h \
- typedefs.h anyp/ProtocolType.h
+ typedefs.h anyp/ProtocolType.h CachePeer.h icp_opcode.h \
+ security/PeerOptions.h SquidConfig.h base/YesNoNone.h \
+ helper/ChildConfig.h HttpHeaderTools.h HttpHeader.h sbuf/forward.h \
+ security/forward.h ssl/support.h store/Disk.h ../src/store/Controlled.h \
+ ../src/store/Storage.h ../src/http/RequestMethod.h \
+ ../src/store/forward.h ../src/store_key_md5.h ../src/StoreIOState.h \
+ ../src/base/RefCount.h store/forward.h time/gadgets.h neighbors.h ICP.h \
+ LogTags.h store_key_md5.h StoreClient.h acl/ChecklistFiller.h \
+ base/AsyncCall.h base/forward.h dlink.h store/ParsingBuffer.h \
+ ../src/StoreIOBuffer.h ../src/base/Range.h StoreIOBuffer.h \
+ StoreIOState.h mem/AllocatorProxy.h
 /usr/include/stdc-predef.h:
 ../include/squid.h:
 ../include/autoconf.h:
@@ -1077,3 +1087,39 @@ ip/Address.h:
 ipcache.h:
 typedefs.h:
 anyp/ProtocolType.h:
+CachePeer.h:
+icp_opcode.h:
+security/PeerOptions.h:
+SquidConfig.h:
+base/YesNoNone.h:
+helper/ChildConfig.h:
+HttpHeaderTools.h:
+HttpHeader.h:
+sbuf/forward.h:
+security/forward.h:
+ssl/support.h:
+store/Disk.h:
+../src/store/Controlled.h:
+../src/store/Storage.h:
+../src/http/RequestMethod.h:
+../src/store/forward.h:
+../src/store_key_md5.h:
+../src/StoreIOState.h:
+../src/base/RefCount.h:
+store/forward.h:
+time/gadgets.h:
+neighbors.h:
+ICP.h:
+LogTags.h:
+store_key_md5.h:
+StoreClient.h:
+acl/ChecklistFiller.h:
+base/AsyncCall.h:
+base/forward.h:
+dlink.h:
+store/ParsingBuffer.h:
+../src/StoreIOBuffer.h:
+../src/base/Range.h:
+StoreIOBuffer.h:
+StoreIOState.h:
+mem/AllocatorProxy.h:
