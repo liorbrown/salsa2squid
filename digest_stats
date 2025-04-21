@@ -1,0 +1,418 @@
+
+Counters:
+sample_time = 1743689743.815253 (Thu, 03 Apr 2025 14:15:43 GMT)
+client_http.requests = 977
+client_http.hits = 0
+client_http.errors = 3
+client_http.kbytes_in = 735
+client_http.kbytes_out = 36696
+client_http.hit_kbytes_out = 0
+server.all.requests = 1225
+server.all.errors = 0
+server.all.kbytes_in = 36890
+server.all.kbytes_out = 899
+server.http.requests = 376
+server.http.errors = 0
+server.http.kbytes_in = 1466
+server.http.kbytes_out = 96
+server.ftp.requests = 0
+server.ftp.errors = 0
+server.ftp.kbytes_in = 0
+server.ftp.kbytes_out = 0
+server.other.requests = 849
+server.other.errors = 0
+server.other.kbytes_in = 35423
+server.other.kbytes_out = 803
+icp.pkts_sent = 0
+icp.pkts_recv = 0
+icp.queries_sent = 0
+icp.replies_sent = 0
+icp.queries_recv = 0
+icp.replies_recv = 0
+icp.query_timeouts = 0
+icp.replies_queued = 0
+icp.kbytes_sent = 0
+icp.kbytes_recv = 0
+icp.q_kbytes_sent = 0
+icp.r_kbytes_sent = 0
+icp.q_kbytes_recv = 0
+icp.r_kbytes_recv = 0
+icp.times_used = 0
+cd.times_used = 27
+cd.msgs_sent = 253
+cd.msgs_recv = 253
+cd.memory = 1
+cd.local_memory = 0
+cd.kbytes_sent = 26
+cd.kbytes_recv = 213
+unlink.requests = 0
+page_faults = 18214
+select_loops = 135549
+cpu_time = 14.708630
+wall_time = 37.504057
+swap.outs = 0
+swap.ins = 0
+swap.files_cleaned = 0
+aborted_requests = 3
+hit_validation.attempts = 0
+hit_validation.refusals.due_to_locking = 0
+hit_validation.refusals.due_to_zeroSize = 0
+hit_validation.refusals.due_to_timeLimit = 0
+hit_validation.failures = 0
+
+5 Min Averages:
+sample_start_time = 1743689443.810946 (Thu, 03 Apr 2025 14:10:43 GMT)
+sample_end_time = 1743689743.815253 (Thu, 03 Apr 2025 14:15:43 GMT)
+client_http.requests = 0.000000/sec
+client_http.hits = 0.000000/sec
+client_http.errors = 0.000000/sec
+client_http.kbytes_in = 0.000000/sec
+client_http.kbytes_out = 0.000000/sec
+client_http.all_median_svc_time = 0.000000 seconds
+client_http.miss_median_svc_time = 0.000000 seconds
+client_http.nm_median_svc_time = 0.000000 seconds
+client_http.nh_median_svc_time = 0.000000 seconds
+client_http.hit_median_svc_time = 0.000000 seconds
+server.all.requests = 0.006667/sec
+server.all.errors = 0.000000/sec
+server.all.kbytes_in = 0.006667/sec
+server.all.kbytes_out = 0.000000/sec
+server.http.requests = 0.006667/sec
+server.http.errors = 0.000000/sec
+server.http.kbytes_in = 0.006667/sec
+server.http.kbytes_out = 0.003333/sec
+server.ftp.requests = 0.000000/sec
+server.ftp.errors = 0.000000/sec
+server.ftp.kbytes_in = 0.000000/sec
+server.ftp.kbytes_out = 0.000000/sec
+server.other.requests = 0.000000/sec
+server.other.errors = 0.000000/sec
+server.other.kbytes_in = 0.000000/sec
+server.other.kbytes_out = 0.000000/sec
+icp.pkts_sent = 0.000000/sec
+icp.pkts_recv = 0.000000/sec
+icp.queries_sent = 0.000000/sec
+icp.replies_sent = 0.000000/sec
+icp.queries_recv = 0.000000/sec
+icp.replies_recv = 0.000000/sec
+icp.replies_queued = 0.000000/sec
+icp.query_timeouts = 0.000000/sec
+icp.kbytes_sent = 0.000000/sec
+icp.kbytes_recv = 0.000000/sec
+icp.q_kbytes_sent = 0.000000/sec
+icp.r_kbytes_sent = 0.000000/sec
+icp.q_kbytes_recv = 0.000000/sec
+icp.r_kbytes_recv = 0.000000/sec
+icp.query_median_svc_time = 0.000000 seconds
+icp.reply_median_svc_time = 0.000000 seconds
+dns.median_svc_time = 0.000000 seconds
+unlink.requests = 0.000000/sec
+page_faults = 0.000000/sec
+select_loops = 1.316648/sec
+select_fds = 0.020000/sec
+average_select_fd_period = 0.000000/fd
+median_select_fds = -1.000000
+swap.outs = 0.000000/sec
+swap.ins = 0.000000/sec
+swap.files_cleaned = 0.000000/sec
+aborted_requests = 0.000000/sec
+hit_validation.attempts = 0.000000/sec
+hit_validation.refusals.due_to_locking = 0.000000/sec
+hit_validation.refusals.due_to_zeroSize = 0.000000/sec
+hit_validation.refusals.due_to_timeLimit = 0.000000/sec
+hit_validation.failures = 0.000000/sec
+syscalls.disk.opens = 0.000000/sec
+syscalls.disk.closes = 0.000000/sec
+syscalls.disk.reads = 0.000000/sec
+syscalls.disk.writes = 0.000000/sec
+syscalls.disk.seeks = 0.000000/sec
+syscalls.disk.unlinks = 0.000000/sec
+syscalls.sock.accepts = 0.000000/sec
+syscalls.sock.sockets = 0.006667/sec
+syscalls.sock.connects = 0.006667/sec
+syscalls.sock.binds = 0.000000/sec
+syscalls.sock.closes = 0.006667/sec
+syscalls.sock.reads = 0.006667/sec
+syscalls.sock.writes = 0.006667/sec
+syscalls.sock.recvfroms = 0.000000/sec
+syscalls.sock.sendtos = 0.000000/sec
+cpu_time = 0.037777 seconds
+wall_time = 300.004307 seconds
+cpu_usage = 0.012592%
+
+Histograms:
+client_http.allSvcTime histogram:
+	  0/0.000000	1	18.028669
+	 13/1.017352	14	125.115182
+	 20/1.943709	10	61.244734
+	 26/3.069709	8	35.439719
+	 30/4.050593	4	14.278457
+	 33/4.938498	4	12.143589
+	 36/5.982499	1	2.581980
+	 39/7.210037	4	8.783722
+	 43/9.188824	2	3.538911
+	 44/9.753970	1	1.676466
+	 46/10.980041	1	1.504892
+	 49/13.086158	3	3.839657
+	 54/17.450846	2	1.954238
+	 58/21.897880	1	0.787351
+	 70/42.765533	1	0.411938
+	 71/45.193085	3	1.170868
+	 72/47.755286	1	0.369779
+	 73/50.459606	1	0.350346
+	 76/59.506314	4	1.191854
+	 78/66.404701	1	0.267469
+	 79/70.143452	1	0.253413
+	 81/78.254590	1	0.227478
+	 83/87.290488	4	0.816789
+	 84/92.187715	1	0.193466
+	 85/97.356578	2	0.366598
+	 86/102.812143	3	0.520999
+	 87/108.570313	2	0.329079
+	 88/114.647872	2	0.311786
+	 89/121.062537	5	0.738501
+	 90/127.833006	6	0.839630
+	 91/134.979013	3	0.397753
+	 92/142.521390	2	0.251233
+	 93/150.482121	4	0.476061
+	 94/158.884411	2	0.225521
+	 95/167.752754	8	0.854679
+	 96/177.112998	3	0.303661
+	 97/186.992430	3	0.287703
+	 98/197.419845	6	0.545167
+	 99/208.425641	9	0.774776
+	100/220.041897	13	1.060309
+	101/232.302474	10	0.772759
+	102/245.243112	10	0.732149
+	103/258.901530	4	0.277469
+	104/273.317543	3	0.197166
+	105/288.533172	7	0.435876
+	106/304.592770	17	1.002927
+	107/321.543148	17	0.950221
+	108/339.433717	6	0.317748
+	109/358.316626	5	0.250874
+	110/378.246917	11	0.522919
+	111/399.282685	16	0.720637
+	112/421.485249	14	0.597421
+	113/444.919327	12	0.485164
+	114/469.653229	6	0.229834
+	115/495.759051	15	0.544389
+	116/523.312889	17	0.584551
+	117/552.395063	13	0.423518
+	118/583.090344	12	0.370395
+	119/615.488206	34	0.994301
+	120/649.683087	11	0.304780
+	121/685.774663	17	0.446271
+	122/723.868138	25	0.621791
+	123/764.074551	15	0.353469
+	124/806.511103	22	0.491177
+	125/851.301491	10	0.211529
+	126/898.576277	28	0.561156
+	127/948.473264	21	0.398750
+	128/1001.137898	17	0.305834
+	129/1056.723692	17	0.289761
+	130/1115.392675	28	0.452173
+	131/1177.315862	16	0.244806
+	132/1242.673756	26	0.376904
+	133/1311.656871	21	0.288424
+	134/1384.466286	15	0.195191
+	135/1461.314236	30	0.369866
+	136/1542.424728	12	0.140171
+	137/1628.034193	18	0.199208
+	138/1718.392175	19	0.199224
+	139/1813.762063	16	0.158951
+	140/1914.421853	9	0.084711
+	141/2020.664961	18	0.160519
+	142/2132.801077	15	0.126736
+	143/2251.157071	6	0.048030
+	144/2376.077941	9	0.068259
+	145/2507.927824	15	0.107787
+	146/2647.091053	8	0.054465
+	147/2793.973277	8	0.051603
+	148/2949.002648	6	0.036668
+	149/3112.631067	6	0.034741
+	150/3285.335497	5	0.027430
+	151/3467.619361	3	0.015593
+	152/3660.014001	4	0.019698
+	153/3863.080236	4	0.018663
+	154/4077.409989	13	0.057467
+	155/4303.628015	8	0.033506
+	156/4542.393724	3	0.011904
+	157/4794.403101	1	0.003760
+	158/5060.390735	3	0.010686
+	159/5341.131961	4	0.013499
+	160/5637.445120	4	0.012790
+	161/5950.193943	3	0.009088
+	162/6280.290071	3	0.008611
+	163/6628.695711	6	0.016316
+	165/7384.554166	3	0.007323
+	166/7794.210255	1	0.002313
+	167/8226.588825	1	0.002191
+	168/8682.950227	2	0.004152
+	170/9673.016361	2	0.003727
+	171/10209.607065	6	0.010594
+	175/12670.573514	1	0.001423
+	177/14115.272698	1	0.001277
+	178/14898.262970	9	0.010890
+	179/15724.683528	1	0.001146
+	180/16596.943329	2	0.002172
+	181/17517.584948	1	0.001029
+	182/18489.291990	1	0.000975
+	183/19514.896911	2	0.001848
+	184/20597.389277	1	0.000875
+	185/21739.924474	1	0.000829
+	190/28476.491918	2	0.001266
+	191/30056.058962	1	0.000600
+	192/31723.240183	1	0.000568
+	195/37300.428782	1	0.000483
+	200/48858.520115	2	0.000738
+	203/57448.127209	1	0.000314
+	207/71294.549239	1	0.000253
+	210/83828.457760	1	0.000215
+	211/88478.243954	1	0.000204
+	212/93385.940819	3	0.000579
+	213/98565.853939	1	0.000183
+	217/122322.494364	2	0.000295
+	218/129107.437396	1	0.000140
+client_http.missSvcTime histogram:
+	  0/0.000000	1	18.028669
+	 13/1.017352	14	125.115182
+	 20/1.943709	10	61.244734
+	 26/3.069709	8	35.439719
+	 30/4.050593	4	14.278457
+	 33/4.938498	4	12.143589
+	 36/5.982499	1	2.581980
+	 39/7.210037	4	8.783722
+	 43/9.188824	2	3.538911
+	 44/9.753970	1	1.676466
+	 46/10.980041	1	1.504892
+	 49/13.086158	3	3.839657
+	 54/17.450846	2	1.954238
+	 58/21.897880	1	0.787351
+	 72/47.755286	1	0.369779
+	 76/59.506314	1	0.297963
+	 86/102.812143	1	0.173666
+	 89/121.062537	2	0.295401
+	 98/197.419845	2	0.181722
+	 99/208.425641	1	0.086086
+	101/232.302474	1	0.077276
+	102/245.243112	1	0.073215
+	103/258.901530	1	0.069367
+	105/288.533172	1	0.062268
+	106/304.592770	1	0.058996
+	107/321.543148	1	0.055895
+	108/339.433717	2	0.105916
+	110/378.246917	3	0.142614
+	111/399.282685	3	0.135120
+	112/421.485249	3	0.128019
+	113/444.919327	1	0.040430
+	114/469.653229	2	0.076611
+	117/552.395063	2	0.065157
+	118/583.090344	2	0.061732
+	119/615.488206	4	0.116977
+	120/649.683087	3	0.083122
+	121/685.774663	2	0.052502
+	122/723.868138	2	0.049743
+	123/764.074551	1	0.023565
+	124/806.511103	4	0.089305
+	126/898.576277	4	0.080165
+	129/1056.723692	1	0.017045
+	130/1115.392675	3	0.048447
+	131/1177.315862	2	0.030601
+	132/1242.673756	1	0.014496
+	134/1384.466286	1	0.013013
+	135/1461.314236	2	0.024658
+	137/1628.034193	1	0.011067
+	139/1813.762063	2	0.019869
+	141/2020.664961	1	0.008918
+	142/2132.801077	2	0.016898
+	147/2793.973277	1	0.006450
+	171/10209.607065	3	0.005297
+client_http.nearMissSvcTime histogram:
+client_http.nearHitSvcTime histogram:
+client_http.hitSvcTime histogram:
+icp.querySvcTime histogram:
+icp.replySvcTime histogram:
+dns.svc_time histogram:
+select_fds_hist histogram:
+	  0/-1.000000	1	1.000000
+	  1/0.000000	101505	101505.000000
+	  2/1.000000	32914	32914.000000
+	  3/2.000000	1116	1116.000000
+	  4/3.000000	12	12.000000
+	  5/4.000000	1	1.000000
+
+Peer Digests:
+no guess stats for all peers available
+
+Per-peer statistics:
+
+peer digest from 192.168.10.50
+no guess stats for 192.168.10.50 available
+
+event	 timestamp	 secs from now	 secs from init
+initialized	 1743531111	 -158670	 +0
+needed	 1743604691	 -85090	 +73580
+requested	 1743689503	 -278	 +158392
+received	 1743689503	 -278	 +158392
+next_check	 1743689803	 +22	 +158692
+peer digest state:
+	needed: yes, usable: yes, requested:  no
+
+	last retry delay: 0 secs
+	last request response time: 0 secs
+	last request result: success
+
+peer digest traffic:
+	requests sent: 104, volume: 10 KB
+	replies recv:  104, volume: 89 KB
+
+peer digest structure:
+192.168.10.50 digest: size: 346 bytes
+	 entries: count: 148 capacity: 553 util: 27%
+	 deletion attempts: 0
+	 bits: per entry: 5 on: 549 capacity: 2768 util: 20%
+	 bit-seq: count: 852 avg.len: 3.25
+
+
+peer digest from 192.168.10.51
+no guess stats for 192.168.10.51 available
+
+event	 timestamp	 secs from now	 secs from init
+initialized	 1743531111	 -158670	 +0
+needed	 1743604691	 -85090	 +73580
+requested	 1743689743	 -38	 +158632
+received	 1743689743	 -38	 +158632
+next_check	 1743690043	 +262	 +158932
+peer digest state:
+	needed: yes, usable: yes, requested:  no
+
+	last retry delay: 0 secs
+	last request response time: 0 secs
+	last request result: success
+
+peer digest traffic:
+	requests sent: 114, volume: 11 KB
+	replies recv:  114, volume: 99 KB
+
+peer digest structure:
+192.168.10.51 digest: size: 368 bytes
+	 entries: count: 173 capacity: 588 util: 29%
+	 deletion attempts: 0
+	 bits: per entry: 5 on: 641 capacity: 2944 util: 22%
+	 bit-seq: count: 1022 avg.len: 2.88
+
+
+Algorithm usage:
+Cache Digest:      27 (100%)
+Icp:                0 (  0%)
+Total:             27 (100%)
+
+Local Digest:
+store digest: size: 1 bytes
+	 entries: count: 0 capacity: 1 util: 0%
+	 deletion attempts: 0
+	 bits: per entry: 5 on: 0 capacity: 8 util: 0%
+	 bit-seq: count: 2 avg.len: 3.50
+	 added: 0 rejected: 0 ( -1.00 %) del-ed: 0
+	 collisions: on add: -1.00 % on rej: -1.00 %

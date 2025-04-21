@@ -408,20 +408,50 @@ salsa2.o: salsa2.cc /usr/include/stdc-predef.h ../include/squid.h \
  ../src/helper/forward.h adaptation/History.h \
  ../src/adaptation/DynamicGroupCfg.h ../src/SquidString.h \
  ../src/adaptation/forward.h adaptation/icap/History.h ../src/LogTags.h \
- eui/Eui48.h eui/Eui64.h salsa2.h PeerSelectState.h AccessLogEntry.h \
- acl/Checklist.h ../src/acl/InnerNode.h ../src/acl/Acl.h \
- ../src/acl/forward.h ../src/acl/Options.h ip/Address.h ipcache.h \
- typedefs.h anyp/ProtocolType.h CachePeer.h icp_opcode.h \
- security/PeerOptions.h SquidConfig.h base/YesNoNone.h \
+ eui/Eui48.h eui/Eui64.h salsa2.h SquidConfig.h base/YesNoNone.h \
  helper/ChildConfig.h HttpHeaderTools.h HttpHeader.h sbuf/forward.h \
- security/forward.h ssl/support.h store/Disk.h ../src/store/Controlled.h \
- ../src/store/Storage.h ../src/http/RequestMethod.h \
- ../src/store/forward.h ../src/store_key_md5.h ../src/StoreIOState.h \
- ../src/base/RefCount.h store/forward.h time/gadgets.h neighbors.h ICP.h \
- LogTags.h store_key_md5.h StoreClient.h acl/ChecklistFiller.h \
- base/AsyncCall.h base/forward.h dlink.h store/ParsingBuffer.h \
- ../src/StoreIOBuffer.h ../src/base/Range.h StoreIOBuffer.h \
- StoreIOState.h mem/AllocatorProxy.h
+ ip/Address.h security/forward.h ssl/support.h store/Disk.h \
+ ../src/store/Controlled.h ../src/store/Storage.h \
+ ../src/http/RequestMethod.h ../src/store/forward.h \
+ ../src/store_key_md5.h ../src/StoreIOState.h ../src/base/RefCount.h \
+ store/forward.h time/gadgets.h PeerSelectState.h AccessLogEntry.h \
+ acl/Checklist.h ../src/acl/InnerNode.h ../src/acl/Acl.h \
+ ../src/acl/forward.h ../src/acl/Options.h ipcache.h typedefs.h \
+ anyp/ProtocolType.h CachePeer.h icp_opcode.h security/PeerOptions.h \
+ /usr/include/c++/13/random /usr/include/c++/13/cmath /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+ /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+ /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+ /usr/include/c++/13/bits/specfun.h /usr/include/c++/13/tr1/gamma.tcc \
+ /usr/include/c++/13/tr1/special_function_util.h \
+ /usr/include/c++/13/tr1/bessel_function.tcc \
+ /usr/include/c++/13/tr1/beta_function.tcc \
+ /usr/include/c++/13/tr1/ell_integral.tcc \
+ /usr/include/c++/13/tr1/exp_integral.tcc \
+ /usr/include/c++/13/tr1/hypergeometric.tcc \
+ /usr/include/c++/13/tr1/legendre_function.tcc \
+ /usr/include/c++/13/tr1/modified_bessel_func.tcc \
+ /usr/include/c++/13/tr1/poly_hermite.tcc \
+ /usr/include/c++/13/tr1/poly_laguerre.tcc \
+ /usr/include/c++/13/tr1/riemann_zeta.tcc \
+ /usr/include/c++/13/bits/random.h \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/opt_random.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/pmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/emmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/mm_malloc.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/mwaitintrin.h \
+ /usr/include/c++/13/bits/random.tcc neighbors.h ICP.h LogTags.h \
+ store_key_md5.h StoreClient.h acl/ChecklistFiller.h base/AsyncCall.h \
+ base/forward.h dlink.h store/ParsingBuffer.h ../src/StoreIOBuffer.h \
+ ../src/base/Range.h StoreIOBuffer.h StoreIOState.h mem/AllocatorProxy.h
 /usr/include/stdc-predef.h:
 ../include/squid.h:
 ../include/autoconf.h:
@@ -1076,26 +1106,13 @@ adaptation/icap/History.h:
 eui/Eui48.h:
 eui/Eui64.h:
 salsa2.h:
-PeerSelectState.h:
-AccessLogEntry.h:
-acl/Checklist.h:
-../src/acl/InnerNode.h:
-../src/acl/Acl.h:
-../src/acl/forward.h:
-../src/acl/Options.h:
-ip/Address.h:
-ipcache.h:
-typedefs.h:
-anyp/ProtocolType.h:
-CachePeer.h:
-icp_opcode.h:
-security/PeerOptions.h:
 SquidConfig.h:
 base/YesNoNone.h:
 helper/ChildConfig.h:
 HttpHeaderTools.h:
 HttpHeader.h:
 sbuf/forward.h:
+ip/Address.h:
 security/forward.h:
 ssl/support.h:
 store/Disk.h:
@@ -1108,6 +1125,53 @@ store/Disk.h:
 ../src/base/RefCount.h:
 store/forward.h:
 time/gadgets.h:
+PeerSelectState.h:
+AccessLogEntry.h:
+acl/Checklist.h:
+../src/acl/InnerNode.h:
+../src/acl/Acl.h:
+../src/acl/forward.h:
+../src/acl/Options.h:
+ipcache.h:
+typedefs.h:
+anyp/ProtocolType.h:
+CachePeer.h:
+icp_opcode.h:
+security/PeerOptions.h:
+/usr/include/c++/13/random:
+/usr/include/c++/13/cmath:
+/usr/include/math.h:
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
+/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
+/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
+/usr/include/x86_64-linux-gnu/bits/fp-fast.h:
+/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
+/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+/usr/include/c++/13/bits/specfun.h:
+/usr/include/c++/13/tr1/gamma.tcc:
+/usr/include/c++/13/tr1/special_function_util.h:
+/usr/include/c++/13/tr1/bessel_function.tcc:
+/usr/include/c++/13/tr1/beta_function.tcc:
+/usr/include/c++/13/tr1/ell_integral.tcc:
+/usr/include/c++/13/tr1/exp_integral.tcc:
+/usr/include/c++/13/tr1/hypergeometric.tcc:
+/usr/include/c++/13/tr1/legendre_function.tcc:
+/usr/include/c++/13/tr1/modified_bessel_func.tcc:
+/usr/include/c++/13/tr1/poly_hermite.tcc:
+/usr/include/c++/13/tr1/poly_laguerre.tcc:
+/usr/include/c++/13/tr1/riemann_zeta.tcc:
+/usr/include/c++/13/bits/random.h:
+/usr/include/x86_64-linux-gnu/c++/13/bits/opt_random.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/pmmintrin.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/emmintrin.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/xmmintrin.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/mmintrin.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/mm_malloc.h:
+/usr/lib/gcc/x86_64-linux-gnu/13/include/mwaitintrin.h:
+/usr/include/c++/13/bits/random.tcc:
 neighbors.h:
 ICP.h:
 LogTags.h:

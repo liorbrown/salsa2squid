@@ -612,7 +612,7 @@ PeerSelector::selectMore()
 
     debugs(44, 3, request->method << ' ' << request->url.host());
 
-    if (Config.salsa2){
+    if (Config.salsa2 && Config.npeers){
         Salsa2 mySalsa{this, &servers};
         mySalsa.peerSelection();
     } else {

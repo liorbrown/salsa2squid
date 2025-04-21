@@ -7,6 +7,7 @@
         "numeric": "cpp",
         "streambuf": "cpp",
         "type_traits": "cpp",
-        "cstdint": "cpp"
+        "cstdint": "cpp",
+        "string": "cpp"
     }
 }
