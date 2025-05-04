@@ -61,6 +61,7 @@ class PeerSelector: public Dns::IpReceiver
     CBDATA_CHILD(PeerSelector);
 
 public:
+    void resolveSelected();
     explicit PeerSelector(PeerSelectionInitiator*);
     ~PeerSelector() override;
 
@@ -126,7 +127,7 @@ protected:
 
     void addSelection(CachePeer*, const hier_code);
 
-    void resolveSelected();
+    
 
     static IRCB HandlePingReply;
     static ACLCB CheckAlwaysDirectDone;

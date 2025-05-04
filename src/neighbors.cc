@@ -45,6 +45,7 @@
 #include "Store.h"
 #include "store_key_md5.h"
 #include "tools.h"
+#include "salsa2.h"
 
 /* count mcast group peers every 15 minutes */
 #define MCAST_COUNT_RATE 900
@@ -1026,6 +1027,12 @@ neighborsUdpAck(const cache_key * key, icp_common_t * header, const Ip::Address 
 
     const char *opcode_d = icp_opcode_str[opcode];
 
+    if (Salsa2::activeSalsa)
+    {
+        Salsa2::activeSalsa->getIcp(p, ntype, AnyP::PROTO_ICP, header, mem->ircb_data);
+        return;
+    }
+
     if (p)
         neighborUpdateRtt(p, mem);
 
@@ -1176,7 +1183,7 @@ neighborUp(const CachePeer * p)
 time_t
 positiveTimeout(const time_t timeout)
 {
-    return max(static_cast<time_t>(1), timeout);
+    return std::max(static_cast<time_t>(1), timeout);
 }
 
 static void

@@ -611,10 +611,10 @@ PeerSelector::selectMore()
         return;
 
     debugs(44, 3, request->method << ' ' << request->url.host());
-
-    if (Config.salsa2 && Config.npeers){
-        Salsa2 mySalsa{this, &servers};
-        mySalsa.peerSelection();
+    const char* subnet = "192.168.10";
+    if (Config.salsa2 && Config.npeers && std::strncmp(request->url.host(), subnet, std::strlen(subnet))){
+        Salsa2* mySalsa = new Salsa2(this, &servers);
+        mySalsa->peerSelection();
     } else {
 
         /** If we don't know whether DIRECT is permitted ... */
@@ -697,10 +697,10 @@ PeerSelector::selectMore()
 
             break;
         }
-    }
     
-    // end peer selection; start resolving selected peers
-    resolveSelected();
+        // end peer selection; start resolving selected peers
+        resolveSelected();
+    }
 }
 
 bool peerAllowedToUse(const CachePeer *, PeerSelector*);
