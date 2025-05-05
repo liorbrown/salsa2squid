@@ -237,7 +237,7 @@ void Salsa2::addRoundRobin()
 // Conditional compilation block for updating the request with peer selection information.
 #ifdef REQ_UPDATE
 
-// Function to update the request information, likely by executing an external command.
+// Function to update the request information, by executing an external command.
 void Salsa2::updateReq()
 {
     Salsa2::activeSalsa = nullptr;
@@ -285,42 +285,17 @@ void Salsa2::getResolutions()
     debugs(96,0,"Salsa2: icpReqWaiting = " << this->pingsWaiting);
 }
 
-void Salsa2::getIcp(CachePeer * p, 
-    peer_t type,
-    AnyP::ProtocolType proto, 
-    void *pingdata, 
-    void *data)
+void Salsa2::getIcp(CachePeer * p, icp_common_t* header)
 {    
-    if (proto == AnyP::PROTO_ICP || type || data)
-    { 
-        icp_common_t* header = static_cast<icp_common_t*>(pingdata);
-        bool hit = header->getOpCode() == ICP_HIT;
+    this->cachesData[this->getPeerIndex(p->name)].resolution = 
+        header->getOpCode() == ICP_HIT;
 
-        if (hit)
-            this->cachesData[this->getPeerIndex(p->name)].resolution = 1;
+    debugs(96,0,"Salsa2: Recive new icp response from cache " << p->name << 
+        " Result: " << header->getOpCode() <<
+        " pingsWaiting is " << this->pingsWaiting);
 
-        debugs(96,0,"Salsa2: Recive new icp response from cache " << p->name << 
-            " Result: " << header->getOpCode() <<
-            " pingsWaiting is " << this->pingsWaiting);
-
-        if (!--this->pingsWaiting)
-            this->updateReq();
-    }
+    if (!--this->pingsWaiting)
+        this->updateReq();
 }
-
-// void Salsa2::icpRecive(CachePeer * p, 
-//                        peer_t type,
-//                        AnyP::ProtocolType proto, 
-//                        void *pingdata, 
-//                        void *data)
-// {    
-//     // if (proto == AnyP::PROTO_ICP || type || data)
-//     // { 
-//     //     icp_common_t* header = static_cast<icp_common_t*>(pingdata);
-//     //     bool hit = header->getOpCode() == ICP_HIT;
-
-//     //     debugs(96,0,"Salsa2: Recive new icp response from cache " << p->name << " Result: " << hit);
-//     // }
-// }
 
 #endif

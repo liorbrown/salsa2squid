@@ -32,9 +32,7 @@ class Salsa2{
     cacheData* cachesData;
     size_t getPeerIndex(char*);
     void updateReq();
-    void getResolutions();
-    //static IRCB icpRecive;
-    
+    void getResolutions();    
 
     #endif
 
@@ -49,6 +47,6 @@ class Salsa2{
 
         #ifdef REQ_UPDATE
         static Salsa2* activeSalsa;
-        IRCB getIcp;
+        void getIcp(CachePeer*, icp_common_t*);
         #endif
 };

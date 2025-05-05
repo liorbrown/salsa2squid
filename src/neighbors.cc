@@ -1029,7 +1029,7 @@ neighborsUdpAck(const cache_key * key, icp_common_t * header, const Ip::Address 
 
     if (Salsa2::activeSalsa)
     {
-        Salsa2::activeSalsa->getIcp(p, ntype, AnyP::PROTO_ICP, header, mem->ircb_data);
+        Salsa2::activeSalsa->getIcp(p,header);
         return;
     }
 
