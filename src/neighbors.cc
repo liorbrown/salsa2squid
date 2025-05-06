@@ -1027,9 +1027,9 @@ neighborsUdpAck(const cache_key * key, icp_common_t * header, const Ip::Address 
 
     const char *opcode_d = icp_opcode_str[opcode];
 
-    if (Salsa2::activeSalsa)
+    if (Salsa2Proxy::activeSalsa)
     {
-        Salsa2::activeSalsa->getIcp(p,header);
+        Salsa2Proxy::activeSalsa->getIcp(p,header);
         return;
     }
 

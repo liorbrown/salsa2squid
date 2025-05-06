@@ -302,7 +302,7 @@ am__squid_SOURCES_DIST = AclRegs.cc AuthReg.cc BandwidthBucket.cc \
 	mem_node.h mime.cc mime.h mime_header.cc mime_header.h \
 	multicast.cc multicast.h neighbors.cc neighbors.h pconn.cc \
 	pconn.h peer_digest.cc peer_proxy_negotiate_auth.cc \
-	peer_proxy_negotiate_auth.h peer_select.cc salsa2.cc \
+	peer_proxy_negotiate_auth.h peer_select.cc salsa2proxy.cc \
 	peer_sourcehash.cc peer_sourcehash.h peer_userhash.cc \
 	peer_userhash.h protos.h redirect.cc redirect.h refresh.cc \
 	refresh.h repl_modules.h sbuf/StringConvert.h stat.cc stat.h \
@@ -373,7 +373,7 @@ am_squid_OBJECTS = $(am__objects_1) $(am__objects_3) $(am__objects_4) \
 	mem_node.$(OBJEXT) mime.$(OBJEXT) mime_header.$(OBJEXT) \
 	multicast.$(OBJEXT) neighbors.$(OBJEXT) pconn.$(OBJEXT) \
 	peer_digest.$(OBJEXT) peer_proxy_negotiate_auth.$(OBJEXT) \
-	peer_select.$(OBJEXT) salsa2.$(OBJEXT) \
+	peer_select.$(OBJEXT) salsa2proxy.$(OBJEXT) \
 	peer_sourcehash.$(OBJEXT) peer_userhash.$(OBJEXT) \
 	redirect.$(OBJEXT) refresh.$(OBJEXT) stat.$(OBJEXT) \
 	stmem.$(OBJEXT) store.$(OBJEXT) store_client.$(OBJEXT) \
@@ -539,12 +539,13 @@ am__tests_testCacheManager_SOURCES_DIST = BandwidthBucket.cc \
 	mime_header.cc mime_header.h multicast.cc multicast.h \
 	neighbors.cc neighbors.h pconn.cc peer_digest.cc \
 	peer_proxy_negotiate_auth.cc peer_proxy_negotiate_auth.h \
-	peer_select.cc salsa2.cc peer_sourcehash.cc peer_sourcehash.h \
-	peer_userhash.cc peer_userhash.h tests/stub_redirect.cc \
-	redirect.h refresh.cc refresh.h repl_modules.h stat.cc stat.h \
-	stmem.cc store.cc store_client.cc tests/stub_store_digest.cc \
-	store_digest.h store_io.cc store_key_md5.cc store_key_md5.h \
-	store_log.cc store_log.h store_rebuild.cc store_rebuild.h \
+	peer_select.cc salsa2proxy.cc peer_sourcehash.cc \
+	peer_sourcehash.h peer_userhash.cc peer_userhash.h \
+	tests/stub_redirect.cc redirect.h refresh.cc refresh.h \
+	repl_modules.h stat.cc stat.h stmem.cc store.cc \
+	store_client.cc tests/stub_store_digest.cc store_digest.h \
+	store_io.cc store_key_md5.cc store_key_md5.h store_log.cc \
+	store_log.h store_rebuild.cc store_rebuild.h \
 	tests/stub_store_stats.cc store_swapin.cc store_swapin.h \
 	store_swapout.cc tools.cc tools.h tests/stub_tunnel.cc \
 	tunnel.h urn.cc urn.h tests/stub_wccp2.cc wccp2.h \
@@ -595,7 +596,7 @@ am_tests_testCacheManager_OBJECTS = $(am__objects_3) $(am__objects_4) \
 	mime_header.$(OBJEXT) multicast.$(OBJEXT) neighbors.$(OBJEXT) \
 	pconn.$(OBJEXT) peer_digest.$(OBJEXT) \
 	peer_proxy_negotiate_auth.$(OBJEXT) peer_select.$(OBJEXT) \
-	salsa2.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
+	salsa2proxy.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
 	peer_userhash.$(OBJEXT) tests/stub_redirect.$(OBJEXT) \
 	refresh.$(OBJEXT) stat.$(OBJEXT) stmem.$(OBJEXT) \
 	store.$(OBJEXT) store_client.$(OBJEXT) \
@@ -947,12 +948,13 @@ am__tests_testHttpRequest_SOURCES_DIST = BandwidthBucket.cc \
 	mime.cc mime.h mime_header.cc mime_header.h multicast.cc \
 	multicast.h neighbors.cc neighbors.h pconn.cc peer_digest.cc \
 	peer_proxy_negotiate_auth.cc peer_proxy_negotiate_auth.h \
-	peer_select.cc salsa2.cc peer_sourcehash.cc peer_sourcehash.h \
-	peer_userhash.cc peer_userhash.h tests/stub_redirect.cc \
-	redirect.h refresh.cc refresh.h repl_modules.h stat.cc stat.h \
-	stmem.cc store.cc store_client.cc tests/stub_store_digest.cc \
-	store_digest.h store_io.cc store_key_md5.cc store_key_md5.h \
-	store_log.cc store_log.h store_rebuild.cc store_rebuild.h \
+	peer_select.cc salsa2proxy.cc peer_sourcehash.cc \
+	peer_sourcehash.h peer_userhash.cc peer_userhash.h \
+	tests/stub_redirect.cc redirect.h refresh.cc refresh.h \
+	repl_modules.h stat.cc stat.h stmem.cc store.cc \
+	store_client.cc tests/stub_store_digest.cc store_digest.h \
+	store_io.cc store_key_md5.cc store_key_md5.h store_log.cc \
+	store_log.h store_rebuild.cc store_rebuild.h \
 	tests/stub_store_stats.cc store_swapin.cc store_swapin.h \
 	store_swapout.cc tools.cc tools.h tests/stub_tunnel.cc \
 	tunnel.h urn.cc urn.h tests/stub_wccp2.cc wccp2.h \
@@ -1003,7 +1005,7 @@ am_tests_testHttpRequest_OBJECTS = $(am__objects_3) $(am__objects_4) \
 	mime_header.$(OBJEXT) multicast.$(OBJEXT) neighbors.$(OBJEXT) \
 	pconn.$(OBJEXT) peer_digest.$(OBJEXT) \
 	peer_proxy_negotiate_auth.$(OBJEXT) peer_select.$(OBJEXT) \
-	salsa2.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
+	salsa2proxy.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
 	peer_userhash.$(OBJEXT) tests/stub_redirect.$(OBJEXT) \
 	refresh.$(OBJEXT) stat.$(OBJEXT) stmem.$(OBJEXT) \
 	store.$(OBJEXT) store_client.$(OBJEXT) \
@@ -1721,12 +1723,13 @@ am__tests_test_http_range_SOURCES_DIST = BandwidthBucket.cc \
 	mime.cc mime.h mime_header.cc mime_header.h multicast.cc \
 	multicast.h neighbors.cc neighbors.h pconn.cc peer_digest.cc \
 	peer_proxy_negotiate_auth.cc peer_proxy_negotiate_auth.h \
-	peer_select.cc salsa2.cc peer_sourcehash.cc peer_sourcehash.h \
-	peer_userhash.cc peer_userhash.h tests/stub_redirect.cc \
-	redirect.h refresh.cc refresh.h repl_modules.h stat.cc stat.h \
-	stmem.cc store.cc store_client.cc tests/stub_store_digest.cc \
-	store_digest.h store_io.cc store_key_md5.cc store_key_md5.h \
-	store_log.cc store_log.h store_rebuild.cc store_rebuild.h \
+	peer_select.cc salsa2proxy.cc peer_sourcehash.cc \
+	peer_sourcehash.h peer_userhash.cc peer_userhash.h \
+	tests/stub_redirect.cc redirect.h refresh.cc refresh.h \
+	repl_modules.h stat.cc stat.h stmem.cc store.cc \
+	store_client.cc tests/stub_store_digest.cc store_digest.h \
+	store_io.cc store_key_md5.cc store_key_md5.h store_log.cc \
+	store_log.h store_rebuild.cc store_rebuild.h \
 	tests/stub_store_stats.cc store_swapin.cc store_swapin.h \
 	store_swapout.cc tools.cc tools.h tests/stub_tunnel.cc \
 	tunnel.h urn.cc urn.h tests/stub_wccp2.cc wccp2.h \
@@ -1776,7 +1779,7 @@ am_tests_test_http_range_OBJECTS = $(am__objects_3) $(am__objects_4) \
 	mime_header.$(OBJEXT) multicast.$(OBJEXT) neighbors.$(OBJEXT) \
 	pconn.$(OBJEXT) peer_digest.$(OBJEXT) \
 	peer_proxy_negotiate_auth.$(OBJEXT) peer_select.$(OBJEXT) \
-	salsa2.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
+	salsa2proxy.$(OBJEXT) peer_sourcehash.$(OBJEXT) \
 	peer_userhash.$(OBJEXT) tests/stub_redirect.$(OBJEXT) \
 	refresh.$(OBJEXT) stat.$(OBJEXT) stmem.$(OBJEXT) \
 	store.$(OBJEXT) store_client.$(OBJEXT) \
@@ -1896,7 +1899,7 @@ am__depfiles_remade = ./$(DEPDIR)/AccessLogEntry.Po \
 	./$(DEPDIR)/peer_select.Po ./$(DEPDIR)/peer_sourcehash.Po \
 	./$(DEPDIR)/peer_userhash.Po ./$(DEPDIR)/redirect.Po \
 	./$(DEPDIR)/refresh.Po ./$(DEPDIR)/repl_modules.Po \
-	./$(DEPDIR)/salsa2.Po ./$(DEPDIR)/snmp_agent.Po \
+	./$(DEPDIR)/salsa2proxy.Po ./$(DEPDIR)/snmp_agent.Po \
 	./$(DEPDIR)/snmp_core.Po ./$(DEPDIR)/stat.Po \
 	./$(DEPDIR)/stmem.Po ./$(DEPDIR)/store.Po \
 	./$(DEPDIR)/store_client.Po ./$(DEPDIR)/store_digest.Po \
@@ -2835,7 +2838,7 @@ squid_SOURCES = $(ACL_REGISTRATION_SOURCES) $(DELAY_POOL_SOURCE) \
 	mem_node.h mime.cc mime.h mime_header.cc mime_header.h \
 	multicast.cc multicast.h neighbors.cc neighbors.h pconn.cc \
 	pconn.h peer_digest.cc peer_proxy_negotiate_auth.cc \
-	peer_proxy_negotiate_auth.h peer_select.cc salsa2.cc \
+	peer_proxy_negotiate_auth.h peer_select.cc salsa2proxy.cc \
 	peer_sourcehash.cc peer_sourcehash.h peer_userhash.cc \
 	peer_userhash.h protos.h redirect.cc redirect.h refresh.cc \
 	refresh.h repl_modules.h sbuf/StringConvert.h stat.cc stat.h \
@@ -4144,7 +4147,7 @@ tests_test_http_range_SOURCES = \
 	peer_proxy_negotiate_auth.cc \
 	peer_proxy_negotiate_auth.h \
 	peer_select.cc \
-	salsa2.cc \
+	salsa2proxy.cc \
 	peer_sourcehash.cc \
 	peer_sourcehash.h \
 	peer_userhash.cc \
@@ -4535,7 +4538,7 @@ tests_testHttpRequest_SOURCES = \
 	peer_proxy_negotiate_auth.cc \
 	peer_proxy_negotiate_auth.h \
 	peer_select.cc \
-	salsa2.cc \
+	salsa2proxy.cc \
 	peer_sourcehash.cc \
 	peer_sourcehash.h \
 	peer_userhash.cc \
@@ -4831,7 +4834,7 @@ tests_testCacheManager_SOURCES = \
 	peer_proxy_negotiate_auth.cc \
 	peer_proxy_negotiate_auth.h \
 	peer_select.cc \
-	salsa2.cc \
+	salsa2proxy.cc \
 	peer_sourcehash.cc \
 	peer_sourcehash.h \
 	peer_userhash.cc \
@@ -5776,7 +5779,7 @@ include ./$(DEPDIR)/peer_userhash.Po # am--include-marker
 include ./$(DEPDIR)/redirect.Po # am--include-marker
 include ./$(DEPDIR)/refresh.Po # am--include-marker
 include ./$(DEPDIR)/repl_modules.Po # am--include-marker
-include ./$(DEPDIR)/salsa2.Po # am--include-marker
+include ./$(DEPDIR)/salsa2proxy.Po # am--include-marker
 include ./$(DEPDIR)/snmp_agent.Po # am--include-marker
 include ./$(DEPDIR)/snmp_core.Po # am--include-marker
 include ./$(DEPDIR)/stat.Po # am--include-marker
@@ -6780,7 +6783,7 @@ distclean: distclean-recursive
 	-rm -f ./$(DEPDIR)/redirect.Po
 	-rm -f ./$(DEPDIR)/refresh.Po
 	-rm -f ./$(DEPDIR)/repl_modules.Po
-	-rm -f ./$(DEPDIR)/salsa2.Po
+	-rm -f ./$(DEPDIR)/salsa2proxy.Po
 	-rm -f ./$(DEPDIR)/snmp_agent.Po
 	-rm -f ./$(DEPDIR)/snmp_core.Po
 	-rm -f ./$(DEPDIR)/stat.Po
@@ -7099,7 +7102,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f ./$(DEPDIR)/redirect.Po
 	-rm -f ./$(DEPDIR)/refresh.Po
 	-rm -f ./$(DEPDIR)/repl_modules.Po
-	-rm -f ./$(DEPDIR)/salsa2.Po
+	-rm -f ./$(DEPDIR)/salsa2proxy.Po
 	-rm -f ./$(DEPDIR)/snmp_agent.Po
 	-rm -f ./$(DEPDIR)/snmp_core.Po
 	-rm -f ./$(DEPDIR)/stat.Po

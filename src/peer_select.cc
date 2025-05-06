@@ -613,7 +613,7 @@ PeerSelector::selectMore()
     debugs(44, 3, request->method << ' ' << request->url.host());
     const char* subnet = "192.168.10";
     if (Config.salsa2 && Config.npeers && std::strncmp(request->url.host(), subnet, std::strlen(subnet))){
-        Salsa2* mySalsa = new Salsa2(this, &servers);
+        Salsa2Proxy* mySalsa = new Salsa2Proxy(this, &servers);
         mySalsa->peerSelection();
     } else {
 

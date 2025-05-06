@@ -8,10 +8,11 @@
 
 using namespace std;
 
-class Salsa2{
+class Salsa2Proxy{
     
-    static double missPos;
+    static double* missPos;
     static double missNeg;
+
     static CachePeer* currentPeer;
 
     PeerSelector* selector;
@@ -42,11 +43,11 @@ class Salsa2{
     void addPeer(CachePeer*, hier_code);
     
     public:
-        Salsa2(PeerSelector* peerSelector, FwdServer** fwdServers);
+        Salsa2Proxy(PeerSelector* peerSelector, FwdServer** fwdServers);
         void peerSelection();
 
         #ifdef REQ_UPDATE
-        static Salsa2* activeSalsa;
+        static Salsa2Proxy* activeSalsa;
         void getIcp(CachePeer*, icp_common_t*);
         #endif
 };

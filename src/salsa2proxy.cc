@@ -33,11 +33,14 @@ public:
 };
 
 // Static member to keep track of the current peer for round-robin selection.
-CachePeer* Salsa2::currentPeer = nullptr;
+CachePeer* Salsa2Proxy::currentPeer = nullptr;
+double* Salsa2Proxy::missPos = nullptr;
 
-Salsa2* Salsa2::activeSalsa = nullptr;
+#ifdef REQ_UPDATE
+Salsa2Proxy* Salsa2Proxy::activeSalsa = nullptr;
+#endif
 
-Salsa2::Salsa2(PeerSelector* peerSelector, FwdServer** fwdServers):
+Salsa2Proxy::Salsa2Proxy(PeerSelector* peerSelector, FwdServer** fwdServers):
         selector(peerSelector),
         servers(fwdServers),
         tail(nullptr),
@@ -49,12 +52,12 @@ Salsa2::Salsa2(PeerSelector* peerSelector, FwdServer** fwdServers):
 
         {
             #ifdef REQ_UPDATE
-            Salsa2::activeSalsa = nullptr;
+            Salsa2Proxy::activeSalsa = nullptr;
             #endif
         }
 
 // This is the main function responsible for selecting peers using the Salsa2 algorithm.
-void Salsa2::peerSelection()
+void Salsa2Proxy::peerSelection()
 {
     debugs(96,0,"Salsa2: Starting salsa2 peer selection for URL: " << this->request->url.host());
 
@@ -83,7 +86,7 @@ void Salsa2::peerSelection()
 }
 
 // This function checks the digests of each peer to see if they have the requested content.
-void Salsa2::checkDigestsHits()
+void Salsa2Proxy::checkDigestsHits()
 {
 #ifdef REQ_UPDATE
     // Index to keep track of the current cache in the cachesData array.
@@ -139,7 +142,7 @@ void Salsa2::checkDigestsHits()
 }
 
 // Adds a peer to the linked list of forward servers.
-void Salsa2::addPeer(CachePeer* peer, hier_code code)
+void Salsa2Proxy::addPeer(CachePeer* peer, hier_code code)
 {
     // Create a new FwdServer object.
     FwdServer* newTail = new FwdServer(peer, code);
@@ -158,7 +161,7 @@ void Salsa2::addPeer(CachePeer* peer, hier_code code)
 
 // This function is intended to implement the core Salsa2 peer selection logic.
 // Currently, it is empty.
-void Salsa2::selectPeers()
+void Salsa2Proxy::selectPeers()
 {
     // TODO: Implement the Salsa2 peer selection algorithm here.
     // This function should use the information gathered in checkDigestsHits()
@@ -172,7 +175,7 @@ void Salsa2::selectPeers()
 #define NOT_FOUND 99999
 
 // Helper function to get the index of a peer in the cachesData array by its name.
-size_t Salsa2::getPeerIndex(char* name)
+size_t Salsa2Proxy::getPeerIndex(char* name)
 {
     // Iterate through the cachesData array.
     for (int i = 0; i < Config.npeers; i++)
@@ -187,7 +190,7 @@ size_t Salsa2::getPeerIndex(char* name)
 #endif
 
 // Adds peers using a round-robin strategy if no suitable peers were found via digests.
-void Salsa2::addRoundRobin()
+void Salsa2Proxy::addRoundRobin()
 {
     // If no servers have been selected yet (no digest hits).
     if (!*(this->servers))
@@ -238,9 +241,9 @@ void Salsa2::addRoundRobin()
 #ifdef REQ_UPDATE
 
 // Function to update the request information, by executing an external command.
-void Salsa2::updateReq()
+void Salsa2Proxy::updateReq()
 {
-    Salsa2::activeSalsa = nullptr;
+    Salsa2Proxy::activeSalsa = nullptr;
 
     // Create a stringstream to build the command.
     stringstream sstr;
@@ -269,9 +272,9 @@ void Salsa2::updateReq()
     delete this;
 }
 
-void Salsa2::getResolutions()
+void Salsa2Proxy::getResolutions()
 {
-    Salsa2::activeSalsa = this;
+    Salsa2Proxy::activeSalsa = this;
 
     int timeout;
 
@@ -285,7 +288,7 @@ void Salsa2::getResolutions()
     debugs(96,0,"Salsa2: icpReqWaiting = " << this->pingsWaiting);
 }
 
-void Salsa2::getIcp(CachePeer * p, icp_common_t* header)
+void Salsa2Proxy::getIcp(CachePeer * p, icp_common_t* header)
 {    
     this->cachesData[this->getPeerIndex(p->name)].resolution = 
         header->getOpCode() == ICP_HIT;
