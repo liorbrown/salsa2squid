@@ -10,8 +10,7 @@ using namespace std;
 
 class Salsa2Proxy{
     
-    static double* missPos;
-    static double missNeg;
+    
 
     static CachePeer* currentPeer;
 
@@ -50,4 +49,26 @@ class Salsa2Proxy{
         static Salsa2Proxy* activeSalsa;
         void getIcp(CachePeer*, icp_common_t*);
         #endif
+};
+
+class Salsa2Parent{
+    private:
+        size_t nCaches;
+        size_t* missPosArr;
+        size_t* missNegArr;
+        double missPos;
+        double missNeg;
+        
+    
+        Salsa2Parent(size_t nCaches):
+            nCaches(nCaches),
+            missPosArr(new size_t[nCaches]),
+            missNegArr(new size_t[nCaches]){}
+        
+        static Salsa2Parent* instance;
+
+    public:
+        static Salsa2Parent* getInstance(size_t);
+
+        ~Salsa2Parent();
 };
