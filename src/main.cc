@@ -82,6 +82,8 @@
 #include "wccp.h"
 #include "wccp2.h"
 #include "windows_service.h"
+// @category salsa2
+#include "salsa2parent.h" 
 
 #if USE_ADAPTATION
 #include "adaptation/Config.h"
@@ -274,6 +276,9 @@ SignalEngine::doShutdown(time_t wait)
 
     debugs(1, Important(2), "Preparing for shutdown after " << statCounter.client_http.requests << " requests");
     debugs(1, Important(3), "Waiting " << wait << " seconds for active connections to finish");
+
+    // @category salsa2
+    Salsa2Parent::free();
 
     if (shutting_down) {
         // Already a shutdown signal has received and shutdown is in progress.

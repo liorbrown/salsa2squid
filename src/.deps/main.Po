@@ -465,7 +465,7 @@ main.o: main.cc /usr/include/stdc-predef.h ../include/squid.h \
  ../src/store/Controlled.h ../src/StoreIOState.h time/gadgets.h stat.h \
  StatCounters.h base/ByteCounter.h store/Disks.h store_log.h \
  StoreFileSystem.h base/TypeTraits.h time/Engine.h tools.h unlinkd.h \
- wccp.h wccp2.h windows_service.h adaptation/Config.h \
+ wccp.h wccp2.h windows_service.h salsa2parent.h adaptation/Config.h \
  adaptation/icap/Config.h ../src/adaptation/Config.h \
  ../src/adaptation/icap/ServiceRep.h ../src/adaptation/icap/Elements.h \
  ../src/adaptation/Initiator.h ../src/adaptation/Service.h \
@@ -1348,6 +1348,7 @@ unlinkd.h:
 wccp.h:
 wccp2.h:
 windows_service.h:
+salsa2parent.h:
 adaptation/Config.h:
 adaptation/icap/Config.h:
 ../src/adaptation/Config.h:

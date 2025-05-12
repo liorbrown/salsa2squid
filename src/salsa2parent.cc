@@ -1,8 +1,7 @@
-#include "salsa2.h"
+#include "salsa2parent.h"
 
 Salsa2Parent* Salsa2Parent::instance = nullptr;
 
-// TODO: find where to delete instance
 Salsa2Parent::~Salsa2Parent()
 {
     if (this->missNegArr)
