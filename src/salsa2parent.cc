@@ -2,14 +2,6 @@
 
 Salsa2Parent* Salsa2Parent::instance = nullptr;
 
-Salsa2Parent* Salsa2Parent::getInstance(size_t nCaches)
-{
-    if (!instance)
-        instance = new Salsa2Parent(nCaches);
-    
-    return (instance);
-}
-
 // TODO: find where to delete instance
 Salsa2Parent::~Salsa2Parent()
 {
@@ -18,5 +10,15 @@ Salsa2Parent::~Salsa2Parent()
 
     if (this->missPosArr)
         delete[] this->missPosArr;
+
+    if (this->reqNum)
+        delete[] this->missPosArr;
+}
+
+void Salsa2Parent::newMiss(size_t posIndications, bool isPosInd)
+{
+    size_t* missArray = isPosInd ? this->missPosArr : this->missNegArr;
+
+    missArray[posIndications]++;
 }
 

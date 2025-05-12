@@ -34,7 +34,6 @@ public:
 
 // Static member to keep track of the current peer for round-robin selection.
 CachePeer* Salsa2Proxy::currentPeer = nullptr;
-double* Salsa2Proxy::missPos = nullptr;
 
 #ifdef REQ_UPDATE
 Salsa2Proxy* Salsa2Proxy::activeSalsa = nullptr;
