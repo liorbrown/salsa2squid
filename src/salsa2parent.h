@@ -23,10 +23,16 @@ class Salsa2Parent{
         static Salsa2Parent* instance;
 
     public:
-        void newReq(size_t posIndications){++this->reqNum[posIndications];}
+        void newReq(size_t posIndications){
+            debugs(96, 
+                   DBG_CRITICAL, 
+                   "Got new request with " << 
+                   posIndications << 
+                   ", Requsets count is " << 
+                   this->reqNum[posIndications]++);}
+                   
         void newMiss(size_t posIndications, bool isPosInd);
 
-        static void init(size_t caches){if (caches && Config.salsa2 && !instance) instance = new Salsa2Parent(caches);}
-        static Salsa2Parent& getInstance(){return *instance;}
+        static Salsa2Parent& getInstance(size_t caches);
         static void free(){if (instance) delete instance;}
 };

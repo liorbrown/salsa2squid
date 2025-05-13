@@ -21,3 +21,13 @@ void Salsa2Parent::newMiss(size_t posIndications, bool isPosInd)
     missArray[posIndications]++;
 }
 
+Salsa2Parent& Salsa2Parent::getInstance(size_t caches)
+{
+    if (caches && Config.salsa2 && !Config.npeers && !instance)
+    {
+        debugs(96,DBG_CRITICAL,"Creates salsa2parent instance, with " << caches);
+        instance = new Salsa2Parent(caches);
+    }
+
+    return *instance;
+}

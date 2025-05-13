@@ -1,7 +1,7 @@
 #include "squid.h"
 #include "debug/Stream.h"
 #include "HttpRequest.h"
-#include "salsa2.h"
+#include "salsa2proxy.h"
 #include <random>
 #include "neighbors.h"
 #include "mem/AllocatorProxy.h"
@@ -80,7 +80,7 @@ void Salsa2Proxy::peerSelection()
     #ifdef REQ_UPDATE
         this->getResolutions();
     #else
-        this->selector->resolveSelected();
+        this->dispatch();
     #endif    
 }
 
@@ -135,6 +135,9 @@ void Salsa2Proxy::checkDigestsHits()
 
                 // Add this peer to the list of forward servers with the code indicating a parent hit.
                 this->addPeer(peer, CD_PARENT_HIT);
+
+                char buf[MAX_IPSTRLEN];
+                this->request->posIndications.insert(peer->addresses[0].toUrl(buf,MAX_IPSTRLEN));
             }
         }
     }
@@ -236,6 +239,12 @@ void Salsa2Proxy::addRoundRobin()
     }
 }
 
+void Salsa2Proxy::dispatch()
+{
+    this->request->nCaches = Config.npeers;
+    this->selector->resolveSelected();    
+}
+
 // Conditional compilation block for updating the request with peer selection information.
 #ifdef REQ_UPDATE
 
@@ -266,7 +275,7 @@ void Salsa2Proxy::updateReq()
     // Log the executed command and its return code.
     debugs(96,0,"Salsa2: command " << sstr.str() << " returned code " << res );
 
-    this->selector->resolveSelected();
+    this->dispatch();
 
     delete this;
 }
@@ -301,3 +310,4 @@ void Salsa2Proxy::getIcp(CachePeer * p, icp_common_t* header)
 }
 
 #endif
+

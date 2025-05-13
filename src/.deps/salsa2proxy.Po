@@ -408,7 +408,7 @@ salsa2proxy.o: salsa2proxy.cc /usr/include/stdc-predef.h \
  ../src/helper/forward.h adaptation/History.h \
  ../src/adaptation/DynamicGroupCfg.h ../src/SquidString.h \
  ../src/adaptation/forward.h adaptation/icap/History.h ../src/LogTags.h \
- eui/Eui48.h eui/Eui64.h salsa2.h SquidConfig.h base/YesNoNone.h \
+ eui/Eui48.h eui/Eui64.h salsa2proxy.h SquidConfig.h base/YesNoNone.h \
  helper/ChildConfig.h HttpHeaderTools.h HttpHeader.h sbuf/forward.h \
  ip/Address.h security/forward.h ssl/support.h store/Disk.h \
  ../src/store/Controlled.h ../src/store/Storage.h \
@@ -1105,7 +1105,7 @@ adaptation/icap/History.h:
 ../src/LogTags.h:
 eui/Eui48.h:
 eui/Eui64.h:
-salsa2.h:
+salsa2proxy.h:
 SquidConfig.h:
 base/YesNoNone.h:
 helper/ChildConfig.h:

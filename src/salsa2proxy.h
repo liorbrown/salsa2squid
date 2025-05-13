@@ -10,8 +10,6 @@ using namespace std;
 
 class Salsa2Proxy{
     
-    
-
     static CachePeer* currentPeer;
 
     PeerSelector* selector;
@@ -40,6 +38,7 @@ class Salsa2Proxy{
     void selectPeers();
     void addRoundRobin();
     void addPeer(CachePeer*, hier_code);
+    void dispatch();
     
     public:
         Salsa2Proxy(PeerSelector* peerSelector, FwdServer** fwdServers);

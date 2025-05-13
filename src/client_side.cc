@@ -120,6 +120,7 @@
 #include "Store.h"
 #include "TimeOrTag.h"
 #include "tools.h"
+#include "salsa2parent.h"
 
 #if USE_AUTH
 #include "auth/UserRequest.h"
@@ -1626,6 +1627,10 @@ clientProcessRequest(ConnStateData *conn, const Http1::RequestParserPointer &hp,
     // setup and body_pipe preparation blobs are needed for FTP.
 
     request->manager(conn, http->al);
+
+    // @category salsa2
+    if (Config.salsa2 && !Config.npeers && request->nCaches)
+        Salsa2Parent::getInstance(request->nCaches).newReq(request->posIndications.size());
 
     request->flags.accelerated = http->flags.accel;
     request->flags.sslBumped=conn->switchedToHttps();

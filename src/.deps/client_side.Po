@@ -470,13 +470,13 @@ client_side.o: client_side.cc /usr/include/stdc-predef.h \
  servers/forward.h SquidConfig.h base/YesNoNone.h store/Disk.h \
  ../src/store/Controlled.h ../src/StoreIOState.h time/gadgets.h \
  StatCounters.h base/ByteCounter.h StatHist.h TimeOrTag.h ETag.h tools.h \
- ssl/bio.h ../src/FadingCounter.h ../src/fd.h ssl/context_storage.h \
- ../src/base/ClpMap.h ../src/mem/PoolingAllocator.h ../src/SquidMath.h \
- ../src/base/TypeTraits.h ../src/CacheManager.h ../src/anyp/forward.h \
- ../src/comm/forward.h ../src/log/forward.h ../src/mgr/Action.h \
- ../src/ipc/forward.h ../src/mgr/forward.h ../src/mgr/ActionProfile.h \
- ../src/mgr/ActionCreator.h ../src/mgr/Command.h \
- ../src/mgr/ActionParams.h ../src/mgr/QueryParams.h \
+ salsa2parent.h ssl/bio.h ../src/FadingCounter.h ../src/fd.h \
+ ssl/context_storage.h ../src/base/ClpMap.h ../src/mem/PoolingAllocator.h \
+ ../src/SquidMath.h ../src/base/TypeTraits.h ../src/CacheManager.h \
+ ../src/anyp/forward.h ../src/comm/forward.h ../src/log/forward.h \
+ ../src/mgr/Action.h ../src/ipc/forward.h ../src/mgr/forward.h \
+ ../src/mgr/ActionProfile.h ../src/mgr/ActionCreator.h \
+ ../src/mgr/Command.h ../src/mgr/ActionParams.h ../src/mgr/QueryParams.h \
  ../src/mgr/QueryParam.h ../src/RequestFlags.h ../src/mgr/forward.h \
  ../src/mgr/Action.h ../src/mgr/Command.h ssl/gadgets.h ssl/helper.h \
  ../src/ssl/cert_validate_message.h ssl/ProxyCerts.h ../src/acl/Gadgets.h \
@@ -1357,6 +1357,7 @@ StatHist.h:
 TimeOrTag.h:
 ETag.h:
 tools.h:
+salsa2parent.h:
 ssl/bio.h:
 ../src/FadingCounter.h:
 ../src/fd.h:

@@ -442,7 +442,7 @@ peer_select.o: peer_select.cc /usr/include/stdc-predef.h \
  ../src/store_key_md5.h ../src/StoreIOState.h time/gadgets.h Store.h \
  base/DelayedAsyncCalls.h ../src/base/AsyncCallList.h MemObject.h \
  RemovalPolicy.h stmem.h ../include/splay.h ../src/fatal.h \
- store/Controller.h StoreStats.h salsa2.h
+ store/Controller.h StoreStats.h salsa2proxy.h
 /usr/include/stdc-predef.h:
 ../include/squid.h:
 ../include/autoconf.h:
@@ -1218,4 +1218,4 @@ stmem.h:
 ../src/fatal.h:
 store/Controller.h:
 StoreStats.h:
-salsa2.h:
+salsa2proxy.h:

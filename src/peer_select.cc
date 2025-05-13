@@ -36,7 +36,7 @@
 #include "SquidConfig.h"
 #include "Store.h"
 #include "time/gadgets.h"
-#include "salsa2.h"
+#include "salsa2proxy.h"
 
 /**
  * A CachePeer which has been selected as a possible destination.
