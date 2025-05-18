@@ -5,6 +5,7 @@
 #include <random>
 #include "neighbors.h"
 #include "mem/AllocatorProxy.h"
+#include "http/RegisteredHeaders.h"
 
 using namespace std;
 
@@ -87,10 +88,10 @@ void Salsa2Proxy::peerSelection()
 // This function checks the digests of each peer to see if they have the requested content.
 void Salsa2Proxy::checkDigestsHits()
 {
-#ifdef REQ_UPDATE
+    #ifdef REQ_UPDATE
     // Index to keep track of the current cache in the cachesData array.
     size_t cacheIndex = -1;
-#endif
+    #endif
 
     // Reset the number of choices and ideal choices for hierarchical selection.
     request->hier.n_choices = request->hier.n_ichoices = 0;
@@ -136,8 +137,8 @@ void Salsa2Proxy::checkDigestsHits()
                 // Add this peer to the list of forward servers with the code indicating a parent hit.
                 this->addPeer(peer, CD_PARENT_HIT);
 
-                char buf[MAX_IPSTRLEN];
-                this->request->posIndications.insert(peer->addresses[0].toUrl(buf,MAX_IPSTRLEN));
+                //char buf[MAX_IPSTRLEN];
+                //this->request->posIndications.insert(peer->addresses[0].toUrl(buf,MAX_IPSTRLEN));
             }
         }
     }
@@ -241,7 +242,16 @@ void Salsa2Proxy::addRoundRobin()
 
 void Salsa2Proxy::dispatch()
 {
-    this->request->nCaches = Config.npeers;
+    this->request->header.addEntry(new HttpHeaderEntry(Http::VARY, 
+                                    SBuf("nCaches"), 
+                                    to_string(Config.npeers).c_str()));
+
+    debugs(96, DBG_CRITICAL, "Salsa2: request->header.size - " << request->header.entries.size()); 
+            
+    for(auto entry : request->header.entries)
+        debugs(96, DBG_CRITICAL, entry->name.c_str() << ':' << entry->value);
+
+    // Sends request to all selected peers
     this->selector->resolveSelected();    
 }
 
@@ -282,10 +292,13 @@ void Salsa2Proxy::updateReq()
 
 void Salsa2Proxy::getResolutions()
 {
+    // Set static member to this for that neighbors::neighborsUdpAck
+    // will call it when ICP returns
     Salsa2Proxy::activeSalsa = this;
 
     int timeout;
 
+    // Sends ICP query to all parents
     neighborsUdpPing(request,
                     this->selector->entry,
                     nullptr,
@@ -297,7 +310,8 @@ void Salsa2Proxy::getResolutions()
 }
 
 void Salsa2Proxy::getIcp(CachePeer * p, icp_common_t* header)
-{    
+{   
+    // Sets peer resultion to 1 if ICP result is HIT 
     this->cachesData[this->getPeerIndex(p->name)].resolution = 
         header->getOpCode() == ICP_HIT;
 
@@ -305,9 +319,9 @@ void Salsa2Proxy::getIcp(CachePeer * p, icp_common_t* header)
         " Result: " << header->getOpCode() <<
         " pingsWaiting is " << this->pingsWaiting);
 
+    // Check if all ICPs returned, then update simulator DB and send request
     if (!--this->pingsWaiting)
         this->updateReq();
 }
 
 #endif
-

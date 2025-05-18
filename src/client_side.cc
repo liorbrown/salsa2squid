@@ -1629,8 +1629,15 @@ clientProcessRequest(ConnStateData *conn, const Http1::RequestParserPointer &hp,
     request->manager(conn, http->al);
 
     // @category salsa2
-    if (Config.salsa2 && !Config.npeers && request->nCaches)
-        Salsa2Parent::getInstance(request->nCaches).newReq(request->posIndications.size());
+    if (Config.salsa2 && !Config.npeers)
+    {
+        size_t nCaches =  std::stoul(request->header.getByName("nCaches").rawBuf());
+
+        if (nCaches)
+        {
+            Salsa2Parent::getInstance(nCaches).newReq(0);
+        }
+    }
 
     request->flags.accelerated = http->flags.accel;
     request->flags.sslBumped=conn->switchedToHttps();

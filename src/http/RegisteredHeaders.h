@@ -31,6 +31,14 @@ enum HdrType {
     ALTERNATE_PROTOCOL,             /**< GFE custom header we may have to erase */
     AUTHENTICATION_INFO,            /**< RFC 2617 */
     AUTHORIZATION,                  /**< RFC 7235, 4559 */
+
+    // @category salsa2
+    // I will want this data to be send in this special headers type
+    // but when i add those 2 lines i got very strange "segmantation fault" shit
+    // so for now i use the VARY header 
+    // CAHCES,
+    // INDICATIONS,
+
     CACHE_CONTROL,                  /**< RFC 9111 */
     CACHE_STATUS,                   /**< draft-ietf-httpbis-cache-header */
     CDN_LOOP,                       /**< RFC 8586 */
@@ -118,8 +126,11 @@ enum HdrType {
     FTP_PRE,                        /**< Internal header containing leading FTP control response lines */
     FTP_STATUS,                     /**< Internal header for FTP reply status */
     FTP_REASON,                     /**< Internal header for FTP reply reason */
+    
+    
+
     OTHER,                          /**< internal tag value for "unknown" headers */
-    BAD_HDR,                        /**< Invalid header */
+    BAD_HDR,                        /**< Invalid header */    
     enumEnd_                        // internal tag for end-of-headers
 };
 

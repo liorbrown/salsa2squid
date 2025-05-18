@@ -193,10 +193,6 @@ public:
     /// whether we have responded with HTTP 100 or FTP 150 already
     bool forcedBodyContinuation;
 
-    // @category salsa2
-    size_t nCaches;
-    std::unordered_set<char*> posIndications;
-
 public:
     bool multipartRangeRequest() const;
 

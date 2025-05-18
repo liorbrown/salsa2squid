@@ -451,7 +451,8 @@ salsa2proxy.o: salsa2proxy.cc /usr/include/stdc-predef.h \
  /usr/include/c++/13/bits/random.tcc neighbors.h ICP.h LogTags.h \
  store_key_md5.h StoreClient.h acl/ChecklistFiller.h base/AsyncCall.h \
  base/forward.h dlink.h store/ParsingBuffer.h ../src/StoreIOBuffer.h \
- ../src/base/Range.h StoreIOBuffer.h StoreIOState.h mem/AllocatorProxy.h
+ ../src/base/Range.h StoreIOBuffer.h StoreIOState.h mem/AllocatorProxy.h \
+ http/RegisteredHeaders.h
 /usr/include/stdc-predef.h:
 ../include/squid.h:
 ../include/autoconf.h:
@@ -1187,3 +1188,4 @@ store/ParsingBuffer.h:
 StoreIOBuffer.h:
 StoreIOState.h:
 mem/AllocatorProxy.h:
+http/RegisteredHeaders.h:
