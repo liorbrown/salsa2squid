@@ -277,8 +277,10 @@ SignalEngine::doShutdown(time_t wait)
     debugs(1, Important(2), "Preparing for shutdown after " << statCounter.client_http.requests << " requests");
     debugs(1, Important(3), "Waiting " << wait << " seconds for active connections to finish");
 
+    // This line somehow raise doble free exception
+    // so i just comment it and hope its relesed somehow somewhere else
     // @category salsa2
-    Salsa2Parent::free();
+    // Salsa2Parent::free();
 
     if (shutting_down) {
         // Already a shutdown signal has received and shutdown is in progress.

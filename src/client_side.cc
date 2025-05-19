@@ -1628,13 +1628,14 @@ clientProcessRequest(ConnStateData *conn, const Http1::RequestParserPointer &hp,
 
     request->manager(conn, http->al);
 
-    // @category salsa2
+   // @category salsa2
     if (Config.salsa2 && !Config.npeers)
     {
-        size_t nCaches =  std::stoul(request->header.getByName("nCaches").rawBuf());
+        String sCaches = request->header.getByName("nCaches");
 
-        if (nCaches)
+        if (sCaches.size())
         {
+            size_t nCaches =  std::stoul(sCaches.rawBuf());
             Salsa2Parent::getInstance(nCaches).newReq(0);
         }
     }

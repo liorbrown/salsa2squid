@@ -242,7 +242,7 @@ void Salsa2Proxy::addRoundRobin()
 
 void Salsa2Proxy::dispatch()
 {
-    this->request->header.addEntry(new HttpHeaderEntry(Http::VARY, 
+    this->request->header.addEntry(new HttpHeaderEntry(Http::OTHER, 
                                     SBuf("nCaches"), 
                                     to_string(Config.npeers).c_str()));
 
