@@ -1631,7 +1631,7 @@ clientProcessRequest(ConnStateData *conn, const Http1::RequestParserPointer &hp,
    // @category salsa2
     if (Config.salsa2 && !Config.npeers)
     {
-        String sCaches = request->header.getByName("nCaches");
+        String sCaches = request->header.getByName("salsa2");
 
         if (sCaches.size())
         {

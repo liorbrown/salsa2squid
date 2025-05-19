@@ -7,6 +7,11 @@
 #include "mem/AllocatorProxy.h"
 #include "http/RegisteredHeaders.h"
 
+// This flag tells to not relly check digest
+// but random it it hit or miss
+// Uses opnly for dev porpuse
+#define RANDOM_DIGEST
+
 using namespace std;
 
 // Copy this class from peer_select.cc
@@ -64,6 +69,11 @@ void Salsa2Proxy::peerSelection()
     // Initialize the list of selected forward servers to empty.
     *(this->servers) = NULL;
 
+    // Add header salsa2 with number of caches
+    this->request->header.addEntry(new HttpHeaderEntry(Http::OTHER, 
+                                    SBuf("salsa2"), 
+                                    to_string(Config.npeers).c_str()));
+
     // Check for digest hits among the available peers.
     checkDigestsHits();
     // Apply the Salsa2 peer selection logic (currently empty).
@@ -102,10 +112,10 @@ void Salsa2Proxy::checkDigestsHits()
     // Iterate through the configured peers.
     for (CachePeer* peer = Config.peers; peer; peer = peer->next)
     {
-#ifdef REQ_UPDATE
+        #ifdef REQ_UPDATE
         // Store the name of the current peer in the cachesData array.
         this->cachesData[++cacheIndex].name = peer->name;
-#endif
+        #endif
 
         // Perform a digest lookup for the current peer.
         lookup_t lookup = peerDigestLookup(peer, this->selector);
@@ -113,19 +123,25 @@ void Salsa2Proxy::checkDigestsHits()
         debugs(96,0,"Salsa2: Checking digest of " << *peer << " Result: " << lookup);
 
         // If the digest lookup was not negative (i.e., the peer has some information about the object).
-        if (lookup != LOOKUP_NONE)
+        if (lookup != LOOKUP_NONE && peerHTTPOkay(peer, this->selector))
         {
             // Increment the total number of choices for hierarchical selection.
             this->request->hier.n_choices++;
 
+            #ifdef RANDOM_DIGEST
+            if (rand() % 2)
+            #else
             // If the digest lookup was a hit and the peer is HTTP okay (available and healthy).
-            if (lookup == LOOKUP_HIT && peerHTTPOkay(peer, this->selector))
-            {
-#ifdef REQ_UPDATE
+            if (lookup == LOOKUP_HIT)
+            #endif
+            {            
+                #ifdef REQ_UPDATE
+
                 // Mark this cache as having an indication (digest hit) and being accessed.
                 this->cachesData[cacheIndex].indication =
                     this->cachesData[cacheIndex].accessed = 1;
-#endif
+                    
+                #endif
 
                 // Increment the number of ideal choices (peers with a digest hit).
                 this->request->hier.n_ichoices++;
@@ -137,9 +153,13 @@ void Salsa2Proxy::checkDigestsHits()
                 // Add this peer to the list of forward servers with the code indicating a parent hit.
                 this->addPeer(peer, CD_PARENT_HIT);
 
-                //char buf[MAX_IPSTRLEN];
-                //this->request->posIndications.insert(peer->addresses[0].toUrl(buf,MAX_IPSTRLEN));
-            }
+                char buf[MAX_IPSTRLEN];                
+
+                // Add peer IP to 
+                this->request->header.addEntry(new HttpHeaderEntry(Http::OTHER, 
+                                                SBuf("salsa2"),
+                                                peer->addresses[0].toUrl(buf,MAX_IPSTRLEN))); 
+            }                        
         }
     }
 }
@@ -242,9 +262,7 @@ void Salsa2Proxy::addRoundRobin()
 
 void Salsa2Proxy::dispatch()
 {
-    this->request->header.addEntry(new HttpHeaderEntry(Http::OTHER, 
-                                    SBuf("nCaches"), 
-                                    to_string(Config.npeers).c_str()));
+    
 
     debugs(96, DBG_CRITICAL, "Salsa2: request->header.size - " << request->header.entries.size()); 
             
