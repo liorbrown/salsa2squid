@@ -55,11 +55,11 @@ class Salsa2Proxy{
     void checkDigestsHits();
 
     /// @brief Select the peers to ask according to digests result
-    /// TBD - For now do nothing
+    /// SALSA2 TODO: need implement
     void selectPeers();
 
     /// @brief If no digest give positive indication, select peer with round robin
-    /// TBD - Will change in the future
+    /// SALSA2 TODO: - Will change in the future
     void addRoundRobin();
 
 

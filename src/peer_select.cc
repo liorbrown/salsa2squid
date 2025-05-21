@@ -611,11 +611,14 @@ PeerSelector::selectMore()
         return;
 
     debugs(44, 3, request->method << ' ' << request->url.host());
+
+    // SALSA2 TODO: This subnet exclusion is temporery for stuiped bug
+    // need to be fix
     const char* subnet = "192.168.10";
-    if (Config.salsa2 && Config.npeers && std::strncmp(request->url.host(), subnet, std::strlen(subnet))){
-        Salsa2Proxy* mySalsa = new Salsa2Proxy(this, &servers);
-        mySalsa->peerSelection();
-    } else {
+    if (Config.salsa2 && Config.npeers && std::strncmp(request->url.host(), subnet, std::strlen(subnet)))
+        // Not need to create a pointer, because object do self-destruction
+        (new Salsa2Proxy(this, &servers))->peerSelection();
+    else {
 
         /** If we don't know whether DIRECT is permitted ... */
         if (direct == DIRECT_UNKNOWN) {
