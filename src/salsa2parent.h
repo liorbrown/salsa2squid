@@ -1,6 +1,10 @@
 #include <cstddef>
+#include <unordered_set>
 #include "squid.h"
 #include "SquidConfig.h"
+#include "HttpRequest.h"
+
+using namespace std;
 
 /// @brief This is singltone class that contain for this cache all the statistic data needed for salsa2
 class Salsa2Parent{
@@ -9,15 +13,17 @@ class Salsa2Parent{
         size_t* missPosArr;
         size_t* missNegArr;
         size_t* reqNum;
-        double* missPos;
-        double* missNeg;
+        double* possExclusionProbability;
+        double* negExclusionProbability;
         
     
         Salsa2Parent(size_t caches):
             nCaches(caches),
             missPosArr(new size_t[caches]{0}),
             missNegArr(new size_t[caches]{0}),
-            reqNum(new size_t[caches]{0}){}
+            reqNum(new size_t[caches]{0}),
+            possExclusionProbability(new double[caches]),
+            negExclusionProbability(new double[caches]){}
         
         ~Salsa2Parent();
         
@@ -28,22 +34,26 @@ class Salsa2Parent{
         /// @brief Tihs methos calles when new request arrived
         /// , this is update the num of requests that sended for certain number of 
         /// positive indications
-        /// @param posIndications Number of positive indications that proxy got for this request
-        void newReq(size_t posIndications){
-            debugs(96, 
-                   DBG_CRITICAL, 
-                   "Salsa2: Got new request with " << 
-                   posIndications << 
-                   ", Requsets count is " << 
-                   this->reqNum[posIndications]++);}
+        /// @param request Current request
+        /// @param posIndications List of caches that gave possitive indication to proxy
+        void newReq(HttpRequest::Pointer request, const unordered_set<string>& posIndications);
         
         /// @brief Called when this cache miss request.
         /// Updates the number of misses
-        /// @param posIndications Number of positive indications proxy recived for this request
-        /// @param isPosInd True - if this cache digest give to proxy possitive indication
-        void newMiss(size_t posIndications, bool isPosInd);
+        /// @param request The requset that missed
+        void newMiss(HttpRequest::Pointer request);
 
         static Salsa2Parent& getInstance(size_t caches);
+
+        /// @brief Parse "salsa2" header entry
+        /// @param header "salsa2" header entry
+        /// @param nCaches Returns the number of parents
+        /// @param posIndications Returns set of cahces 
+        /// that gave to proxy positive indication for this request
+        static void parse
+            (const String header, 
+             size_t& nCaches, 
+             unordered_set<string>& posIndications);
 
         /// @brief Called when this server shutdown 
         static void free(){if (instance) delete instance;}

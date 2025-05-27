@@ -237,6 +237,12 @@ public:
     /// the master transaction this request belongs to. Never nil.
     MasterXaction::Pointer masterXaction;
 
+    // @category salsa2
+    // Tells if this cahce digest gave to proxy positive indication
+    bool isPositive;
+    // Tells how many caches gave positive indications  for this request
+    size_t posIndications;
+    
     /// forgets about the cached Range header (for a reason)
     void ignoreRange(const char *reason);
     int64_t getRangeOffsetLimit(); /* the result of this function gets cached in rangeOffsetLimit */

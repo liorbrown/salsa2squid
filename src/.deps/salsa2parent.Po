@@ -11,7 +11,49 @@ salsa2parent.o: salsa2parent.cc /usr/include/stdc-predef.h salsa2parent.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h \
  /usr/include/c++/13/pstl/pstl_config.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h ../include/squid.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
+ /usr/include/c++/13/unordered_set \
+ /usr/include/c++/13/bits/requires_hosted.h \
+ /usr/include/c++/13/initializer_list \
+ /usr/include/c++/13/bits/unordered_set.h \
+ /usr/include/c++/13/bits/hashtable.h \
+ /usr/include/c++/13/bits/hashtable_policy.h /usr/include/c++/13/tuple \
+ /usr/include/c++/13/bits/stl_pair.h /usr/include/c++/13/type_traits \
+ /usr/include/c++/13/bits/move.h /usr/include/c++/13/bits/utility.h \
+ /usr/include/c++/13/bits/uses_allocator.h \
+ /usr/include/c++/13/bits/invoke.h \
+ /usr/include/c++/13/bits/functional_hash.h \
+ /usr/include/c++/13/bits/hash_bytes.h \
+ /usr/include/c++/13/bits/stl_algobase.h \
+ /usr/include/c++/13/bits/functexcept.h \
+ /usr/include/c++/13/bits/exception_defines.h \
+ /usr/include/c++/13/bits/cpp_type_traits.h \
+ /usr/include/c++/13/ext/type_traits.h \
+ /usr/include/c++/13/ext/numeric_traits.h \
+ /usr/include/c++/13/bits/stl_iterator_base_types.h \
+ /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/13/bits/concept_check.h \
+ /usr/include/c++/13/debug/assertions.h \
+ /usr/include/c++/13/bits/stl_iterator.h \
+ /usr/include/c++/13/bits/ptr_traits.h /usr/include/c++/13/debug/debug.h \
+ /usr/include/c++/13/bits/predefined_ops.h /usr/include/c++/13/bit \
+ /usr/include/c++/13/ext/aligned_buffer.h \
+ /usr/include/c++/13/ext/alloc_traits.h \
+ /usr/include/c++/13/bits/alloc_traits.h \
+ /usr/include/c++/13/bits/stl_construct.h /usr/include/c++/13/new \
+ /usr/include/c++/13/bits/exception.h \
+ /usr/include/c++/13/bits/memoryfwd.h \
+ /usr/include/c++/13/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h \
+ /usr/include/c++/13/bits/new_allocator.h \
+ /usr/include/c++/13/bits/enable_special_members.h \
+ /usr/include/c++/13/bits/stl_function.h \
+ /usr/include/c++/13/backward/binders.h \
+ /usr/include/c++/13/bits/node_handle.h \
+ /usr/include/c++/13/bits/range_access.h \
+ /usr/include/c++/13/bits/erase_if.h \
+ /usr/include/c++/13/bits/memory_resource.h \
+ /usr/include/c++/13/bits/uses_allocator_args.h ../include/squid.h \
  ../include/autoconf.h ../include/version.h ../compat/compat.h \
  ../compat/osdetect.h ../compat/fdsetsize.h \
  /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -165,23 +207,16 @@ salsa2parent.o: salsa2parent.cc /usr/include/stdc-predef.h salsa2parent.h \
  /usr/include/x86_64-linux-gnu/bits/statfs.h ../compat/debug.h \
  ../compat/valgrind.h SquidConfig.h acl/forward.h ../src/base/RefCount.h \
  ../src/base/Lock.h /usr/include/c++/13/iostream \
- /usr/include/c++/13/bits/requires_hosted.h /usr/include/c++/13/ostream \
- /usr/include/c++/13/ios /usr/include/c++/13/iosfwd \
- /usr/include/c++/13/bits/stringfwd.h \
- /usr/include/c++/13/bits/memoryfwd.h /usr/include/c++/13/bits/postypes.h \
- /usr/include/c++/13/cwchar /usr/include/wchar.h \
- /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
+ /usr/include/c++/13/ostream /usr/include/c++/13/ios \
+ /usr/include/c++/13/iosfwd /usr/include/c++/13/bits/stringfwd.h \
+ /usr/include/c++/13/bits/postypes.h /usr/include/c++/13/cwchar \
+ /usr/include/wchar.h /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
  /usr/include/x86_64-linux-gnu/bits/wchar2-decl.h \
  /usr/include/x86_64-linux-gnu/bits/wchar2.h \
- /usr/include/c++/13/exception /usr/include/c++/13/bits/exception.h \
- /usr/include/c++/13/bits/exception_ptr.h \
- /usr/include/c++/13/bits/exception_defines.h \
+ /usr/include/c++/13/exception /usr/include/c++/13/bits/exception_ptr.h \
  /usr/include/c++/13/bits/cxxabi_init_exception.h \
- /usr/include/c++/13/typeinfo /usr/include/c++/13/bits/hash_bytes.h \
- /usr/include/c++/13/new /usr/include/c++/13/bits/move.h \
- /usr/include/c++/13/type_traits \
- /usr/include/c++/13/bits/nested_exception.h \
+ /usr/include/c++/13/typeinfo /usr/include/c++/13/bits/nested_exception.h \
  /usr/include/c++/13/bits/char_traits.h \
  /usr/include/c++/13/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h \
@@ -203,42 +238,14 @@ salsa2parent.o: salsa2parent.cc /usr/include/stdc-predef.h salsa2parent.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h \
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
  /usr/include/c++/13/bits/locale_classes.h /usr/include/c++/13/string \
- /usr/include/c++/13/bits/allocator.h \
- /usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h \
- /usr/include/c++/13/bits/new_allocator.h \
- /usr/include/c++/13/bits/functexcept.h \
- /usr/include/c++/13/bits/cpp_type_traits.h \
  /usr/include/c++/13/bits/ostream_insert.h \
  /usr/include/c++/13/bits/cxxabi_forced.h \
- /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
- /usr/include/c++/13/bits/concept_check.h \
- /usr/include/c++/13/debug/assertions.h \
- /usr/include/c++/13/bits/stl_iterator_base_types.h \
- /usr/include/c++/13/bits/stl_iterator.h \
- /usr/include/c++/13/ext/type_traits.h \
- /usr/include/c++/13/bits/ptr_traits.h \
- /usr/include/c++/13/bits/stl_function.h \
- /usr/include/c++/13/backward/binders.h \
- /usr/include/c++/13/ext/numeric_traits.h \
- /usr/include/c++/13/bits/stl_algobase.h \
- /usr/include/c++/13/bits/stl_pair.h /usr/include/c++/13/bits/utility.h \
- /usr/include/c++/13/debug/debug.h \
- /usr/include/c++/13/bits/predefined_ops.h /usr/include/c++/13/bit \
- /usr/include/c++/13/bits/refwrap.h /usr/include/c++/13/bits/invoke.h \
- /usr/include/c++/13/bits/range_access.h \
- /usr/include/c++/13/initializer_list \
- /usr/include/c++/13/bits/basic_string.h \
- /usr/include/c++/13/ext/alloc_traits.h \
- /usr/include/c++/13/bits/alloc_traits.h \
- /usr/include/c++/13/bits/stl_construct.h /usr/include/c++/13/string_view \
- /usr/include/c++/13/bits/functional_hash.h \
+ /usr/include/c++/13/bits/refwrap.h \
+ /usr/include/c++/13/bits/basic_string.h /usr/include/c++/13/string_view \
  /usr/include/c++/13/bits/string_view.tcc \
  /usr/include/c++/13/ext/string_conversions.h /usr/include/c++/13/cerrno \
  /usr/include/c++/13/bits/charconv.h \
  /usr/include/c++/13/bits/basic_string.tcc \
- /usr/include/c++/13/bits/memory_resource.h \
- /usr/include/c++/13/bits/uses_allocator.h \
- /usr/include/c++/13/bits/uses_allocator_args.h /usr/include/c++/13/tuple \
  /usr/include/c++/13/bits/locale_classes.tcc \
  /usr/include/c++/13/system_error \
  /usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h \
@@ -269,13 +276,7 @@ salsa2parent.o: salsa2parent.cc /usr/include/stdc-predef.h salsa2parent.h \
  ../src/acl/forward.h ../src/base/forward.h ../src/sbuf/forward.h \
  /usr/include/c++/13/functional /usr/include/c++/13/bits/std_function.h \
  /usr/include/c++/13/unordered_map \
- /usr/include/c++/13/bits/unordered_map.h \
- /usr/include/c++/13/bits/hashtable.h \
- /usr/include/c++/13/bits/hashtable_policy.h \
- /usr/include/c++/13/ext/aligned_buffer.h \
- /usr/include/c++/13/bits/enable_special_members.h \
- /usr/include/c++/13/bits/node_handle.h \
- /usr/include/c++/13/bits/erase_if.h /usr/include/c++/13/vector \
+ /usr/include/c++/13/bits/unordered_map.h /usr/include/c++/13/vector \
  /usr/include/c++/13/bits/stl_uninitialized.h \
  /usr/include/c++/13/bits/stl_vector.h \
  /usr/include/c++/13/bits/stl_bvector.h \
@@ -367,20 +368,51 @@ salsa2parent.o: salsa2parent.cc /usr/include/stdc-predef.h salsa2parent.h \
  /usr/include/openssl/srtp.h ../src/security/Session.h \
  ../src/base/HardFun.h ../src/comm/forward.h ../src/security/forward.h \
  ../src/security/LockingPointer.h /usr/include/c++/13/limits \
- /usr/include/openssl/err.h /usr/include/c++/13/unordered_set \
- /usr/include/c++/13/bits/unordered_set.h ssl/support.h \
- ../src/ssl/gadgets.h ../src/ssl/crtd_message.h \
- /usr/include/openssl/txt_db.h /usr/include/openssl/x509v3.h \
- /usr/include/openssl/x509v3err.h /usr/include/openssl/engine.h \
- /usr/include/openssl/rand.h /usr/include/openssl/randerr.h \
- /usr/include/openssl/ui.h /usr/include/openssl/uierr.h \
- /usr/include/openssl/engineerr.h store/Disk.h ../src/store/Controlled.h \
- ../src/store/Storage.h ../src/http/RequestMethod.h ../src/http/forward.h \
+ /usr/include/openssl/err.h ssl/support.h ../src/ssl/gadgets.h \
+ ../src/ssl/crtd_message.h /usr/include/openssl/txt_db.h \
+ /usr/include/openssl/x509v3.h /usr/include/openssl/x509v3err.h \
+ /usr/include/openssl/engine.h /usr/include/openssl/rand.h \
+ /usr/include/openssl/randerr.h /usr/include/openssl/ui.h \
+ /usr/include/openssl/uierr.h /usr/include/openssl/engineerr.h \
+ store/Disk.h ../src/store/Controlled.h ../src/store/Storage.h \
+ ../src/http/RequestMethod.h ../src/http/forward.h \
  ../src/http/MethodType.h ../src/store/forward.h ../src/store_key_md5.h \
  ../src/StoreIOState.h ../src/base/RefCount.h ../src/cbdata.h \
  store/forward.h time/gadgets.h /usr/include/c++/13/chrono \
  /usr/include/c++/13/bits/chrono.h /usr/include/c++/13/ratio \
- /usr/include/c++/13/bits/parse_numbers.h
+ /usr/include/c++/13/bits/parse_numbers.h HttpRequest.h anyp/Uri.h \
+ ../src/anyp/UriScheme.h ../src/ip/Address.h base/CbcPointer.h \
+ dns/forward.h error/Error.h ../src/error/Detail.h ../src/error/forward.h \
+ HierarchyLogEntry.h comm/Connection.h ../src/base/CodeContext.h \
+ ../src/base/Stopwatch.h ../src/defines.h ../src/eui/Eui48.h \
+ /usr/include/c++/13/cstring ../src/eui/Eui64.h ../src/hier_code.h \
+ ../src/time/gadgets.h enums.h hier_code.h http/StatusCode.h lookup_t.h \
+ PingData.h http/Message.h ../src/BodyPipe.h ../src/base/AsyncJob.h \
+ ../src/base/AsyncCall.h ../src/event.h ../src/AsyncEngine.h \
+ ../src/base/Packable.h ../src/base/RefCount.h ../src/base/CbcPointer.h \
+ ../src/MemBuf.h ../src/enums.h ../src/http/ProtocolVersion.h \
+ ../src/anyp/ProtocolVersion.h ../src/http/StatusCode.h \
+ ../src/HttpHeader.h http/RequestMethod.h MasterXaction.h anyp/forward.h \
+ anyp/PortCfg.h ../src/anyp/forward.h ../src/anyp/TrafficMode.h \
+ ../src/comm/Connection.h ../src/comm/Tcp.h \
+ ../src/security/ServerOptions.h ../src/security/PeerOptions.h \
+ ../src/base/YesNoNone.h ../src/security/KeyData.h base/InstanceId.h \
+ base/Lock.h comm/forward.h XactionInitiator.h RequestFlags.h \
+ base/SupportOrVeto.h /usr/include/c++/13/optional auth/UserRequest.h \
+ ../src/AccessLogEntry.h ../src/anyp/PortCfg.h ../src/base/CodeContext.h \
+ ../src/comm/Connection.h ../src/error/Error.h ../src/HierarchyLogEntry.h \
+ ../src/http/ProtocolVersion.h ../src/http/RequestMethod.h \
+ ../src/HttpHeader.h ../src/icp_opcode.h ../src/ip/Address.h \
+ ../src/LogTags.h ../src/CollapsingHistory.h ../src/MessageSizes.h \
+ ../src/Notes.h ../src/proxyp/forward.h ../src/adaptation/icap/Elements.h \
+ ../src/adaptation/Elements.h ../src/ssl/gadgets.h ../src/ssl/support.h \
+ ../src/auth/AuthAclState.h ../src/auth/Scheme.h ../src/auth/forward.h \
+ ../src/auth/User.h ../src/auth/CredentialState.h ../src/auth/Type.h \
+ ../src/base/CbcPointer.h ../src/dlink.h ../src/Notes.h \
+ ../src/helper/forward.h adaptation/History.h \
+ ../src/adaptation/DynamicGroupCfg.h ../src/SquidString.h \
+ ../src/adaptation/forward.h adaptation/icap/History.h ../src/LogTags.h \
+ eui/Eui48.h eui/Eui64.h
 /usr/include/stdc-predef.h:
 salsa2parent.h:
 /usr/include/c++/13/cstddef:
@@ -397,6 +429,54 @@ salsa2parent.h:
 /usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h:
 /usr/include/c++/13/pstl/pstl_config.h:
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
+/usr/include/c++/13/unordered_set:
+/usr/include/c++/13/bits/requires_hosted.h:
+/usr/include/c++/13/initializer_list:
+/usr/include/c++/13/bits/unordered_set.h:
+/usr/include/c++/13/bits/hashtable.h:
+/usr/include/c++/13/bits/hashtable_policy.h:
+/usr/include/c++/13/tuple:
+/usr/include/c++/13/bits/stl_pair.h:
+/usr/include/c++/13/type_traits:
+/usr/include/c++/13/bits/move.h:
+/usr/include/c++/13/bits/utility.h:
+/usr/include/c++/13/bits/uses_allocator.h:
+/usr/include/c++/13/bits/invoke.h:
+/usr/include/c++/13/bits/functional_hash.h:
+/usr/include/c++/13/bits/hash_bytes.h:
+/usr/include/c++/13/bits/stl_algobase.h:
+/usr/include/c++/13/bits/functexcept.h:
+/usr/include/c++/13/bits/exception_defines.h:
+/usr/include/c++/13/bits/cpp_type_traits.h:
+/usr/include/c++/13/ext/type_traits.h:
+/usr/include/c++/13/ext/numeric_traits.h:
+/usr/include/c++/13/bits/stl_iterator_base_types.h:
+/usr/include/c++/13/bits/stl_iterator_base_funcs.h:
+/usr/include/c++/13/bits/concept_check.h:
+/usr/include/c++/13/debug/assertions.h:
+/usr/include/c++/13/bits/stl_iterator.h:
+/usr/include/c++/13/bits/ptr_traits.h:
+/usr/include/c++/13/debug/debug.h:
+/usr/include/c++/13/bits/predefined_ops.h:
+/usr/include/c++/13/bit:
+/usr/include/c++/13/ext/aligned_buffer.h:
+/usr/include/c++/13/ext/alloc_traits.h:
+/usr/include/c++/13/bits/alloc_traits.h:
+/usr/include/c++/13/bits/stl_construct.h:
+/usr/include/c++/13/new:
+/usr/include/c++/13/bits/exception.h:
+/usr/include/c++/13/bits/memoryfwd.h:
+/usr/include/c++/13/bits/allocator.h:
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h:
+/usr/include/c++/13/bits/new_allocator.h:
+/usr/include/c++/13/bits/enable_special_members.h:
+/usr/include/c++/13/bits/stl_function.h:
+/usr/include/c++/13/backward/binders.h:
+/usr/include/c++/13/bits/node_handle.h:
+/usr/include/c++/13/bits/range_access.h:
+/usr/include/c++/13/bits/erase_if.h:
+/usr/include/c++/13/bits/memory_resource.h:
+/usr/include/c++/13/bits/uses_allocator_args.h:
 ../include/squid.h:
 ../include/autoconf.h:
 ../include/version.h:
@@ -602,12 +682,10 @@ acl/forward.h:
 ../src/base/RefCount.h:
 ../src/base/Lock.h:
 /usr/include/c++/13/iostream:
-/usr/include/c++/13/bits/requires_hosted.h:
 /usr/include/c++/13/ostream:
 /usr/include/c++/13/ios:
 /usr/include/c++/13/iosfwd:
 /usr/include/c++/13/bits/stringfwd.h:
-/usr/include/c++/13/bits/memoryfwd.h:
 /usr/include/c++/13/bits/postypes.h:
 /usr/include/c++/13/cwchar:
 /usr/include/wchar.h:
@@ -616,15 +694,9 @@ acl/forward.h:
 /usr/include/x86_64-linux-gnu/bits/wchar2-decl.h:
 /usr/include/x86_64-linux-gnu/bits/wchar2.h:
 /usr/include/c++/13/exception:
-/usr/include/c++/13/bits/exception.h:
 /usr/include/c++/13/bits/exception_ptr.h:
-/usr/include/c++/13/bits/exception_defines.h:
 /usr/include/c++/13/bits/cxxabi_init_exception.h:
 /usr/include/c++/13/typeinfo:
-/usr/include/c++/13/bits/hash_bytes.h:
-/usr/include/c++/13/new:
-/usr/include/c++/13/bits/move.h:
-/usr/include/c++/13/type_traits:
 /usr/include/c++/13/bits/nested_exception.h:
 /usr/include/c++/13/bits/char_traits.h:
 /usr/include/c++/13/bits/localefwd.h:
@@ -653,48 +725,16 @@ acl/forward.h:
 /usr/include/x86_64-linux-gnu/sys/single_threaded.h:
 /usr/include/c++/13/bits/locale_classes.h:
 /usr/include/c++/13/string:
-/usr/include/c++/13/bits/allocator.h:
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h:
-/usr/include/c++/13/bits/new_allocator.h:
-/usr/include/c++/13/bits/functexcept.h:
-/usr/include/c++/13/bits/cpp_type_traits.h:
 /usr/include/c++/13/bits/ostream_insert.h:
 /usr/include/c++/13/bits/cxxabi_forced.h:
-/usr/include/c++/13/bits/stl_iterator_base_funcs.h:
-/usr/include/c++/13/bits/concept_check.h:
-/usr/include/c++/13/debug/assertions.h:
-/usr/include/c++/13/bits/stl_iterator_base_types.h:
-/usr/include/c++/13/bits/stl_iterator.h:
-/usr/include/c++/13/ext/type_traits.h:
-/usr/include/c++/13/bits/ptr_traits.h:
-/usr/include/c++/13/bits/stl_function.h:
-/usr/include/c++/13/backward/binders.h:
-/usr/include/c++/13/ext/numeric_traits.h:
-/usr/include/c++/13/bits/stl_algobase.h:
-/usr/include/c++/13/bits/stl_pair.h:
-/usr/include/c++/13/bits/utility.h:
-/usr/include/c++/13/debug/debug.h:
-/usr/include/c++/13/bits/predefined_ops.h:
-/usr/include/c++/13/bit:
 /usr/include/c++/13/bits/refwrap.h:
-/usr/include/c++/13/bits/invoke.h:
-/usr/include/c++/13/bits/range_access.h:
-/usr/include/c++/13/initializer_list:
 /usr/include/c++/13/bits/basic_string.h:
-/usr/include/c++/13/ext/alloc_traits.h:
-/usr/include/c++/13/bits/alloc_traits.h:
-/usr/include/c++/13/bits/stl_construct.h:
 /usr/include/c++/13/string_view:
-/usr/include/c++/13/bits/functional_hash.h:
 /usr/include/c++/13/bits/string_view.tcc:
 /usr/include/c++/13/ext/string_conversions.h:
 /usr/include/c++/13/cerrno:
 /usr/include/c++/13/bits/charconv.h:
 /usr/include/c++/13/bits/basic_string.tcc:
-/usr/include/c++/13/bits/memory_resource.h:
-/usr/include/c++/13/bits/uses_allocator.h:
-/usr/include/c++/13/bits/uses_allocator_args.h:
-/usr/include/c++/13/tuple:
 /usr/include/c++/13/bits/locale_classes.tcc:
 /usr/include/c++/13/system_error:
 /usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h:
@@ -745,12 +785,6 @@ format/Format.h:
 /usr/include/c++/13/bits/std_function.h:
 /usr/include/c++/13/unordered_map:
 /usr/include/c++/13/bits/unordered_map.h:
-/usr/include/c++/13/bits/hashtable.h:
-/usr/include/c++/13/bits/hashtable_policy.h:
-/usr/include/c++/13/ext/aligned_buffer.h:
-/usr/include/c++/13/bits/enable_special_members.h:
-/usr/include/c++/13/bits/node_handle.h:
-/usr/include/c++/13/bits/erase_if.h:
 /usr/include/c++/13/vector:
 /usr/include/c++/13/bits/stl_uninitialized.h:
 /usr/include/c++/13/bits/stl_vector.h:
@@ -924,8 +958,6 @@ security/forward.h:
 ../src/security/LockingPointer.h:
 /usr/include/c++/13/limits:
 /usr/include/openssl/err.h:
-/usr/include/c++/13/unordered_set:
-/usr/include/c++/13/bits/unordered_set.h:
 ssl/support.h:
 ../src/ssl/gadgets.h:
 ../src/ssl/crtd_message.h:
@@ -955,3 +987,100 @@ time/gadgets.h:
 /usr/include/c++/13/bits/chrono.h:
 /usr/include/c++/13/ratio:
 /usr/include/c++/13/bits/parse_numbers.h:
+HttpRequest.h:
+anyp/Uri.h:
+../src/anyp/UriScheme.h:
+../src/ip/Address.h:
+base/CbcPointer.h:
+dns/forward.h:
+error/Error.h:
+../src/error/Detail.h:
+../src/error/forward.h:
+HierarchyLogEntry.h:
+comm/Connection.h:
+../src/base/CodeContext.h:
+../src/base/Stopwatch.h:
+../src/defines.h:
+../src/eui/Eui48.h:
+/usr/include/c++/13/cstring:
+../src/eui/Eui64.h:
+../src/hier_code.h:
+../src/time/gadgets.h:
+enums.h:
+hier_code.h:
+http/StatusCode.h:
+lookup_t.h:
+PingData.h:
+http/Message.h:
+../src/BodyPipe.h:
+../src/base/AsyncJob.h:
+../src/base/AsyncCall.h:
+../src/event.h:
+../src/AsyncEngine.h:
+../src/base/Packable.h:
+../src/base/RefCount.h:
+../src/base/CbcPointer.h:
+../src/MemBuf.h:
+../src/enums.h:
+../src/http/ProtocolVersion.h:
+../src/anyp/ProtocolVersion.h:
+../src/http/StatusCode.h:
+../src/HttpHeader.h:
+http/RequestMethod.h:
+MasterXaction.h:
+anyp/forward.h:
+anyp/PortCfg.h:
+../src/anyp/forward.h:
+../src/anyp/TrafficMode.h:
+../src/comm/Connection.h:
+../src/comm/Tcp.h:
+../src/security/ServerOptions.h:
+../src/security/PeerOptions.h:
+../src/base/YesNoNone.h:
+../src/security/KeyData.h:
+base/InstanceId.h:
+base/Lock.h:
+comm/forward.h:
+XactionInitiator.h:
+RequestFlags.h:
+base/SupportOrVeto.h:
+/usr/include/c++/13/optional:
+auth/UserRequest.h:
+../src/AccessLogEntry.h:
+../src/anyp/PortCfg.h:
+../src/base/CodeContext.h:
+../src/comm/Connection.h:
+../src/error/Error.h:
+../src/HierarchyLogEntry.h:
+../src/http/ProtocolVersion.h:
+../src/http/RequestMethod.h:
+../src/HttpHeader.h:
+../src/icp_opcode.h:
+../src/ip/Address.h:
+../src/LogTags.h:
+../src/CollapsingHistory.h:
+../src/MessageSizes.h:
+../src/Notes.h:
+../src/proxyp/forward.h:
+../src/adaptation/icap/Elements.h:
+../src/adaptation/Elements.h:
+../src/ssl/gadgets.h:
+../src/ssl/support.h:
+../src/auth/AuthAclState.h:
+../src/auth/Scheme.h:
+../src/auth/forward.h:
+../src/auth/User.h:
+../src/auth/CredentialState.h:
+../src/auth/Type.h:
+../src/base/CbcPointer.h:
+../src/dlink.h:
+../src/Notes.h:
+../src/helper/forward.h:
+adaptation/History.h:
+../src/adaptation/DynamicGroupCfg.h:
+../src/SquidString.h:
+../src/adaptation/forward.h:
+adaptation/icap/History.h:
+../src/LogTags.h:
+eui/Eui48.h:
+eui/Eui64.h:

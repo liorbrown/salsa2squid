@@ -151,14 +151,12 @@ void Salsa2Proxy::checkDigestsHits()
                 // peerNoteDigestLookup(request, p, LOOKUP_HIT);
 
                 // Add this peer to the list of forward servers with the code indicating a parent hit.
-                this->addPeer(peer, CD_PARENT_HIT);
-
-                char buf[MAX_IPSTRLEN];                
+                this->addPeer(peer, CD_PARENT_HIT);               
 
                 // Add peer IP to 
-                this->request->header.addEntry(new HttpHeaderEntry(Http::OTHER, 
+                this->request->header.addEntry(new HttpHeaderEntry(Http::OTHER,
                                                 SBuf("salsa2"),
-                                                peer->addresses[0].toUrl(buf,MAX_IPSTRLEN))); 
+                                                peer->name));
             }                        
         }
     }
