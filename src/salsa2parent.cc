@@ -4,21 +4,51 @@ Salsa2Parent* Salsa2Parent::instance = nullptr;
 
 Salsa2Parent::~Salsa2Parent()
 {
-    if (this->missNegArr)
-        delete[] missNegArr;
+    if (this->missCounter)
+    {
+        delete[] this->missCounter[0];
+        delete[] this->missCounter[1];
+        delete[] this->missCounter;
+    }
 
-    if (this->missPosArr)
-        delete[] this->missPosArr;
+    if (this->reqCounter)
+    {
+        delete[] this->reqCounter[0];
+        delete[] this->reqCounter[1];
+        delete[] this->reqCounter;
+    }
 
-    if (this->reqNum)
-        delete[] this->missPosArr;
+    if (this->exclusionProbability)
+    {
+        delete[] this->exclusionProbability[0];
+        delete[] this->exclusionProbability[1];
+        delete[] this->exclusionProbability;
+    }
+}
 
+void Salsa2Parent::updateExclusionProb(HttpRequest::Pointer request)
+{
+    size_t misses = this->missCounter[request->isPositive][request->posIndications];
+    size_t requests = this->reqCounter[request->isPositive][request->posIndications];
+    double& exclusionProb = this->exclusionProbability[request->isPositive][request->posIndications];
+
+    assert(requests);
+
+    exclusionProb = (double)misses / requests;
+
+    stringstream stream{"Misses counter:"};
     
-    if (this->possExclusionProbability)
-        delete[] this->possExclusionProbability;
+    for (size_t i = 0; i < 2; i++)
+    {
+        stream << "\nIs possitive: " << i << " - ";
+        
+        for (size_t j = i; j < this->nCaches + i; j++)
+            stream << '[' << j << "] " << this->missCounter[i][j] 
+                    << " / " << this->reqCounter[i][j] 
+                    << " = " << this->exclusionProbability[i][j] << " | ";
+    }
 
-    if (this->negExclusionProbability)
-        delete[] this->negExclusionProbability;
+    debugs(96, DBG_CRITICAL, "Salsa2: " << stream.str());
 }
 
 void Salsa2Parent::newReq(HttpRequest::Pointer request, const unordered_set<string>& posIndications)
@@ -31,33 +61,28 @@ void Salsa2Parent::newReq(HttpRequest::Pointer request, const unordered_set<stri
 
     request->isPositive = posIndications.find(hostname) != posIndications.end();    
 
+    ++this->reqCounter[request->isPositive][nPosIndications];
+
     debugs(96, DBG_CRITICAL,
         "\nrequest->posIndications = " << request->posIndications <<
         "\nrequest->isPositive = " << request->isPositive <<
         "\nNew request arrived: " << request->url.host() <<
         "\nNumber of positive indications: " << nPosIndications <<
-        "\nNumber of requests for this amount: " << ++this->reqNum[nPosIndications]);
+        "\nNumber of requests for this amount: " << this->reqCounter[request->isPositive][nPosIndications]);
+
+        this->updateExclusionProb(request);
 }
 
 void Salsa2Parent::newMiss(HttpRequest::Pointer request)
 {
-    // Checks if need to update the number of misses for possitive indication
-    // or for negative indication
-    size_t* missArray = request->isPositive ? this->missPosArr : this->missNegArr;
+    size_t misses = ++this->missCounter[request->isPositive][request->posIndications];
 
     debugs(96, DBG_CRITICAL,
            "Salsa2: Misses request: " << request->url.host() <<
             "\nNumber of positive indications for request: " << request->posIndications <<
-            "\nNumber of misses for this amount: " << ++missArray[request->posIndications]);
-    
-     for (size_t i = 0; i <= this->nCaches; i++)
-        debugs(96, DBG_CRITICAL, '[' << i << "] : " << this->missPosArr[i]);
+            "\nNumber of misses for this amount: " << misses);
 
-    debugs(96, DBG_CRITICAL, "Salsa2: missNegArr:");
-    
-    for (size_t i = 0; i <= this->nCaches; i++)
-        debugs(96, DBG_CRITICAL, '[' << i << "] : " << this->missNegArr[i]);
-    
+    this->updateExclusionProb(request);
 }
 
 Salsa2Parent& Salsa2Parent::getInstance(size_t caches)

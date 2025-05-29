@@ -76,6 +76,7 @@ public:
 class SquidConfig
 {
 public:
+    // @category salsa2
     int salsa2;
     
     struct {

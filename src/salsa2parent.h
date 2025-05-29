@@ -10,25 +10,24 @@ using namespace std;
 class Salsa2Parent{
     private:
         size_t nCaches;
-        size_t* missPosArr;
-        size_t* missNegArr;
-        size_t* reqNum;
-        double* possExclusionProbability;
-        double* negExclusionProbability;
-        
+
+        // All statistics matrices have 2 rows, first for spectular requests (this cahce have negative indication)
+        // and seconed for regular requests (this cahce have possitive indication)
+        size_t** reqCounter;
+        size_t** missCounter;
+        double** exclusionProbability;
     
         Salsa2Parent(size_t caches):
-            nCaches(caches),          
-            missPosArr(new size_t[caches + 1]{0}),
-            missNegArr(new size_t[caches + 1]{0}),
-            reqNum(new size_t[caches + 1]{0}),
-            possExclusionProbability(new double[caches + 1]),
-            negExclusionProbability(new double[caches + 1]){}
-        
+            nCaches(caches),
+            reqCounter(new size_t*[2] {new size_t[caches + 1]{0}, new size_t[caches + 1]{0}}),
+            missCounter(new size_t*[2] {new size_t[caches + 1]{0}, new size_t[caches + 1]{0}}),
+            exclusionProbability(new double*[2] {new double[caches + 1]{0.0}, new double[caches + 1]{0.0}}){}
+
         ~Salsa2Parent();
         
-        static Salsa2Parent* instance;
+        void updateExclusionProb(HttpRequest::Pointer request);
 
+        static Salsa2Parent* instance;
     public:
 
         /// @brief Tihs methos calles when new request arrived
