@@ -1,5 +1,7 @@
 #include "salsa2parent.h"
 
+#define DELTA_PI (0.25)
+
 Salsa2Parent* Salsa2Parent::instance = nullptr;
 
 Salsa2Parent::~Salsa2Parent()
@@ -34,7 +36,7 @@ void Salsa2Parent::updateExclusionProb(HttpRequest::Pointer request)
 
     assert(requests);
 
-    exclusionProb = (double)misses / requests;
+    exclusionProb = DELTA_PI * misses / requests + (1 - DELTA_PI) * exclusionProb;
 
     stringstream stream{"Misses counter:"};
     
