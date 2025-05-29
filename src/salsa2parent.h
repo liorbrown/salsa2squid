@@ -9,7 +9,8 @@ using namespace std;
 /// @brief This is singltone class that contain for this cache all the statistic data needed for salsa2
 class Salsa2Parent{
     private:
-        size_t nCaches;
+        const size_t nCaches;
+        const size_t reEstimateWindow;
 
         // All statistics matrices have 2 rows, first for spectular requests (this cahce have negative indication)
         // and seconed for regular requests (this cahce have possitive indication)
@@ -19,13 +20,16 @@ class Salsa2Parent{
     
         Salsa2Parent(size_t caches):
             nCaches(caches),
+            reEstimateWindow(3), // TODO: init now arbitary to 3, will be estimated ahead
             reqCounter(new size_t*[2] {new size_t[caches + 1]{0}, new size_t[caches + 1]{0}}),
             missCounter(new size_t*[2] {new size_t[caches + 1]{0}, new size_t[caches + 1]{0}}),
             exclusionProbability(new double*[2] {new double[caches + 1]{0.0}, new double[caches + 1]{0.0}}){}
 
         ~Salsa2Parent();
         
-        void updateExclusionProb(HttpRequest::Pointer request);
+        /// @brief Updating exclusionProbability according to given request details
+        /// @param request This request tells salsa2 which probalitiy we need to estimate
+        void reEstimateExclusionProb(HttpRequest::Pointer request);
 
         static Salsa2Parent* instance;
     public:

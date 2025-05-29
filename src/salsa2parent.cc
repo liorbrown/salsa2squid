@@ -28,7 +28,7 @@ Salsa2Parent::~Salsa2Parent()
     }
 }
 
-void Salsa2Parent::updateExclusionProb(HttpRequest::Pointer request)
+void Salsa2Parent::reEstimateExclusionProb(HttpRequest::Pointer request)
 {
     size_t misses = this->missCounter[request->isPositive][request->posIndications];
     size_t requests = this->reqCounter[request->isPositive][request->posIndications];
@@ -61,18 +61,24 @@ void Salsa2Parent::newReq(HttpRequest::Pointer request, const unordered_set<stri
     size_t nPosIndications = posIndications.size();    
     request->posIndications = nPosIndications;
 
-    request->isPositive = posIndications.find(hostname) != posIndications.end();    
+    request->isPositive = posIndications.find(hostname) != posIndications.end();
+    
+    size_t &requests = this->reqCounter[request->isPositive][nPosIndications];
 
-    ++this->reqCounter[request->isPositive][nPosIndications];
+    // Check if reach window size, so re-estimate exclusion probability
+    // need to do it before increasing requests count, because its not yet counting the miss
+    // if will be for this request
+    if (requests && !(requests % this->reEstimateWindow))
+        this->reEstimateExclusionProb(request);
+
+    ++requests;
 
     debugs(96, DBG_CRITICAL,
         "\nrequest->posIndications = " << request->posIndications <<
         "\nrequest->isPositive = " << request->isPositive <<
         "\nNew request arrived: " << request->url.host() <<
         "\nNumber of positive indications: " << nPosIndications <<
-        "\nNumber of requests for this amount: " << this->reqCounter[request->isPositive][nPosIndications]);
-
-        this->updateExclusionProb(request);
+        "\nNumber of requests for this amount: " << requests);
 }
 
 void Salsa2Parent::newMiss(HttpRequest::Pointer request)
@@ -83,8 +89,6 @@ void Salsa2Parent::newMiss(HttpRequest::Pointer request)
            "Salsa2: Misses request: " << request->url.host() <<
             "\nNumber of positive indications for request: " << request->posIndications <<
             "\nNumber of misses for this amount: " << misses);
-
-    this->updateExclusionProb(request);
 }
 
 Salsa2Parent& Salsa2Parent::getInstance(size_t caches)
