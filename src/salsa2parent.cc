@@ -37,7 +37,6 @@ void Salsa2Parent::newReq(HttpRequest::Pointer request, const unordered_set<stri
         "\nNew request arrived: " << request->url.host() <<
         "\nNumber of positive indications: " << nPosIndications <<
         "\nNumber of requests for this amount: " << ++this->reqNum[nPosIndications]);
-    debugs(96, DBG_CRITICAL, "line 10");
 }
 
 void Salsa2Parent::newMiss(HttpRequest::Pointer request)
@@ -47,9 +46,18 @@ void Salsa2Parent::newMiss(HttpRequest::Pointer request)
     size_t* missArray = request->isPositive ? this->missPosArr : this->missNegArr;
 
     debugs(96, DBG_CRITICAL,
-           "Misses request: " << request->url.host() <<
+           "Salsa2: Misses request: " << request->url.host() <<
             "\nNumber of positive indications for request: " << request->posIndications <<
             "\nNumber of misses for this amount: " << ++missArray[request->posIndications]);
+    
+     for (size_t i = 0; i <= this->nCaches; i++)
+        debugs(96, DBG_CRITICAL, '[' << i << "] : " << this->missPosArr[i]);
+
+    debugs(96, DBG_CRITICAL, "Salsa2: missNegArr:");
+    
+    for (size_t i = 0; i <= this->nCaches; i++)
+        debugs(96, DBG_CRITICAL, '[' << i << "] : " << this->missNegArr[i]);
+    
 }
 
 Salsa2Parent& Salsa2Parent::getInstance(size_t caches)

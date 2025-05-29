@@ -48,6 +48,7 @@
 #endif
 
 #include <memory>
+#include "salsa2parent.h"
 
 CBDATA_CLASS_INIT(clientReplyContext);
 
@@ -699,6 +700,12 @@ clientReplyContext::processMiss()
     HttpRequest *r = http->request;
     ErrorState *err = nullptr;
     debugs(88, 4, r->method << ' ' << url);
+
+    // @category salsa2
+    // Checks if this request managed by salsa2
+    // Then update new miss
+    if (Salsa2Parent::isSalsa(r))
+        Salsa2Parent::getInstance().newMiss(r);
 
     /**
      * We might have a left-over StoreEntry from a failed cache hit

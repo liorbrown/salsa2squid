@@ -18,12 +18,12 @@ class Salsa2Parent{
         
     
         Salsa2Parent(size_t caches):
-            nCaches(caches),
-            missPosArr(new size_t[caches]{0}),
-            missNegArr(new size_t[caches]{0}),
-            reqNum(new size_t[caches]{0}),
-            possExclusionProbability(new double[caches]),
-            negExclusionProbability(new double[caches]){}
+            nCaches(caches),          
+            missPosArr(new size_t[caches + 1]{0}),
+            missNegArr(new size_t[caches + 1]{0}),
+            reqNum(new size_t[caches + 1]{0}),
+            possExclusionProbability(new double[caches + 1]),
+            negExclusionProbability(new double[caches + 1]){}
         
         ~Salsa2Parent();
         
@@ -43,7 +43,13 @@ class Salsa2Parent{
         /// @param request The requset that missed
         void newMiss(HttpRequest::Pointer request);
 
-        static Salsa2Parent& getInstance(size_t caches);
+        static Salsa2Parent& getInstance(size_t caches = 0);
+
+        /// @brief Checks if given request is handling by salsa2
+        /// @param request 
+        /// @return True - if handle by salsa2, False - otherwise
+        static bool isSalsa(HttpRequest::Pointer request)
+            {return request->header.getByName("salsa2").size();}
 
         /// @brief Parse "salsa2" header entry
         /// @param header "salsa2" header entry
