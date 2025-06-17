@@ -12,7 +12,8 @@ class Salsa2Parent{
         const size_t nCaches;
         const size_t reEstimateWindow;
 
-        // All statistics matrices have 2 rows, first for spectular requests (this cahce have negative indication)
+        // All statistics matrices have 2 rows, first for spectular requests
+        // (this cahce have negative indication)
         // and seconed for regular requests (this cahce have possitive indication)
         size_t** reqCounter;
         size_t** missCounter;

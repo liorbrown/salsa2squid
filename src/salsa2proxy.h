@@ -62,7 +62,6 @@ class Salsa2Proxy{
     /// SALSA2 TODO: - Will change in the future
     void addRoundRobin();
 
-
     /// @brief Add peer to peers list of forword them the requsts
     /// @param peer Peer to add
     /// @param code Code that tell why we choose this peer

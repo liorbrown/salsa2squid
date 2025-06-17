@@ -30,13 +30,12 @@ Salsa2Parent::~Salsa2Parent()
 
 void Salsa2Parent::reEstimateExclusionProb(HttpRequest::Pointer request)
 {
-    size_t misses = this->missCounter[request->isPositive][request->posIndications];
-    size_t requests = this->reqCounter[request->isPositive][request->posIndications];
+    //the update is initiate by parent
+    size_t& misses = this->missCounter[request->isPositive][request->posIndications];
     double& exclusionProb = this->exclusionProbability[request->isPositive][request->posIndications];
 
-    assert(requests);
-
-    exclusionProb = DELTA_PI * misses / requests + (1 - DELTA_PI) * exclusionProb;
+    exclusionProb = DELTA_PI * misses / this->reEstimateWindow + (1 - DELTA_PI) * exclusionProb;
+    misses = 0;
 
     stringstream stream{"Misses counter:"};
     
