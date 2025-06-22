@@ -122,8 +122,11 @@ void Salsa2Parent::newReq(HttpRequest::Pointer request,
     }
 
     ++requests;
-    ++clampsingCount;
 
+    // If current request is specular, add clampsing count of v[i]
+    if (!request->isPositive)
+        ++clampsingCount;
+        
     debugs(96, DBG_CRITICAL,
         "\nrequest->posIndications = " << request->posIndications <<
         "\nrequest->isPositive = " << request->isPositive <<
