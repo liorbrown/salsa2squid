@@ -1634,7 +1634,7 @@ clientProcessRequest(ConnStateData *conn, const Http1::RequestParserPointer &hp,
     if (Config.salsa2 && !Config.npeers && salsaHeader.size())
     {                
         size_t nCaches;
-        unordered_set<string> posIndications;
+        std::unordered_set<std::string> posIndications;
 
         Salsa2Parent::parse(salsaHeader, nCaches, posIndications);
         

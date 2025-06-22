@@ -4,33 +4,43 @@
 #include "SquidConfig.h"
 #include "HttpRequest.h"
 
-using namespace std;
-
-/// @brief This is singltone class that contain for this cache all the statistic data needed for salsa2
+/// @brief This is singltone class that contain for this cache 
+/// all the statistic data needed for salsa2
 class Salsa2Parent{
     private:
+        const double delta[2];
         const size_t nCaches;
-        const size_t reEstimateWindow;
+        size_t updateInterval;
 
         // All statistics matrices have 2 rows, first for spectular requests
         // (this cahce have negative indication)
         // and seconed for regular requests (this cahce have possitive indication)
         size_t** reqCounter;
+        size_t* clampsingCounter;
         size_t** missCounter;
         double** exclusionProbability;
     
-        Salsa2Parent(size_t caches):
-            nCaches(caches),
-            reEstimateWindow(3), // TODO: init now arbitary to 3, will be estimated ahead
-            reqCounter(new size_t*[2] {new size_t[caches + 1]{0}, new size_t[caches + 1]{0}}),
-            missCounter(new size_t*[2] {new size_t[caches + 1]{0}, new size_t[caches + 1]{0}}),
-            exclusionProbability(new double*[2] {new double[caches + 1]{0.0}, new double[caches + 1]{0.0}}){}
+        Salsa2Parent(size_t caches);
 
         ~Salsa2Parent();
+
+        /// @brief Get window size of re estimate exclusion probability
+        /// @return The window size of re estimate exclusion probability
+        size_t getReEstimateWindowSize(){return (this->updateInterval / 10);}
+
+        /// @brief Get window size of when to clamps v[i] to V_INIT
+        /// for ensure its not make and stay to high, and then it will not get requests
+        /// any more and this will damgage our statistics
+        /// @return The window size of when to clamps v[i]
+        size_t getVClampsInterval(){return (this->updateInterval * 10);}
         
         /// @brief Updating exclusionProbability according to given request details
         /// @param request This request tells salsa2 which probalitiy we need to estimate
         void reEstimateExclusionProb(HttpRequest::Pointer request);
+
+        /// @brief Minimize v[i] to v_init
+        /// @param posIndications Number of posIndications to clamps its v[i]
+        void VClampsing(size_t posIndications);
 
         static Salsa2Parent* instance;
     public:
@@ -40,7 +50,8 @@ class Salsa2Parent{
         /// positive indications
         /// @param request Current request
         /// @param posIndications List of caches that gave possitive indication to proxy
-        void newReq(HttpRequest::Pointer request, const unordered_set<string>& posIndications);
+        void newReq(HttpRequest::Pointer request, 
+            const std::unordered_set<std::string>& posIndications);
         
         /// @brief Called when this cache miss request.
         /// Updates the number of misses
@@ -63,7 +74,7 @@ class Salsa2Parent{
         static void parse
             (const String header, 
              size_t& nCaches, 
-             unordered_set<string>& posIndications);
+             std::unordered_set<std::string>& posIndications);
 
         /// @brief Called when this server shutdown 
         static void free(){if (instance) delete instance;}
