@@ -87,9 +87,17 @@ void Salsa2Proxy::peerSelection()
     for(FwdServer* f = *(this->servers); f; f = f->next)
         debugs(96,0,"Salsa2: "<< *(f->_peer));
 
-
     #ifdef REQ_UPDATE
-        this->getResolutions();
+        
+        debugs(96,0,"Salsa2: this->request->url.getScheme().image() = " << 
+            this->request->url.getScheme().image());
+        debugs(96,0,"Salsa2: this->request->url.getScheme().image().c_str() == http = " <<
+            (this->request->url.getScheme().image().toStdString() == string("http")));
+
+        if (this->request->url.getScheme().image().c_str() == string("http"))
+            this->getResolutions();
+        else
+            this->updateReq();
     #else
         this->dispatch();
     #endif    
@@ -260,8 +268,6 @@ void Salsa2Proxy::addRoundRobin()
 
 void Salsa2Proxy::dispatch()
 {
-    
-
     debugs(96, DBG_CRITICAL, "Salsa2: request->header.size - " << request->header.entries.size()); 
             
     for(auto entry : request->header.entries)
