@@ -1219,6 +1219,10 @@ clientReplyContext::buildReplyHeader()
     const bool is_hit = http->loggingTags().isTcpHit();
     HttpRequest *request = http->request;
 
+    // @category salsa2
+    // Re-estimate exclusion probability
+    Salsa2Parent::getInstance().reEstimateProbabilities(request, hdr);
+
     if (is_hit || collapsedRevalidation == crSlave)
         hdr->delById(Http::HdrType::SET_COOKIE);
     // TODO: RFC 2965 : Must honour Cache-Control: no-cache="set-cookie2" and remove header.
