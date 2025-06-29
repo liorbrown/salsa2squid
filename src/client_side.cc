@@ -1628,20 +1628,9 @@ clientProcessRequest(ConnStateData *conn, const Http1::RequestParserPointer &hp,
 
     request->manager(conn, http->al);
 
-   // @category salsa2
-    String salsaHeader = request->header.getByName("salsa2");
-    
-    if (Config.salsa2 && !Config.npeers && salsaHeader.size())
-    {                
-        size_t nCaches;
-        std::unordered_set<std::string> posIndications;
-
-        Salsa2Parent::parse(salsaHeader, nCaches, posIndications);
-        
-        assert(nCaches);
-
-        Salsa2Parent::getInstance(nCaches).newReq(request, posIndications);
-    }
+    // @category salsa2
+    // Notify salsa for new request arriving
+    Salsa2Parent::newReq(request);
 
     request->flags.accelerated = http->flags.accel;
     request->flags.sslBumped=conn->switchedToHttps();

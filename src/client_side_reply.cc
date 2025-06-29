@@ -702,10 +702,8 @@ clientReplyContext::processMiss()
     debugs(88, 4, r->method << ' ' << url);
 
     // @category salsa2
-    // Checks if this request managed by salsa2
-    // Then update new miss
-    if (Salsa2Parent::isSalsa(r))
-        Salsa2Parent::getInstance().newMiss(r);
+    // Notify salsa for new miss
+    Salsa2Parent::getInstance().newMiss(r);
 
     /**
      * We might have a left-over StoreEntry from a failed cache hit

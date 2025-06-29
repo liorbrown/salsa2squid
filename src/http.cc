@@ -733,6 +733,13 @@ HttpStateData::processReplyHeader()
     if (!peerSupportsConnectionPinning())
         request->flags.connectionAuthDisabled = true;
 
+    // @category salsa2 
+    // Update parent statistics
+    String salsaEntry = newrep->header.getByName("salsa2");
+    
+    if (salsaEntry.size())
+        debugs(96, 0, "salsa2: salsa2 header is: " << salsaEntry);
+
     HttpReply *vrep = setVirginReply(newrep);
     flags.headers_parsed = true;
 
@@ -1299,7 +1306,7 @@ HttpStateData::processReply()
 
         adaptOrFinalizeReply(); // may write to, abort, or "close" the entry
     }
-
+    
     // kick more reads if needed and/or process the response body, if any
     processReplyBody(); // may call serverComplete()
 }

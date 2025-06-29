@@ -1,26 +1,14 @@
 #include "salsa2parent.h"
 
 #define V_INIT (0.85)
-#define DELTA_V (0.5)
-#define DELTA_PI (0.25)
 
 Salsa2Parent* Salsa2Parent::instance = nullptr;
 
-Salsa2Parent::Salsa2Parent(size_t caches):
-    delta{DELTA_V, DELTA_PI},
-    nCaches(caches),
-    updateInterval(30), // TODO: init now arbitary to 30, will be estimated ahead
-    reqCounter(new size_t*[2]
-        {new size_t[caches + 1]{0}, new size_t[caches + 1]{0}}),
-    clampsingCounter(new size_t[caches + 1]{0}),
-    missCounter(new size_t*[2] 
-        {new size_t[caches + 1]{0}, new size_t[caches + 1]{0}}),
-    exclusionProbability(new double*[2] 
-        {new double[caches + 1], new double[caches + 1]{0.0}})
-    {
-        for (size_t i = 0; i <= caches; i++)     
-            this->exclusionProbability[0][i] = V_INIT;
-    }
+Salsa2Parent::Salsa2Parent(size_t caches): nCaches(caches)
+{
+    for (size_t i = 0; i <= caches; i++)     
+        this->exclusionProbability[0][i] = V_INIT;
+}
 
 Salsa2Parent::~Salsa2Parent()
 {
@@ -44,11 +32,14 @@ Salsa2Parent::~Salsa2Parent()
         delete[] this->exclusionProbability[1];
         delete[] this->exclusionProbability;
     }
+
+    if (this->clampingCounter)
+        delete[] this->clampingCounter;
 }
 
-void Salsa2Parent::reEstimateExclusionProb(HttpRequest::Pointer request)
+void Salsa2Parent::reEstimateExclusionProb(HttpRequest* request, HttpHeader* responseHeader)
 {
-    // Gets the relevant parameters according to request type (0 - spectular, 1 - regular)
+    // Gets the relevant parameters according to request type (0 - speculative, 1 - regular)
     // and by number of pos indication for current request
     size_t& misses = this->missCounter[request->isPositive][request->posIndications];
     double& exclusionProb = this->exclusionProbability[request->isPositive][request->posIndications];
@@ -58,9 +49,11 @@ void Salsa2Parent::reEstimateExclusionProb(HttpRequest::Pointer request)
     exclusionProb = currDelta * misses / this->getReEstimateWindowSize() + 
         (1 - currDelta) * exclusionProb;
         
-    misses = 0;
+    responseHeader->addEntry(new HttpHeaderEntry(Http::OTHER,
+                                                 SBuf("salsa2"),
+                                                 std::to_string(exclusionProb).c_str()));
 
-    std::stringstream stream{"Misses counter:"};
+    std::stringstream stream;
     
     for (size_t i = 0; i < 2; i++)
     {
@@ -73,11 +66,13 @@ void Salsa2Parent::reEstimateExclusionProb(HttpRequest::Pointer request)
     }
 
     debugs(96, DBG_CRITICAL, "Salsa2: " << stream.str());
+
+    misses = 0;
 }
 
-void Salsa2Parent::VClampsing(size_t posIndications)
+void Salsa2Parent::VClamping(size_t posIndications)
 {
-    debugs(96, DBG_CRITICAL, "Salsa2: Clampsing v[" << posIndications << ']');
+    debugs(96, DBG_CRITICAL, "Salsa2: Clamping v[" << posIndications << ']');
 
     double &trueNegativeProb = this->exclusionProbability[0][posIndications];
 
@@ -102,51 +97,55 @@ void Salsa2Parent::newReq(HttpRequest::Pointer request,
     // because squid mechanism send the same request with same data to all parents
     request->isPositive = posIndications.find(hostname) != posIndications.end();
     
-    size_t &requests = this->reqCounter[request->isPositive][nPosIndications];
-    size_t &clampsingCount = this->clampsingCounter[nPosIndications];
+    // Increase requests counter for current request type
+    ++this->reqCounter[request->isPositive][nPosIndications];
 
-    // Check if reach window size, so re-estimate exclusion probability
-    // need to do it before increasing requests count, because its not yet counting the miss
-    // if will be for this request
-    if (requests == this->getReEstimateWindowSize())
-    {
-        this->reEstimateExclusionProb(request);
-        requests = 0;
-    }
-
-    // Check if reach clamsing count, so clamps v[i] to V_INIT 
-    if (clampsingCount == this->getVClampsInterval())
-    {
-        this->VClampsing(nPosIndications);
-        clampsingCount = 0;  
-    }
-
-    ++requests;
-
-    // If current request is specular, add clampsing count of v[i]
+    // If current request is specular, add clamping count of v[i]
     if (!request->isPositive)
-        ++clampsingCount;
-        
-    debugs(96, DBG_CRITICAL,
-        "\nrequest->posIndications = " << request->posIndications <<
-        "\nrequest->isPositive = " << request->isPositive <<
-        "\nNew request arrived: " << request->url.host() <<
-        "\nNumber of positive indications: " << nPosIndications <<
-        "\nNumber of requests for this amount: " << requests);
+        ++this->clampingCounter[nPosIndications];
 }
 
 void Salsa2Parent::newMiss(HttpRequest::Pointer request)
 {
-    // Update miss counter for relevant request
-    size_t misses = ++this->missCounter[request->isPositive][request->posIndications];
+    debugs(96, DBG_CRITICAL,"Salsa2: new Miss\n" << *request);
 
-    debugs(96, DBG_CRITICAL,
-           "Salsa2: Misses request: " << request->url.host() <<
-            "\nNumber of positive indications for request: " << request->posIndications <<
-            "\nNumber of misses for this amount: " << misses);
+    // Update miss counter for relevant request
+    if (Salsa2Parent::isSalsa(request))        
+        ++this->missCounter[request->isPositive][request->posIndications];
 }
 
-Salsa2Parent& Salsa2Parent::getInstance(size_t caches)
+void Salsa2Parent::reEstimateProbabilities(HttpRequest* request, HttpHeader* responseHeader)
+{
+    debugs(96, DBG_CRITICAL, "Salsa2: new ReEstimation\n" << *request);
+
+    if (Salsa2Parent::isSalsa(request))
+    {
+        size_t &clampingCount = this->clampingCounter[request->posIndications];
+
+        // Check if reach clamsing count, so clamp v[i] to V_INIT 
+        if (clampingCount >= this->getVClampInterval())
+        {
+            this->VClamping(request->posIndications);
+            clampingCount = 0;  
+        }
+
+        size_t &requests = this->reqCounter[request->isPositive][request->posIndications];
+
+        debugs(96, DBG_CRITICAL, "requests = " << requests << 
+            "\nthis->getReEstimateWindowSize() = " << this->getReEstimateWindowSize());
+            
+        // Check if reach window size, so re-estimate exclusion probability
+        // need to do it before increasing requests count, because its not yet counting the miss
+        // if will be for this request
+        if (requests >= this->getReEstimateWindowSize())
+        {
+            this->reEstimateExclusionProb(request, responseHeader);
+            requests = 0;
+        }
+    }
+}
+
+Salsa2Parent &Salsa2Parent::getInstance(size_t caches)
 {
     // Creates instance only for parent caches, not proxy
     // Check this is parent by check if have no peers in its conf file
@@ -174,4 +173,36 @@ void Salsa2Parent::parse(
 
     while (std::getline(tokenizer, segment, ','))
         posIndications.insert(segment.substr(1));
+}
+
+void Salsa2Parent::newReq(HttpRequest::Pointer request)
+{
+    debugs(96, DBG_CRITICAL, "Salsa2: new req\n" << *request);
+
+    if (Salsa2Parent::isSalsa(request))
+    {                
+        String salsaHeader = request->header.getByName("salsa2");
+        size_t nCaches;
+        std::unordered_set<std::string> posIndications;
+
+        Salsa2Parent::parse(salsaHeader, nCaches, posIndications);
+
+        Salsa2Parent::getInstance(nCaches).newReq(request, posIndications);
+        
+    }
+}
+
+std::ostream& operator<<(std::ostream& stream, HttpRequest &request)
+{
+    stream << "Req address = " << &request
+           << "\nStore ID = " << request.storeId()
+           << "\nclient address = " << request.client_addr
+           << "\nisPossitive = " << std::boolalpha << request.isPositive
+           << "\nposIndications = " << request.posIndications
+           << "\nHeader =";
+
+    for(auto entry : request.header.entries)
+        stream << '\n' << entry->name.c_str() << ": " << entry->value;
+
+    return stream;
 }

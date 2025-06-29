@@ -64,7 +64,7 @@ Salsa2Proxy::Salsa2Proxy(PeerSelector* peerSelector, FwdServer** fwdServers):
 // This is the main function responsible for selecting peers using the Salsa2 algorithm.
 void Salsa2Proxy::peerSelection()
 {
-    debugs(96,0,"Salsa2: Starting salsa2 peer selection for URL: " << this->request->url.host());
+    debugs(96,0,"Salsa2: Starting salsa2 peer selection for URL: " << this->request->storeId());
 
     // Initialize the list of selected forward servers to empty.
     *(this->servers) = NULL;
@@ -88,12 +88,6 @@ void Salsa2Proxy::peerSelection()
         debugs(96,0,"Salsa2: "<< *(f->_peer));
 
     #ifdef REQ_UPDATE
-        
-        debugs(96,0,"Salsa2: this->request->url.getScheme().image() = " << 
-            this->request->url.getScheme().image());
-        debugs(96,0,"Salsa2: this->request->url.getScheme().image().c_str() == http = " <<
-            (this->request->url.getScheme().image().toStdString() == string("http")));
-
         if (this->request->url.getScheme().image().c_str() == string("http"))
             this->getResolutions();
         else
@@ -159,7 +153,7 @@ void Salsa2Proxy::checkDigestsHits()
                 // peerNoteDigestLookup(request, p, LOOKUP_HIT);
 
                 // Add this peer to the list of forward servers with the code indicating a parent hit.
-                this->addPeer(peer, CD_PARENT_HIT);               
+                this->addPeer(peer, CD_PARENT_HIT);          
 
                 // Add peer IP to 
                 this->request->header.addEntry(new HttpHeaderEntry(Http::OTHER,
@@ -224,7 +218,7 @@ void Salsa2Proxy::addRoundRobin()
     // If no servers have been selected yet (no digest hits).
     if (!*(this->servers))
     {
-        debugs(96,0,"Salsa2: No digest match for URL: " << this->request->url.host());
+        debugs(96,0,"Salsa2: No digest match for URL: " << this->request->storeId());
 
         // Iterate through all configured peers.
         for (int i = 0; i < Config.npeers; i++)
@@ -289,7 +283,7 @@ void Salsa2Proxy::updateReq()
     stringstream sstr;
 
     // Start building the command with the REQ_UPDATE flag and the requested URL host.
-    sstr << REQ_UPDATE << " " << this->request->url.host();
+    sstr << REQ_UPDATE << " " << this->request->storeId();
 
     // Iterate through the cachesData array to append peer information.
     for (int i = 0; i < Config.npeers; i++)
