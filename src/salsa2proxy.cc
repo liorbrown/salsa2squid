@@ -1,11 +1,14 @@
 #include "squid.h"
 #include "debug/Stream.h"
 #include "HttpRequest.h"
+#include "HttpReply.h"
 #include "salsa2proxy.h"
 #include <random>
 #include "neighbors.h"
 #include "mem/AllocatorProxy.h"
 #include "http/RegisteredHeaders.h"
+
+#define V_INIT (0.85)
 
 // This flag tells to not relly check digest
 // but random it it hit or miss
@@ -41,11 +44,13 @@ public:
 // Static member to keep track of the current peer for round-robin selection.
 CachePeer* Salsa2Proxy::currentPeer = nullptr;
 
+map<String, array<double*, 2>> Salsa2Proxy::exclusionProbabilities;
+
 #ifdef REQ_UPDATE
 Salsa2Proxy* Salsa2Proxy::activeSalsa = nullptr;
 #endif
 
-Salsa2Proxy::Salsa2Proxy(PeerSelector* peerSelector, FwdServer** fwdServers):
+Salsa2Proxy::Salsa2Proxy(PeerSelector* peerSelector, FwdServer*& fwdServers):
         selector(peerSelector),
         servers(fwdServers),
         tail(nullptr),
@@ -59,7 +64,23 @@ Salsa2Proxy::Salsa2Proxy(PeerSelector* peerSelector, FwdServer** fwdServers):
             #ifdef REQ_UPDATE
             Salsa2Proxy::activeSalsa = nullptr;
             #endif
+
+            this->peerSelection();
         }
+
+void Salsa2Proxy::updateProbabilty(HttpReply* reply, char* peer)
+{
+    if (peer)
+    {
+        String salsaEntry = reply->header.getByName("salsa2");
+        debugs(96, DBG_CRITICAL, "salsa2: Reply header: " << salsaEntry);
+
+        if (salsaEntry.size())
+        {
+            //double prob =  stod(salsaEntry.rawBuf());
+        }
+    }
+}
 
 // This is the main function responsible for selecting peers using the Salsa2 algorithm.
 void Salsa2Proxy::peerSelection()
@@ -67,7 +88,7 @@ void Salsa2Proxy::peerSelection()
     debugs(96,0,"Salsa2: Starting salsa2 peer selection for URL: " << this->request->storeId());
 
     // Initialize the list of selected forward servers to empty.
-    *(this->servers) = NULL;
+    this->servers = nullptr;
 
     // Add header salsa2 with number of caches
     this->request->header.addEntry(new HttpHeaderEntry(Http::OTHER, 
@@ -84,7 +105,7 @@ void Salsa2Proxy::peerSelection()
     debugs(96,0,"Salsa2: Those are the peers that selected by Salsa2:");
 
     // Iterate through the list of selected forward servers and print their information.
-    for(FwdServer* f = *(this->servers); f; f = f->next)
+    for(FwdServer* f = this->servers; f; f = f->next)
         debugs(96,0,"Salsa2: "<< *(f->_peer));
 
     #ifdef REQ_UPDATE
@@ -125,7 +146,13 @@ void Salsa2Proxy::checkDigestsHits()
         debugs(96,0,"Salsa2: Checking digest of " << *peer << " Result: " << lookup);
 
         // If the digest lookup was not negative (i.e., the peer has some information about the object).
-        if (lookup != LOOKUP_NONE && peerHTTPOkay(peer, this->selector))
+        if (peerHTTPOkay(peer, this->selector)
+
+            #ifndef RANDOM_DIGEST
+            && lookup != LOOKUP_NONE 
+            #endif
+
+            )
         {
             // Increment the total number of choices for hierarchical selection.
             this->request->hier.n_choices++;
@@ -174,7 +201,7 @@ void Salsa2Proxy::addPeer(CachePeer* peer, hier_code code)
     if (!this->tail)
     {
         // Set the head and tail of the list to the new server.
-        *(this->servers) = this->tail = newTail;
+        this->servers = this->tail = newTail;
     } else
     {
         // Append the new server to the end of the list and update the tail.
@@ -197,6 +224,22 @@ void Salsa2Proxy::selectPeers()
 // Define a constant for indicating that a peer index was not found.
 #define NOT_FOUND 99999
 
+map<String, array<double*, 2>>& Salsa2Proxy::getProbabilities()
+{
+    if (Salsa2Proxy::exclusionProbabilities.empty())
+        for (CachePeer* p = Config.peers; p; p = p->next)
+        {
+            auto newMatrix = exclusionProbabilities.emplace(p->name, 
+                array<double*, 2>{new double[Config.npeers + 1], 
+                                  new double[Config.npeers + 1]{0.0}});
+                
+
+            fill_n(newMatrix.first->second[0], Config.npeers + 1, V_INIT);
+        }
+
+    return Salsa2Proxy::exclusionProbabilities;
+}
+
 // Helper function to get the index of a peer in the cachesData array by its name.
 size_t Salsa2Proxy::getPeerIndex(char* name)
 {
@@ -216,7 +259,7 @@ size_t Salsa2Proxy::getPeerIndex(char* name)
 void Salsa2Proxy::addRoundRobin()
 {
     // If no servers have been selected yet (no digest hits).
-    if (!*(this->servers))
+    if (!this->servers)
     {
         debugs(96,0,"Salsa2: No digest match for URL: " << this->request->storeId());
 

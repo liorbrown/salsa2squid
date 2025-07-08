@@ -3,6 +3,7 @@
 #include "SquidConfig.h"
 #include "PeerSelectState.h"
 #include "CachePeer.h"
+#include <map>
 
 // This is define if we want to update our simulator with the results
 // all of the code that check this var is used only for algorithms develops and check itself.
@@ -14,12 +15,14 @@ using namespace std;
 /// @brief This class represents on object that creates only in proxy cahce, not parent
 /// and its created for each reuquest and implements the salsa2 algorithm of parents peers choosing  
 class Salsa2Proxy{
-    
+    static map<String, array<double*, 2>> exclusionProbabilities;
+    static map<String, array<double*, 2>>& getProbabilities();
+
     // This point to next peer to choose in the round robin mechanism
     static CachePeer* currentPeer;
 
     PeerSelector* selector;
-    FwdServer** servers;
+    FwdServer*& servers;
     FwdServer* tail;
     HttpRequest* request;
     int pingsWaiting;
@@ -35,6 +38,9 @@ class Salsa2Proxy{
     }  cacheData ;
 
     cacheData* cachesData;
+
+    /// @brief Start salsa2 peers selection
+    void peerSelection();
 
     /// @brief Gets peer index by name
     /// @param name Peer name
@@ -71,10 +77,9 @@ class Salsa2Proxy{
     void dispatch();
     
     public:
-        Salsa2Proxy(PeerSelector* peerSelector, FwdServer** fwdServers);
+        Salsa2Proxy(PeerSelector* peerSelector, FwdServer*& fwdServers);
 
-        /// @brief Start salsa2 peers selection
-        void peerSelection();
+        static void updateProbabilty(HttpReply* reply, char* peer);
 
         #ifdef REQ_UPDATE
         static Salsa2Proxy* activeSalsa;

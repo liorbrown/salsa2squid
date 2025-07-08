@@ -96,22 +96,14 @@ void Salsa2Parent::newReq(HttpRequest::Pointer request,
     // Note that squid proxy can't send implicity to parent if its spectular or regular
     // because squid mechanism send the same request with same data to all parents
     request->isPositive = posIndications.find(hostname) != posIndications.end();
-    
-    // Increase requests counter for current request type
-    ++this->reqCounter[request->isPositive][nPosIndications];
-
-    // If current request is specular, add clamping count of v[i]
-    if (!request->isPositive)
-        ++this->clampingCounter[nPosIndications];
 }
 
 void Salsa2Parent::newMiss(HttpRequest::Pointer request)
 {
     debugs(96, DBG_CRITICAL,"Salsa2: new Miss\n" << *request);
 
-    // Update miss counter for relevant request
-    if (Salsa2Parent::isSalsa(request))        
-        ++this->missCounter[request->isPositive][request->posIndications];
+    // Sets request to miss
+    request->isMiss = true;
 }
 
 void Salsa2Parent::reEstimateProbabilities(HttpRequest* request, HttpHeader* responseHeader)
@@ -120,24 +112,28 @@ void Salsa2Parent::reEstimateProbabilities(HttpRequest* request, HttpHeader* res
 
     if (Salsa2Parent::isSalsa(request))
     {
+        size_t &requests = this->reqCounter[request->isPositive][request->posIndications];
         size_t &clampingCount = this->clampingCounter[request->posIndications];
+        size_t &missCount = this->missCounter[request->isPositive][request->posIndications];
+
+        // Increase requests counter for current request type
+        ++requests;
+
+        // If current request is specular, add clamping count of v[i]
+        clampingCount += !request->isPositive;
+
+        // Increase missCounter if request missed
+        missCount += request->isMiss;
 
         // Check if reach clamsing count, so clamp v[i] to V_INIT 
-        if (clampingCount >= this->getVClampInterval())
+        if (clampingCount == this->getVClampInterval())
         {
             this->VClamping(request->posIndications);
-            clampingCount = 0;  
+            clampingCount = 0;
         }
-
-        size_t &requests = this->reqCounter[request->isPositive][request->posIndications];
-
-        debugs(96, DBG_CRITICAL, "requests = " << requests << 
-            "\nthis->getReEstimateWindowSize() = " << this->getReEstimateWindowSize());
             
         // Check if reach window size, so re-estimate exclusion probability
-        // need to do it before increasing requests count, because its not yet counting the miss
-        // if will be for this request
-        if (requests >= this->getReEstimateWindowSize())
+        if (requests == this->getReEstimateWindowSize())
         {
             this->reEstimateExclusionProb(request, responseHeader);
             requests = 0;

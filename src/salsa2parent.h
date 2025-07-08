@@ -6,7 +6,13 @@
 
 #define DELTA_V (0.5)
 #define DELTA_PI (0.25)
-#define MIN_UPDATE_INTERVAL (1)
+#define SALSA_DEBUG
+
+#ifdef SALSA_DEBUG
+    #define MIN_UPDATE_INTERVAL (30)
+#else
+    #define MIN_UPDATE_INTERVAL (1)
+#endif
 
 /// @brief This is singltone class that contain for this cache 
 /// all the statistic data needed for salsa2

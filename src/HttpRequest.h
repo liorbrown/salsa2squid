@@ -242,6 +242,8 @@ public:
     bool isPositive;
     // Tells how many caches gave positive indications  for this request
     size_t posIndications;
+    // Indicate if requests miss
+    bool isMiss = false;
     
     /// forgets about the cached Range header (for a reason)
     void ignoreRange(const char *reason);

@@ -617,7 +617,7 @@ PeerSelector::selectMore()
     const char* subnet = "192.168.10";
     if (Config.salsa2 && Config.npeers && std::strncmp(request->url.host(), subnet, std::strlen(subnet)))
         // Not need to create a pointer, because object do self-destruction
-        (new Salsa2Proxy(this, &servers))->peerSelection();
+        new Salsa2Proxy(this, servers);
     else {
 
         /** If we don't know whether DIRECT is permitted ... */
