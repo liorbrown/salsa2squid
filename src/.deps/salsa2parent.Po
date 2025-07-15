@@ -53,7 +53,9 @@ salsa2parent.o: salsa2parent.cc /usr/include/stdc-predef.h salsa2parent.h \
  /usr/include/c++/13/bits/range_access.h \
  /usr/include/c++/13/bits/erase_if.h \
  /usr/include/c++/13/bits/memory_resource.h \
- /usr/include/c++/13/bits/uses_allocator_args.h ../include/squid.h \
+ /usr/include/c++/13/bits/uses_allocator_args.h /usr/include/c++/13/map \
+ /usr/include/c++/13/bits/stl_tree.h /usr/include/c++/13/bits/stl_map.h \
+ /usr/include/c++/13/bits/stl_multimap.h ../include/squid.h \
  ../include/autoconf.h ../include/version.h ../compat/compat.h \
  ../compat/osdetect.h ../compat/fdsetsize.h \
  /usr/include/x86_64-linux-gnu/bits/types.h \
@@ -325,9 +327,7 @@ salsa2parent.o: salsa2parent.cc /usr/include/stdc-predef.h salsa2parent.h \
  /usr/include/c++/13/numeric /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h http/RegisteredHeaders.h \
  ../src/base/LookupTable.h HttpHeaderMask.h mem/PoolingAllocator.h \
- sbuf/forward.h SquidString.h /usr/include/c++/13/map \
- /usr/include/c++/13/bits/stl_tree.h /usr/include/c++/13/bits/stl_map.h \
- /usr/include/c++/13/bits/stl_multimap.h ip/Address.h ../src/ip/forward.h \
+ sbuf/forward.h SquidString.h ip/Address.h ../src/ip/forward.h \
  /usr/include/netinet/ip.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h Notes.h mem/forward.h \
  security/forward.h ../src/base/CbDataList.h ../src/cbdata.h \
@@ -477,6 +477,10 @@ salsa2parent.h:
 /usr/include/c++/13/bits/erase_if.h:
 /usr/include/c++/13/bits/memory_resource.h:
 /usr/include/c++/13/bits/uses_allocator_args.h:
+/usr/include/c++/13/map:
+/usr/include/c++/13/bits/stl_tree.h:
+/usr/include/c++/13/bits/stl_map.h:
+/usr/include/c++/13/bits/stl_multimap.h:
 ../include/squid.h:
 ../include/autoconf.h:
 ../include/version.h:
@@ -868,10 +872,6 @@ HttpHeaderMask.h:
 mem/PoolingAllocator.h:
 sbuf/forward.h:
 SquidString.h:
-/usr/include/c++/13/map:
-/usr/include/c++/13/bits/stl_tree.h:
-/usr/include/c++/13/bits/stl_map.h:
-/usr/include/c++/13/bits/stl_multimap.h:
 ip/Address.h:
 ../src/ip/forward.h:
 /usr/include/netinet/ip.h:

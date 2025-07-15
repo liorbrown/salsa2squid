@@ -41,6 +41,47 @@ public:
     FwdServer *next;
 };
 
+#ifdef SALSA_DEBUG
+
+ostream& operator<<(ostream& os, const ProbabilityMatrix& arr);
+ostream& operator<<(ostream& os, const ProbabilityMatrix& arr) 
+{
+    size_t size = Config.npeers + 1;
+
+    for (size_t i = 0; i < 2; ++i) 
+    {
+        os << "\n[";
+
+        for (size_t j = 0; j < size; ++j) 
+        {
+            os << arr[i][j];
+
+            if (j < size - 1) 
+            {
+                os << ", ";
+            }
+        }
+
+        os << "]";
+    }
+
+    return os;
+}
+
+string to_string(const map<String, ProbabilityMatrix>& m);
+string to_string(const map<String, ProbabilityMatrix>& m) 
+{
+    ostringstream os;
+
+    for (const auto& pair : m) {
+        os << '\n' << pair.first << ":\n" << pair.second;
+    }
+
+    return os.str();
+}
+
+#endif
+
 // Static member to keep track of the current peer for round-robin selection.
 CachePeer* Salsa2Proxy::currentPeer = nullptr;
 
@@ -68,17 +109,30 @@ Salsa2Proxy::Salsa2Proxy(PeerSelector* peerSelector, FwdServer*& fwdServers):
             this->peerSelection();
         }
 
-void Salsa2Proxy::updateProbabilty(HttpReply* reply, char* peer)
+void Salsa2Proxy::updateProbabilty
+    (const HttpReply* reply, 
+    const HttpRequestPointer request, 
+    const char* peer)
 {
-    if (peer)
+    String updateProb = reply->header.getByName("salsa2");
+    
+    // Check if response contains probability update value
+    if (updateProb.size())
     {
-        String salsaEntry = reply->header.getByName("salsa2");
-        debugs(96, DBG_CRITICAL, "salsa2: Reply header: " << salsaEntry);
+        debugs(96, DBG_CRITICAL, "salsa2: Reply header: " << updateProb);
 
-        if (salsaEntry.size())
-        {
-            //double prob =  stod(salsaEntry.rawBuf());
-        }
+        bool isPos;
+        size_t posIndications;
+
+        // Get isPossitive and number of possitive indications from request header
+        Salsa2Parent::parse(request, peer, isPos, posIndications);
+
+        // Update right cell with new probability
+        Salsa2Proxy::getProbabilities()[peer][isPos][posIndications] =
+            stod(updateProb.rawBuf());
+
+        debugs(96, DBG_CRITICAL, "Salsa2: exclusionProbabilities:\n" 
+            << to_string(Salsa2Proxy::exclusionProbabilities));
     }
 }
 
@@ -224,26 +278,34 @@ void Salsa2Proxy::selectPeers()
 // Define a constant for indicating that a peer index was not found.
 #define NOT_FOUND 99999
 
-map<String, array<double*, 2>>& Salsa2Proxy::getProbabilities()
+map<String, ProbabilityMatrix>& Salsa2Proxy::getProbabilities()
 {
+    // If exclusionProbabilities is empty, init it
     if (Salsa2Proxy::exclusionProbabilities.empty())
+    {
+        // Runs on all peers in configuration
         for (CachePeer* p = Config.peers; p; p = p->next)
         {
-            auto newMatrix = exclusionProbabilities.emplace(p->name, 
-                array<double*, 2>{new double[Config.npeers + 1], 
-                                  new double[Config.npeers + 1]{0.0}});
+            // Create new matrix for current peer, and init its values
+            auto newMatrix = Salsa2Proxy::exclusionProbabilities[p->name] = 
+                {new double[Config.npeers + 1], 
+                 new double[Config.npeers + 1]{0.0}};
                 
 
-            fill_n(newMatrix.first->second[0], Config.npeers + 1, V_INIT);
+            fill_n(newMatrix[0], Config.npeers + 1, V_INIT);
         }
+
+        debugs(96, DBG_CRITICAL, "Salsa2: exclusionProbabilities:\n" 
+            << to_string(Salsa2Proxy::exclusionProbabilities));
+    }
 
     return Salsa2Proxy::exclusionProbabilities;
 }
 
 // Helper function to get the index of a peer in the cachesData array by its name.
-size_t Salsa2Proxy::getPeerIndex(char* name)
+size_t Salsa2Proxy::getPeerIndex(const char* name) const
 {
-    // Iterate through the cachesData array.
+    // Iterate through the cachesData array
     for (int i = 0; i < Config.npeers; i++)
         // If the name matches, return the index.
         if (this->cachesData[i].name == name)
@@ -305,11 +367,8 @@ void Salsa2Proxy::addRoundRobin()
 
 void Salsa2Proxy::dispatch()
 {
-    debugs(96, DBG_CRITICAL, "Salsa2: request->header.size - " << request->header.entries.size()); 
+    debugs(96, DBG_CRITICAL, "Salsa2: send request - " << *this->request); 
             
-    for(auto entry : request->header.entries)
-        debugs(96, DBG_CRITICAL, entry->name.c_str() << ':' << entry->value);
-
     // Sends request to all selected peers
     this->selector->resolveSelected();    
 }

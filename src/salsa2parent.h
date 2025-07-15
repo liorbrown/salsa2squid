@@ -1,5 +1,4 @@
 #include <cstddef>
-#include <unordered_set>
 #include "squid.h"
 #include "SquidConfig.h"
 #include "HttpRequest.h"
@@ -13,6 +12,8 @@
 #else
     #define MIN_UPDATE_INTERVAL (1)
 #endif
+
+typedef std::array<double*, 2> ProbabilityMatrix;
 
 /// @brief This is singltone class that contain for this cache 
 /// all the statistic data needed for salsa2
@@ -35,30 +36,24 @@ class Salsa2Parent{
         size_t** missCounter = new size_t*[2] 
             {new size_t[nCaches + 1]{0}, new size_t[nCaches + 1]{0}};
 
-        double** exclusionProbability = new double*[2]
+        // No need to init first array because it will init inside ctor
+        ProbabilityMatrix exclusionProbability = 
             {new double[nCaches + 1], new double[nCaches + 1]{0.0}};
     
         Salsa2Parent(size_t caches);
 
         ~Salsa2Parent();
 
-        /// @brief Tihs methos calles when new request arrived
-        /// this is update the num of requests that sended for certain number of 
-        /// positive indications
-        /// @param request Current request
-        /// @param posIndications List of caches that gave possitive indication to proxy
-        void newReq(HttpRequest::Pointer request, 
-            const std::unordered_set<std::string>& posIndications);
-
         /// @brief Get window size of re estimate exclusion probability
         /// @return The window size of re estimate exclusion probability
-        size_t getReEstimateWindowSize(){return (max((this->updateInterval / 10), (size_t)1));}
+        size_t getReEstimateWindowSize() const 
+            {return (max((this->updateInterval / 10), (size_t)1));}
 
         /// @brief Get window size of when to clamp v[i] to V_INIT
         /// for ensure its not make and stay to high, and then it will not get requests
         /// any more and this will damgage our statistics
         /// @return The window size of when to clamp v[i]
-        size_t getVClampInterval(){return (this->updateInterval * 10);}
+        size_t getVClampInterval() const {return (this->updateInterval * 10);}
         
         /// @brief Updating exclusionProbability according to given request details
         /// @param request This request tells salsa2 which probalitiy we need to estimate
@@ -77,27 +72,20 @@ class Salsa2Parent{
                  !Config.npeers && 
                  request->header.getByName("salsa2").size());}
 
-        /// @brief Parse "salsa2" header entry
-        /// @param header "salsa2" header entry
-        /// @param nCaches Returns the number of parents
-        /// @param posIndications Returns set of cahces 
-        /// that gave to proxy positive indication for this request
-        static void parse
-            (const String header, 
-             size_t& nCaches, 
-             std::unordered_set<std::string>& posIndications);
-
         static Salsa2Parent* instance;
         
     public:
-        /// @brief Notify salsa for getting new request
+        /// @brief Notify salsa for getting new request.
+        /// note that this method is static because in the first request that arrived
+        /// the instance not set already, because we dont no the number of peers
+        /// until we get it from proxy
         /// @param request New request that arrived
         static void newReq(HttpRequest::Pointer request);
 
         /// @brief Called when this cache miss request.
         /// Updates the number of misses
         /// @param request The requset that missed
-        void newMiss(HttpRequest::Pointer request);
+        void newMiss(HttpRequest::Pointer request) const;
 
         /// @brief Updating exclusionProbability according to given request details
         /// @param request This request tells salsa2 which probalitiy we need to estimate
@@ -108,10 +96,26 @@ class Salsa2Parent{
 
         /// @brief Called when this server shutdown 
         static void free(){if (instance) delete instance;}
+
+        /// @brief Parse from request header, data for salsa2
+        /// @param request The request to get the data from
+        /// @param peer Name of peer that get this request
+        /// @param isPositive Return parameter that tell if this regular or specular
+        /// @param posIndications The number of possitive indications for this request
+        /// @return The number of peers in the cluster 
+        static size_t parse
+            (const HttpRequest::Pointer request,
+             const std::string peer,
+             bool &isPositive,
+             size_t &posIndications);
 };
+
+#ifdef SALSA_DEBUG
 
 /// @brief For debug, print request data
 /// @param stream Stream to write into in
 /// @param request The request to write
 /// @return Given stream
 std::ostream& operator<<(std::ostream& stream, HttpRequest &request);
+
+#endif

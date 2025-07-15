@@ -26,11 +26,10 @@ Salsa2Parent::~Salsa2Parent()
         delete[] this->reqCounter;
     }
 
-    if (this->exclusionProbability)
+    if (!this->exclusionProbability.empty())
     {
         delete[] this->exclusionProbability[0];
         delete[] this->exclusionProbability[1];
-        delete[] this->exclusionProbability;
     }
 
     if (this->clampingCounter)
@@ -80,48 +79,35 @@ void Salsa2Parent::VClamping(size_t posIndications)
     trueNegativeProb = min(trueNegativeProb, V_INIT);
 }
 
-void Salsa2Parent::newReq(HttpRequest::Pointer request, 
-    const std::unordered_set<std::string>& posIndications)
+void Salsa2Parent::newMiss(HttpRequest::Pointer request) const
 {
-    char hostname[100];
-    gethostname(hostname, 100);
+    if (Salsa2Parent::isSalsa(request))
+    {
+        debugs(96, DBG_CRITICAL,"Salsa2: new Miss\n" << *request);
 
-    size_t nPosIndications = posIndications.size();
-
-    // Update request with the request salsa2 data 
-    request->posIndications = nPosIndications;
-
-    // The indication if this request is spectular or regular, is if this hostname
-    // is in the list of squid hosts that give possitive indication.
-    // Note that squid proxy can't send implicity to parent if its spectular or regular
-    // because squid mechanism send the same request with same data to all parents
-    request->isPositive = posIndications.find(hostname) != posIndications.end();
-}
-
-void Salsa2Parent::newMiss(HttpRequest::Pointer request)
-{
-    debugs(96, DBG_CRITICAL,"Salsa2: new Miss\n" << *request);
-
-    // Sets request to miss
-    request->isMiss = true;
+        // Sets request to miss
+        request->isMiss = true;
+    }
 }
 
 void Salsa2Parent::reEstimateProbabilities(HttpRequest* request, HttpHeader* responseHeader)
 {
-    debugs(96, DBG_CRITICAL, "Salsa2: new ReEstimation\n" << *request);
-
     if (Salsa2Parent::isSalsa(request))
     {
+        debugs(96, DBG_CRITICAL, "Salsa2: new ReEstimation\n" << *request);
+
+        // It's crucial to update all the 3 counters here only
+        // for prevent situation when some request update only few of the counters
+        // and this will create wrongs in the statistics
+
         size_t &requests = this->reqCounter[request->isPositive][request->posIndications];
         size_t &clampingCount = this->clampingCounter[request->posIndications];
         size_t &missCount = this->missCounter[request->isPositive][request->posIndications];
 
         // Increase requests counter for current request type
         ++requests;
-
         // If current request is specular, add clamping count of v[i]
         clampingCount += !request->isPositive;
-
         // Increase missCounter if request missed
         missCount += request->isMiss;
 
@@ -155,38 +141,67 @@ Salsa2Parent &Salsa2Parent::getInstance(size_t caches)
     return *instance;
 }
 
-void Salsa2Parent::parse(
-    const String header, 
-    size_t &nCaches, 
-    std::unordered_set<std::string> &posIndications)
-{
-    debugs(96, DBG_CRITICAL, "salsa2: header: [" << header << ']');
+size_t Salsa2Parent::parse
+    (const HttpRequest::Pointer request, 
+    const std::string peer, 
+    bool &isPositive, 
+    size_t &posIndications)
+{    
+    String salsaHeader = request->header.getByName("salsa2");
+
+    debugs(96, DBG_CRITICAL, "salsa2: header: [" << salsaHeader << ']');
+
+    posIndications = 0;
+    isPositive = false;
+
     std::string segment;
-    std::istringstream tokenizer(header.rawBuf());
+    std::istringstream tokenizer(salsaHeader.rawBuf());
 
+    // Gets caches number from header
     getline(tokenizer, segment, ',');
-    nCaches = stoul(segment);
+    size_t nCaches = stoul(segment);
 
+    // Run on all peer's names and count them
     while (std::getline(tokenizer, segment, ','))
-        posIndications.insert(segment.substr(1));
+    {
+        ++posIndications;
+
+        // This is regular requests Iff given peer is in the peers list of this requests
+        if (segment.substr(1) == peer)
+            isPositive = true;
+    }
+
+    return nCaches;
 }
 
 void Salsa2Parent::newReq(HttpRequest::Pointer request)
 {
-    debugs(96, DBG_CRITICAL, "Salsa2: new req\n" << *request);
-
     if (Salsa2Parent::isSalsa(request))
-    {                
-        String salsaHeader = request->header.getByName("salsa2");
-        size_t nCaches;
-        std::unordered_set<std::string> posIndications;
+    {          
+        debugs(96, DBG_CRITICAL, "Salsa2: new req\n" << *request);
 
-        Salsa2Parent::parse(salsaHeader, nCaches, posIndications);
+        bool isPos;
+        size_t posIndications;
+        char hostname[100];
 
-        Salsa2Parent::getInstance(nCaches).newReq(request, posIndications);
-        
+        // The indication if this request is spectular or regular, is if this hostname
+        // is in the list of squid hosts that give possitive indication.
+        // Note that squid proxy can't send implicity to parent if its spectular or regular
+        // because squid mechanism send the same request with same data to all parents
+        gethostname(hostname, 100); 
+
+        size_t nCaches = Salsa2Parent::parse(request, hostname, isPos, posIndications);
+
+         // Update request with the request salsa2 data 
+        request->posIndications = posIndications;
+        request->isPositive = isPos;
+
+        // Init Salsa2Parent singleton if not set already
+        Salsa2Parent::getInstance(nCaches);
     }
 }
+
+#ifdef SALSA_DEBUG
 
 std::ostream& operator<<(std::ostream& stream, HttpRequest &request)
 {
@@ -202,3 +217,5 @@ std::ostream& operator<<(std::ostream& stream, HttpRequest &request)
 
     return stream;
 }
+
+#endif
