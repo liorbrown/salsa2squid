@@ -112,27 +112,30 @@ Salsa2Proxy::Salsa2Proxy(PeerSelector* peerSelector, FwdServer*& fwdServers):
 void Salsa2Proxy::updateProbabilty
     (const HttpReply* reply, 
     const HttpRequestPointer request, 
-    const char* peer)
+    const CachePeer* peer)
 {
-    String updateProb = reply->header.getByName("salsa2");
-    
-    // Check if response contains probability update value
-    if (updateProb.size())
+    if (peer)
     {
-        debugs(96, DBG_CRITICAL, "salsa2: Reply header: " << updateProb);
+        String updateProb = reply->header.getByName("salsa2");
+        
+        // Check if response contains probability update value
+        if (updateProb.size())
+        {
+            debugs(96, DBG_CRITICAL, "salsa2: Reply header: " << updateProb);
 
-        bool isPos;
-        size_t posIndications;
+            bool isPos;
+            size_t posIndications;
 
-        // Get isPossitive and number of possitive indications from request header
-        Salsa2Parent::parse(request, peer, isPos, posIndications);
+            // Get isPossitive and number of possitive indications from request header
+            Salsa2Parent::parse(request, peer->name, isPos, posIndications);
 
-        // Update right cell with new probability
-        Salsa2Proxy::getProbabilities()[peer][isPos][posIndications] =
-            stod(updateProb.rawBuf());
+            // Update right cell with new probability
+            Salsa2Proxy::getProbabilities()[peer->name][isPos][posIndications] =
+                stod(updateProb.rawBuf());
 
-        debugs(96, DBG_CRITICAL, "Salsa2: exclusionProbabilities:\n" 
-            << to_string(Salsa2Proxy::exclusionProbabilities));
+            debugs(96, DBG_CRITICAL, "Salsa2: exclusionProbabilities:\n" 
+                << to_string(Salsa2Proxy::exclusionProbabilities));
+        }
     }
 }
 

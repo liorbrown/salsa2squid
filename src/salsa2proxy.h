@@ -94,7 +94,7 @@ class Salsa2Proxy{
         static void updateProbabilty
             (const HttpReply* reply, 
             const HttpRequestPointer request, 
-            const char* peer);
+            const CachePeer* peer);
 
         #ifdef REQ_UPDATE
 

@@ -736,7 +736,7 @@ HttpStateData::processReplyHeader()
 
     // @category salsa2 
     // Update parent statistics
-    Salsa2Proxy::updateProbabilty(newrep, request, this->_peer->name);
+    Salsa2Proxy::updateProbabilty(newrep, request, this->_peer);
 
     HttpReply *vrep = setVirginReply(newrep);
     flags.headers_parsed = true;
