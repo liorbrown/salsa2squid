@@ -5,6 +5,7 @@
 #include "CachePeer.h"
 #include "salsa2parent.h"
 #include <map>
+#include <set>
 
 // This is define if we want to update our simulator with the results
 // all of the code that check this var is used only for algorithms develops and check itself.
@@ -21,6 +22,7 @@ class Salsa2Proxy{
 
         // This 3D array holds all the exclusion probabilities of all parents
         static map<String, ProbabilityMatrix> exclusionProbabilities;  
+        static map<String, double> accessCost;
 
         // This point to next peer to choose in the round robin mechanism
         static CachePeer* currentPeer;
@@ -29,9 +31,12 @@ class Salsa2Proxy{
         FwdServer*& servers;
         FwdServer* tail;
         HttpRequest* request;
-        int pingsWaiting;
-
+        set<String> digestsHits;
+        map<String, double> missProbabilities;
+        
         #ifdef REQ_UPDATE
+
+        int pingsWaiting;
 
         /// @brief This struct contains the data that each parent had for this request
         typedef struct{
@@ -83,6 +88,10 @@ class Salsa2Proxy{
         /// @brief Get probabilities matrix. create it if not exist
         /// @return Probabilities matrix
         static map<String, ProbabilityMatrix>& getProbabilities();
+
+        /// @brief Get access cost list. create it if not exist
+        /// @return access cost list
+        static map<String, double>& getAccessCosts();
 
     public:
         Salsa2Proxy(PeerSelector* peerSelector, FwdServer*& fwdServers);

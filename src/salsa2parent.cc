@@ -149,7 +149,7 @@ size_t Salsa2Parent::parse
 {    
     String salsaHeader = request->header.getByName("salsa2");
 
-    debugs(96, DBG_CRITICAL, "salsa2: header: [" << salsaHeader << ']');
+    debugs(96, 4, "salsa2: header: [" << salsaHeader << ']');
 
     posIndications = 0;
     isPositive = false;

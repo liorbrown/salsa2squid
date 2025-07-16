@@ -43,6 +43,15 @@ public:
 
 #ifdef SALSA_DEBUG
 
+ostream& operator<<(ostream& os, const map<String, double> arr);
+ostream& operator<<(ostream& os, const map<String, double> arr)
+{
+    for (auto &d : arr)
+        os << '\n' << d.first << " : " << d.second;
+
+    return os;
+}
+
 ostream& operator<<(ostream& os, const ProbabilityMatrix& arr);
 ostream& operator<<(ostream& os, const ProbabilityMatrix& arr) 
 {
@@ -73,10 +82,9 @@ string to_string(const map<String, ProbabilityMatrix>& m)
 {
     ostringstream os;
 
-    for (const auto& pair : m) {
-        os << '\n' << pair.first << ":\n" << pair.second;
-    }
-
+    for (const auto& pair : m)
+        os << '\n' << pair.first << pair.second;
+    
     return os.str();
 }
 
@@ -85,29 +93,39 @@ string to_string(const map<String, ProbabilityMatrix>& m)
 // Static member to keep track of the current peer for round-robin selection.
 CachePeer* Salsa2Proxy::currentPeer = nullptr;
 
-map<String, array<double*, 2>> Salsa2Proxy::exclusionProbabilities;
+map<String, ProbabilityMatrix> Salsa2Proxy::exclusionProbabilities;
+map<String, double> Salsa2Proxy::accessCost;
 
 #ifdef REQ_UPDATE
 Salsa2Proxy* Salsa2Proxy::activeSalsa = nullptr;
 #endif
 
-Salsa2Proxy::Salsa2Proxy(PeerSelector* peerSelector, FwdServer*& fwdServers):
-        selector(peerSelector),
-        servers(fwdServers),
-        tail(nullptr),
-        request(peerSelector->request)
+map<String, double> &Salsa2Proxy::getAccessCosts()
+{
+    if (Salsa2Proxy::accessCost.empty())
+        for (CachePeer* peer = Config.peers; peer; peer = peer->next)
+            Salsa2Proxy::accessCost[peer->name] = 1;
         
-        #ifdef REQ_UPDATE
-        ,cachesData(new cacheData[Config.npeers])  
-        #endif
+    return Salsa2Proxy::accessCost;
+}
 
-        {
-            #ifdef REQ_UPDATE
-            Salsa2Proxy::activeSalsa = nullptr;
-            #endif
+Salsa2Proxy::Salsa2Proxy(PeerSelector *peerSelector, FwdServer *&fwdServers): 
+    selector(peerSelector),
+    servers(fwdServers),
+    tail(nullptr),
+    request(peerSelector->request),
+    digestsHits({})
 
-            this->peerSelection();
-        }
+    #ifdef REQ_UPDATE
+    ,cachesData(new cacheData[Config.npeers])
+    #endif
+{
+#ifdef REQ_UPDATE
+    Salsa2Proxy::activeSalsa = nullptr;
+#endif
+
+    this->peerSelection();
+}
 
 void Salsa2Proxy::updateProbabilty
     (const HttpReply* reply, 
@@ -121,7 +139,7 @@ void Salsa2Proxy::updateProbabilty
         // Check if response contains probability update value
         if (updateProb.size())
         {
-            debugs(96, DBG_CRITICAL, "salsa2: Reply header: " << updateProb);
+            debugs(96, 4, "salsa2: Reply header: " << updateProb);
 
             bool isPos;
             size_t posIndications;
@@ -133,7 +151,7 @@ void Salsa2Proxy::updateProbabilty
             Salsa2Proxy::getProbabilities()[peer->name][isPos][posIndications] =
                 stod(updateProb.rawBuf());
 
-            debugs(96, DBG_CRITICAL, "Salsa2: exclusionProbabilities:\n" 
+            debugs(96, DBG_CRITICAL, "Salsa2: exclusionProbabilities:" 
                 << to_string(Salsa2Proxy::exclusionProbabilities));
         }
     }
@@ -142,7 +160,8 @@ void Salsa2Proxy::updateProbabilty
 // This is the main function responsible for selecting peers using the Salsa2 algorithm.
 void Salsa2Proxy::peerSelection()
 {
-    debugs(96,0,"Salsa2: Starting salsa2 peer selection for URL: " << this->request->storeId());
+    debugs(96,0,"Salsa2: Starting salsa2 peer selection for URL: " 
+        << this->request->storeId());
 
     // Initialize the list of selected forward servers to empty.
     this->servers = nullptr;
@@ -159,11 +178,11 @@ void Salsa2Proxy::peerSelection()
     // Add peers using a round-robin strategy if no suitable peers were found via digests.
     addRoundRobin();
 
-    debugs(96,0,"Salsa2: Those are the peers that selected by Salsa2:");
+    debugs(96,4,"Salsa2: Those are the peers that selected by Salsa2:");
 
     // Iterate through the list of selected forward servers and print their information.
     for(FwdServer* f = this->servers; f; f = f->next)
-        debugs(96,0,"Salsa2: "<< *(f->_peer));
+        debugs(96,4,"Salsa2: "<< *(f->_peer));
 
     #ifdef REQ_UPDATE
         if (this->request->url.getScheme().image().c_str() == string("http"))
@@ -180,7 +199,7 @@ void Salsa2Proxy::checkDigestsHits()
 {
     #ifdef REQ_UPDATE
     // Index to keep track of the current cache in the cachesData array.
-    size_t cacheIndex = -1;
+    int cacheIndex = -1;
     #endif
 
     // Reset the number of choices and ideal choices for hierarchical selection.
@@ -200,7 +219,7 @@ void Salsa2Proxy::checkDigestsHits()
         // Perform a digest lookup for the current peer.
         lookup_t lookup = peerDigestLookup(peer, this->selector);
 
-        debugs(96,0,"Salsa2: Checking digest of " << *peer << " Result: " << lookup);
+        debugs(96,4,"Salsa2: Checking digest of " << *peer << " Result: " << lookup);
 
         // If the digest lookup was not negative (i.e., the peer has some information about the object).
         if (peerHTTPOkay(peer, this->selector)
@@ -228,6 +247,8 @@ void Salsa2Proxy::checkDigestsHits()
                     this->cachesData[cacheIndex].accessed = 1;
                     
                 #endif
+
+                this->digestsHits.insert(peer->name);
 
                 // Increment the number of ideal choices (peers with a digest hit).
                 this->request->hier.n_ichoices++;
@@ -270,9 +291,13 @@ void Salsa2Proxy::addPeer(CachePeer* peer, hier_code code)
 // Currently, it is empty.
 void Salsa2Proxy::selectPeers()
 {
-    // TODO: Implement the Salsa2 peer selection algorithm here.
-    // This function should use the information gathered in checkDigestsHits()
-    // and potentially other factors to select the most suitable peers.
+    for (CachePeer* peer = Config.peers; peer; peer = peer->next)
+        this->missProbabilities[peer->name] = Salsa2Proxy::getProbabilities()
+            [peer->name]
+            [this->digestsHits.find(peer->name) != end(this->digestsHits)]
+            [this->request->hier.n_ichoices];
+    
+    debugs(96, DBG_CRITICAL, "salsa2: missProbabilities:" << this->missProbabilities);
 }
 
 // Conditional compilation block for request updating functionality.
@@ -326,7 +351,7 @@ void Salsa2Proxy::addRoundRobin()
     // If no servers have been selected yet (no digest hits).
     if (!this->servers)
     {
-        debugs(96,0,"Salsa2: No digest match for URL: " << this->request->storeId());
+        debugs(96,4,"Salsa2: No digest match for URL: " << this->request->storeId());
 
         // Iterate through all configured peers.
         for (int i = 0; i < Config.npeers; i++)
@@ -343,7 +368,7 @@ void Salsa2Proxy::addRoundRobin()
             {
                 // Add this peer to the list of forward servers with the round-robin code.
                 this->addPeer(currentPeer,ROUNDROBIN_PARENT);
-                debugs(96,0,"Salsa2: Add " << *currentPeer << " as round robin");
+                debugs(96,4,"Salsa2: Add " << *currentPeer << " as round robin");
 
 #ifdef REQ_UPDATE
                 // Mark this peer as accessed in the cachesData array.
@@ -364,13 +389,13 @@ void Salsa2Proxy::addRoundRobin()
         }
 
         // If the loop finishes without finding any online parent.
-        debugs(96,0,"Salsa2: Not found any online parent");
+        debugs(96,4,"Salsa2: Not found any online parent");
     }
 }
 
 void Salsa2Proxy::dispatch()
 {
-    debugs(96, DBG_CRITICAL, "Salsa2: send request - " << *this->request); 
+    debugs(96, 4, "Salsa2: send request - " << *this->request); 
             
     // Sends request to all selected peers
     this->selector->resolveSelected();    
@@ -404,7 +429,7 @@ void Salsa2Proxy::updateReq()
     int res = system(sstr.str().c_str());
 
     // Log the executed command and its return code.
-    debugs(96,0,"Salsa2: command " << sstr.str() << " returned code " << res );
+    debugs(96,4,"Salsa2: command " << sstr.str() << " returned code " << res );
 
     this->dispatch();
 
@@ -427,7 +452,7 @@ void Salsa2Proxy::getResolutions()
                     &this->pingsWaiting,
                     &timeout);
 
-    debugs(96,0,"Salsa2: icpReqWaiting = " << this->pingsWaiting);
+    debugs(96,4,"Salsa2: icpReqWaiting = " << this->pingsWaiting);
 }
 
 void Salsa2Proxy::getIcp(CachePeer * p, icp_common_t* header)
@@ -436,7 +461,7 @@ void Salsa2Proxy::getIcp(CachePeer * p, icp_common_t* header)
     this->cachesData[this->getPeerIndex(p->name)].resolution = 
         header->getOpCode() == ICP_HIT;
 
-    debugs(96,0,"Salsa2: Recive new icp response from cache " << p->name << 
+    debugs(96,4,"Salsa2: Recive new icp response from cache " << p->name << 
         " Result: " << header->getOpCode() <<
         " pingsWaiting is " << this->pingsWaiting);
 
