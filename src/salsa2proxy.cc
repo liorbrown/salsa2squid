@@ -9,6 +9,7 @@
 #include "http/RegisteredHeaders.h"
 
 #define V_INIT (0.85)
+#define MISS_PENALTY (20)
 
 // This flag tells to not relly check digest
 // but random it it hit or miss
@@ -48,6 +49,15 @@ ostream& operator<<(ostream& os, const map<String, double> arr)
 {
     for (auto &d : arr)
         os << '\n' << d.first << " : " << d.second;
+
+    return os;
+}
+
+ostream& operator<<(ostream& os, const multimap<double, String> arr);
+ostream& operator<<(ostream& os, const multimap<double, String> arr)
+{
+    for (auto &d : arr)
+        os << '\n' << d.second << " : " << d.first;
 
     return os;
 }
@@ -103,8 +113,12 @@ Salsa2Proxy* Salsa2Proxy::activeSalsa = nullptr;
 map<String, double> &Salsa2Proxy::getAccessCosts()
 {
     if (Salsa2Proxy::accessCost.empty())
+    {
         for (CachePeer* peer = Config.peers; peer; peer = peer->next)
-            Salsa2Proxy::accessCost[peer->name] = 1;
+            Salsa2Proxy::accessCost[peer->name] = rand() % 10;
+        
+        debugs(96, DBG_CRITICAL, "salsa2: access costs:" << Salsa2Proxy::accessCost);
+    }
         
     return Salsa2Proxy::accessCost;
 }
@@ -287,17 +301,20 @@ void Salsa2Proxy::addPeer(CachePeer* peer, hier_code code)
     }
 }
 
-// This function is intended to implement the core Salsa2 peer selection logic.
-// Currently, it is empty.
 void Salsa2Proxy::selectPeers()
 {
+    // Runs on all peers, and calculate their miss probability for current request
     for (CachePeer* peer = Config.peers; peer; peer = peer->next)
-        this->missProbabilities[peer->name] = Salsa2Proxy::getProbabilities()
+        this->missProbabilities.insert({Salsa2Proxy::getProbabilities()
             [peer->name]
             [this->digestsHits.find(peer->name) != end(this->digestsHits)]
-            [this->request->hier.n_ichoices];
+            [this->request->hier.n_ichoices], peer->name});
     
     debugs(96, DBG_CRITICAL, "salsa2: missProbabilities:" << this->missProbabilities);
+
+    map<double, String> sortedProbabilities;
+
+
 }
 
 // Conditional compilation block for request updating functionality.
@@ -370,12 +387,12 @@ void Salsa2Proxy::addRoundRobin()
                 this->addPeer(currentPeer,ROUNDROBIN_PARENT);
                 debugs(96,4,"Salsa2: Add " << *currentPeer << " as round robin");
 
-#ifdef REQ_UPDATE
+                #ifdef REQ_UPDATE
                 // Mark this peer as accessed in the cachesData array.
                 size_t index = this->getPeerIndex(currentPeer->name);
                 if (index != NOT_FOUND)
                     this->cachesData[index].accessed = 1;
-#endif
+                #endif
 
                 // Move to the next peer in the list for the next round-robin selection.
                 currentPeer = currentPeer->next;

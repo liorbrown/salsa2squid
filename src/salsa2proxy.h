@@ -32,7 +32,7 @@ class Salsa2Proxy{
         FwdServer* tail;
         HttpRequest* request;
         set<String> digestsHits;
-        map<String, double> missProbabilities;
+        multimap<double, String> missProbabilities;
         
         #ifdef REQ_UPDATE
 
