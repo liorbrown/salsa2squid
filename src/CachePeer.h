@@ -205,6 +205,8 @@ public:
     char *login = nullptr;        /* Proxy authorization */
     time_t connect_timeout_raw = 0; ///< connect_timeout; use connectTimeout() instead!
     int connect_fail_limit = 0;
+    // @category salsa2
+    double access_cost = 1;
     int max_conn = 0;
 
     /// optional "cache_peer standby=limit" feature

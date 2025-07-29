@@ -21,9 +21,8 @@ class Salsa2Proxy{
     private:
 
         // This 3D array holds all the exclusion probabilities of all parents
-        static map<String, ProbabilityMatrix> exclusionProbabilities;  
-        static map<String, double> accessCost;
-
+        static map<const CachePeer*, ProbabilityMatrix> exclusionProbabilities;
+        
         // This point to next peer to choose in the round robin mechanism
         static CachePeer* currentPeer;
 
@@ -31,8 +30,8 @@ class Salsa2Proxy{
         FwdServer*& servers;
         FwdServer* tail;
         HttpRequest* request;
-        set<String> digestsHits;
-        multimap<double, String> missProbabilities;
+        set<CachePeer*> digestsHits;
+        multimap<double, CachePeer*> missProbabilities;
         
         #ifdef REQ_UPDATE
 
@@ -69,8 +68,18 @@ class Salsa2Proxy{
         /// @brief Checks for each peer if its digest indicate that it have this request
         void checkDigestsHits();
 
+        /// @brief Check all selection oprion, and choose ther best
+        /// @return Peers that select. store as bits in this given integer
+        /// 0 - Not choose, 1 - Choose
+        size_t naiveSelection() const;
+
+        /// @brief Calculate cost of specific peers selection
+        /// @param peersSelection Peers that select. store as bits in this given integer
+        /// 0 - Not choose, 1 - Choose
+        /// @return Expectation cost of given choose
+        double getCost(size_t peersSelection) const;
+
         /// @brief Select the peers to ask according to digests result
-        /// SALSA2 TODO: need implement
         void selectPeers();
 
         /// @brief If no digest give positive indication, select peer with round robin
@@ -87,11 +96,7 @@ class Salsa2Proxy{
 
         /// @brief Get probabilities matrix. create it if not exist
         /// @return Probabilities matrix
-        static map<String, ProbabilityMatrix>& getProbabilities();
-
-        /// @brief Get access cost list. create it if not exist
-        /// @return access cost list
-        static map<String, double>& getAccessCosts();
+        static map<const CachePeer*, ProbabilityMatrix>& getProbabilities();
 
     public:
         Salsa2Proxy(PeerSelector* peerSelector, FwdServer*& fwdServers);

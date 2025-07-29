@@ -9475,3 +9475,9 @@ refresh_pattern .		0	20%	4320
 #Default:
 # salsa2 0
 
+#  TAG: miss_penalty
+#	Sets the cost of miss in caches request
+#	needed for salsa2 algorithm
+#Default:
+# miss_penalty 0
+

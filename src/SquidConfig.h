@@ -78,6 +78,7 @@ class SquidConfig
 public:
     // @category salsa2
     int salsa2;
+    int missPenalty;
     
     struct {
         /* These should be for the Store::Root instance.

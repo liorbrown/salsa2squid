@@ -35,7 +35,8 @@ typedef enum {
     PINNED,
     ORIGINAL_DST,
     STANDBY_POOL,
-    HIER_MAX
+    HIER_MAX,
+    SALSA2
 } hier_code;
 
 extern const char *hier_code_str[];

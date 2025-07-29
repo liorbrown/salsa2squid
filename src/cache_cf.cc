@@ -2337,6 +2337,10 @@ parse_peer(CachePeer ** head)
             p->connect_timeout_raw = xatoi(token + 16);
         } else if (!strncmp(token, "connect-fail-limit=", 19)) {
             p->connect_fail_limit = xatoi(token + 19);
+
+        // @category salsa2
+        } else if (!strncmp(token, "access-cost=", 12)) {
+            p->access_cost = xatof(token + 12);
 #if USE_CACHE_DIGESTS
         } else if (!strncmp(token, "digest-url=", 11)) {
             p->digest_url = xstrdup(token + 11);

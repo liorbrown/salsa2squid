@@ -30,5 +30,6 @@ const char * hier_code_str[] = {
 	"PINNED",
 	"ORIGINAL_DST",
 	"STANDBY_POOL",
-	"HIER_MAX"
+	"HIER_MAX",
+	"SALSA2"
 };
