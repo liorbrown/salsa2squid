@@ -51,7 +51,7 @@
 #include "salsa2parent.h"
 
 // @category salsa2
-#ifndef SALSA2_DEBUG
+#ifdef SALSA_DEBUG
 #include "PeerDigest.h"
 #endif
 
@@ -64,6 +64,9 @@ ErrorState *clientBuildError(err_type, Http::StatusCode, char const *, const Con
 /* privates */
 
 // @category salsa2
+
+// @category salsa2
+#ifdef SALSA_DEBUG
 std::ostream& operator<<(std::ostream& stream, StoreDigestCBlock& cblock);
 std::ostream& operator<<(std::ostream& stream, StoreDigestCBlock& cblock)
 {
@@ -121,6 +124,8 @@ void clientReplyContext::investigateDigest(StoreIOBuffer result)
         }
     }
 }
+
+#endif
 
 clientReplyContext::~clientReplyContext()
 {
@@ -584,7 +589,7 @@ clientReplyContext::cacheHit(const StoreIOBuffer result)
 {
     
 // @category salsa2
-#ifndef SALSA2_DEBUG    
+#ifdef SALSA_DEBUG    
     this->investigateDigest(result);
 #endif
 
@@ -2074,7 +2079,7 @@ clientReplyContext::sendMoreData (StoreIOBuffer result)
         }
 
 // @category salsa2
-#ifndef SALSA2_DEBUG    
+#ifdef SALSA_DEBUG
         this->investigateDigest(result);
 #endif
         debugs(88, 5, conn->clientConnection <<

@@ -5,7 +5,6 @@
 
 #define DELTA_V (0.5)
 #define DELTA_PI (0.25)
-#define SALSA_DEBUG
 
 #ifdef SALSA_DEBUG
     #define MIN_UPDATE_INTERVAL (30)

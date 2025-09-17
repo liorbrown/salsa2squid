@@ -21,7 +21,7 @@
 
 // @category salsa2
 
-#ifndef SALSA_DEBUG
+#ifdef SALSA_DEBUG
 
 #include <sstream>
 #include <cmath>
@@ -75,7 +75,7 @@ CacheDigest::~CacheDigest()
 
 // @category salsa2
 
-#ifndef SALSA_DEBUG
+#ifdef SALSA_DEBUG
 
 std::string CacheDigest::maskToString() const
 {

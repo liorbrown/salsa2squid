@@ -11,6 +11,7 @@
 
 #include "autoconf.h"       /* For GNU autoconf variables */
 #include "version.h"
+#define SALSA_DEBUG
 
 /* default values for listen ports. Usually specified in squid.conf really */
 #define CACHE_HTTP_PORT 3128

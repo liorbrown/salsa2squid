@@ -32,7 +32,7 @@ public:
     ~clientReplyContext() override;
 
 // @category salsa2
-#ifndef SALSA2_DEBUG
+#ifdef SALSA_DEBUG
      
     /// @brief Inspect a StoreIOBuffer that may contain a StoreDigestCBlock and its mask.
     /// @param result Buffer returned from Store containing the digest CBlock + mask.

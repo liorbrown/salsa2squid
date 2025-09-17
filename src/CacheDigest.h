@@ -44,7 +44,7 @@ public:
     double usedMaskPercent() const;
 
     // @category salsa2
-#ifndef SALSA_DEBUG
+#ifdef SALSA_DEBUG
 
     /// @brief Return a human-readable representation of this object's mask.
     /// @return A debug string listing set-bit indices and a small summary.
