@@ -31,6 +31,22 @@ public:
     clientReplyContext(ClientHttpRequest *);
     ~clientReplyContext() override;
 
+// @category salsa2
+#ifndef SALSA2_DEBUG
+     
+    /// @brief Inspect a StoreIOBuffer that may contain a StoreDigestCBlock and its mask.
+    /// @param result Buffer returned from Store containing the digest CBlock + mask.
+    ///
+    /// Notes:
+    ///  - This function performs lightweight validation (length/data/url check) before
+    ///    attempting to parse the buffer as a StoreDigestCBlock.
+    ///  - The network byte-order fields in the CBlock are converted to host order.
+    ///  - If a mask is present, it is copied to a local buffer and converted to a
+    ///    human-readable form via CacheDigest::maskToString() for logging.
+    ///  - The local 'mask' is allocated on the stack using the mask_size from the CBlock
+    void investigateDigest(StoreIOBuffer result);
+#endif
+
     void saveState();
     void restoreState();
     void purgeRequest ();

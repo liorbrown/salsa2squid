@@ -14,7 +14,7 @@
 // This flag tells to not relly check digest
 // but random it it hit or miss
 // Uses opnly for dev porpuse
-#define RANDOM_DIGEST
+#undef RANDOM_DIGEST
 
 using namespace std;
 
@@ -144,7 +144,7 @@ map<const CachePeer*, ProbabilityMatrix>& Salsa2Proxy::getProbabilities()
             fill_n(newMatrix[0], Config.npeers + 1, V_INIT);
         }
 
-        debugs(96, DBG_CRITICAL, "Salsa2: exclusionProbabilities:\n" 
+        debugs(96, 4, "Salsa2: exclusionProbabilities:\n" 
             << to_string(Salsa2Proxy::exclusionProbabilities));
     }
 
@@ -175,7 +175,7 @@ void Salsa2Proxy::updateProbabilty
             Salsa2Proxy::getProbabilities()[peer][isPos][posIndications] =
                 stod(updateProb.rawBuf());
 
-            debugs(96, DBG_CRITICAL, "Salsa2: exclusionProbabilities:" 
+            debugs(96, 4, "Salsa2: exclusionProbabilities:" 
                 << to_string(Salsa2Proxy::exclusionProbabilities));
         }
     }
@@ -183,7 +183,7 @@ void Salsa2Proxy::updateProbabilty
 
 void Salsa2Proxy::peerSelection()
 {
-    debugs(96,0,"Salsa2: Starting salsa2 peer selection for URL: " 
+    debugs(96,4,"Salsa2: Starting salsa2 peer selection for URL: " 
         << this->request->storeId());
 
     // Initialize the list of selected forward servers to empty
@@ -244,13 +244,14 @@ void Salsa2Proxy::checkDigestsHits()
         // Perform a digest lookup for the current peer.
         lookup_t lookup = peerDigestLookup(peer, this->selector);
 
-        debugs(96,4,"Salsa2: Checking digest of " << *peer << " Result: " << lookup);
+        debugs(96,4,"Salsa2: Checking digest of " << *peer << " Result: " << lookup
+                << " Digest URL is: " << peer->digest_url);
 
         // If the digest lookup was not negative (i.e., the peer has some information about the object).
         if (peerHTTPOkay(peer, this->selector)
 
             #ifndef RANDOM_DIGEST
-            && lookup != LOOKUP_NONE 
+            && lookup != LOOKUP_NONE
             #endif
 
             )
@@ -331,7 +332,7 @@ size_t Salsa2Proxy::naiveSelection() const
         }
     }
 
-    debugs(96, 0, "Selected peers are: " << result);
+    debugs(96, 4, "Selected peers are: " << result);
 
     return result;
 }
@@ -381,7 +382,7 @@ void Salsa2Proxy::selectPeers()
             [this->request->hier.n_ichoices],
             peer});
     
-    debugs(96, DBG_CRITICAL, "salsa2: missProbabilities:" << this->missProbabilities);
+    debugs(96, 4, "salsa2: missProbabilities:" << this->missProbabilities);
 
     // Gets best peers selection by naive selection
     size_t selection = this->naiveSelection();

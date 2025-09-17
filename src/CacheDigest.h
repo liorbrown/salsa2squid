@@ -43,6 +43,23 @@ public:
     /// percentage of mask bits which are used
     double usedMaskPercent() const;
 
+    // @category salsa2
+#ifndef SALSA_DEBUG
+
+    /// @brief Return a human-readable representation of this object's mask.
+    /// @return A debug string listing set-bit indices and a small summary.
+    ///         Delegates to maskToString(mask, mask_size).
+    std::string maskToString() const;
+
+    /// @brief Convert a byte mask into a debug string showing all set-bit indices and a small summary.
+    /// @param mask Pointer to the mask byte array. If null, the function returns "mask is null".
+    /// @param size Number of bytes in the mask array.
+    /// @return A string containing comma-separated set-bit indices followed by:
+    ///         "\nMyCount: <number of bits set>\n Hash: <(sum of indices) % 99999>"
+    static std::string maskToString(const char* const mask, const size_t size);
+
+#endif
+
     /// calculate the size of mask required to digest up to
     /// a specified capacity and bitsize.
     static uint32_t CalcMaskSize(uint64_t cap, uint8_t bpe);

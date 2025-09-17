@@ -19,6 +19,15 @@
 #include "CacheDigest.h"
 #include "util.h"
 
+// @category salsa2
+
+#ifndef SALSA_DEBUG
+
+#include <sstream>
+#include <cmath>
+
+#endif
+
 /* local types */
 
 typedef struct {
@@ -63,6 +72,49 @@ CacheDigest::~CacheDigest()
 {
     xfree(mask);
 }
+
+// @category salsa2
+
+#ifndef SALSA_DEBUG
+
+std::string CacheDigest::maskToString() const
+{
+    // Delegate to the static overload that accepts an explicit buffer and size.
+    return maskToString(this->mask, this->mask_size);
+}
+
+std::string CacheDigest::maskToString(const char* const mask, const size_t size)
+{
+    // Guard: if no buffer was supplied, return a short literal to avoid deref.
+    if (!mask)
+        return "mask is null";
+        
+    std::stringstream result;
+    size_t myCount = 0; // number of bits set found
+    size_t hash = 0;    // simple non-crypto checksum (sum of indices mod 99999)
+
+    // Iterate over each byte in the mask
+    for (size_t i = 0; i < size; i++)
+        // Iterate over each bit inside a byte. j takes values 1,2,4,...,128,256.
+        for (size_t j = 1; j <= 256; j *= 2)
+            if (mask[i] & j)
+            {
+                // Compute absolute bit index: byte_index * 8 + bit_offset.
+                // log2(j) returns the bit offset because j is a power of two.
+                size_t index = i * 8 + log2(j);
+                // Append the index to the output list.
+                result << index << ',';
+                ++myCount;
+                // Update a trivial checksum so callers can quickly compare masks.
+                hash = (hash + index) % 99999;
+            }
+    // Append summary statistics for convenience when reading logs.
+    result << "\nMyCount: " << myCount << "\n Hash: " << hash;
+
+    return result.str();
+}
+
+#endif
 
 CacheDigest *
 CacheDigest::clone() const

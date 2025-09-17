@@ -50,6 +50,11 @@
 #include <memory>
 #include "salsa2parent.h"
 
+// @category salsa2
+#ifndef SALSA2_DEBUG
+#include "PeerDigest.h"
+#endif
+
 CBDATA_CLASS_INIT(clientReplyContext);
 
 /* Local functions */
@@ -57,6 +62,65 @@ extern "C" CSS clientReplyStatus;
 ErrorState *clientBuildError(err_type, Http::StatusCode, char const *, const ConnStateData *, HttpRequest *, const AccessLogEntry::Pointer &);
 
 /* privates */
+
+// @category salsa2
+std::ostream& operator<<(std::ostream& stream, StoreDigestCBlock& cblock);
+std::ostream& operator<<(std::ostream& stream, StoreDigestCBlock& cblock)
+{
+    stream << "Count = " << cblock.count
+           << " bpe = " << cblock.bits_per_entry
+           << " mask size = " << cblock.mask_size;
+
+    return stream;
+}
+
+void clientReplyContext::investigateDigest(StoreIOBuffer result)
+{
+    // Quick trace showing which URL we're checking.
+    debugs(96, DBG_CRITICAL, "salsa2: check url: " << http->storeEntry()->url());
+
+    // Only proceed if we have non-empty data and the URL matches the store_digest path.
+    if (result.length &&
+        result.data &&
+        strstr(http->storeEntry()->url(), "/squid-internal-periodic/store_digest"))
+    {
+        // On-disk/over-the-wire CBlock header structure that precedes the mask bytes.
+        StoreDigestCBlock cblock;
+
+        // Log raw buffer info. maskToString will produce a human-readable list of set bits.
+        debugs(96, DBG_CRITICAL, "salsa2: result.length = " << result.length
+            << "\nresult =\n" << CacheDigest::maskToString(result.data, result.length)
+            << "\nsizeof(cblock) = " << sizeof(cblock));
+
+        // Copy the CBlock header from the start of the buffer.
+        memcpy(&cblock, result.data, sizeof(cblock));
+
+        // Convert CBlock numeric fields from network byte order to host byte order.
+        // This must match how the CBlock was serialized by the remote peer.
+        cblock.ver.current = ntohs(cblock.ver.current);
+        cblock.ver.required = ntohs(cblock.ver.required);
+        cblock.capacity = ntohl(cblock.capacity);
+        cblock.count = ntohl(cblock.count);
+        cblock.del_count = ntohl(cblock.del_count);
+        cblock.mask_size = ntohl(cblock.mask_size);
+
+        debugs(96, DBG_CRITICAL, "salsa2: cblock.mask_size = " << cblock.mask_size);
+
+        // If the CBlock declares a non-zero mask size, copy the mask bytes and log them.
+        if (cblock.mask_size)
+        {
+            // This mirrors the original behavior; consider heap allocation for large masks.
+            char mask[cblock.mask_size + 1];
+
+            // Copy mask bytes that follow the CBlock header in the buffer.
+            memcpy(mask, result.data + sizeof(cblock), cblock.mask_size);
+
+            // Log the parsed CBlock and a human-readable dump of the mask.
+            debugs(96, DBG_CRITICAL, "URL is: http://192.168.10.50:3128/squid-internal-periodic/store_digest\nStoreDigestCBlock cblock = " << cblock
+                << "\nmask =\n" << CacheDigest::maskToString(mask, cblock.mask_size));
+        }
+    }
+}
 
 clientReplyContext::~clientReplyContext()
 {
@@ -518,6 +582,12 @@ clientReplyContext::CacheHit(void *data, StoreIOBuffer result)
 void
 clientReplyContext::cacheHit(const StoreIOBuffer result)
 {
+    
+// @category salsa2
+#ifndef SALSA2_DEBUG    
+    this->investigateDigest(result);
+#endif
+
     /** Ignore if the HIT object is being deleted. */
     if (deleting) {
         debugs(88, 3, "HIT object being deleted. Ignore the HIT.");
@@ -2003,6 +2073,10 @@ clientReplyContext::sendMoreData (StoreIOBuffer result)
             }
         }
 
+// @category salsa2
+#ifndef SALSA2_DEBUG    
+        this->investigateDigest(result);
+#endif
         debugs(88, 5, conn->clientConnection <<
                " '" << entry->url() << "'" <<
                " out.offset=" << http->out.offset);
