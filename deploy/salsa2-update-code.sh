@@ -34,7 +34,7 @@ CONFIGURE_ARGS="\
 --prefix=/usr --localstatedir=/var --libexecdir=/lib/squid --datadir=/share/squid \
 --sysconfdir=/etc/squid --with-default-user=proxy --with-logdir=/var/log/squid \
 --with-pidfile=/var/run/squid.pid --enable-cache-digests --enable-ssl-crtd \
---with-openssl --enable-ltdl-convenience --enable-debug"
+--with-openssl --enable-ltdl-convenience --enable-debug --with-systemd"
 
 CLEAN=0
 case "${1:-}" in

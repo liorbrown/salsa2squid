@@ -1,34 +1,34 @@
 /* config.h.  Generated from config-h.in by configure.  */
 /* config-h.in.  Generated from configure.ac by autoheader.  */
 
-/* Define to 1 if you have the `argz_add' function. */
+/* Define to 1 if you have the 'argz_add' function. */
 #define HAVE_ARGZ_ADD 1
 
-/* Define to 1 if you have the `argz_append' function. */
+/* Define to 1 if you have the 'argz_append' function. */
 #define HAVE_ARGZ_APPEND 1
 
-/* Define to 1 if you have the `argz_count' function. */
+/* Define to 1 if you have the 'argz_count' function. */
 #define HAVE_ARGZ_COUNT 1
 
-/* Define to 1 if you have the `argz_create_sep' function. */
+/* Define to 1 if you have the 'argz_create_sep' function. */
 #define HAVE_ARGZ_CREATE_SEP 1
 
 /* Define to 1 if you have the <argz.h> header file. */
 #define HAVE_ARGZ_H 1
 
-/* Define to 1 if you have the `argz_insert' function. */
+/* Define to 1 if you have the 'argz_insert' function. */
 #define HAVE_ARGZ_INSERT 1
 
-/* Define to 1 if you have the `argz_next' function. */
+/* Define to 1 if you have the 'argz_next' function. */
 #define HAVE_ARGZ_NEXT 1
 
-/* Define to 1 if you have the `argz_stringify' function. */
+/* Define to 1 if you have the 'argz_stringify' function. */
 #define HAVE_ARGZ_STRINGIFY 1
 
-/* Define to 1 if you have the `closedir' function. */
+/* Define to 1 if you have the 'closedir' function. */
 #define HAVE_CLOSEDIR 1
 
-/* Define to 1 if you have the declaration of `cygwin_conv_path', and to 0 if
+/* Define to 1 if you have the declaration of 'cygwin_conv_path', and to 0 if
    you don't. */
 /* #undef HAVE_DECL_CYGWIN_CONV_PATH */
 
@@ -41,7 +41,7 @@
 /* Define to 1 if you have the <dld.h> header file. */
 /* #undef HAVE_DLD_H */
 
-/* Define to 1 if you have the `dlerror' function. */
+/* Define to 1 if you have the 'dlerror' function. */
 #define HAVE_DLERROR 1
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
@@ -53,7 +53,7 @@
 /* Define if you have the _dyld_func_lookup function. */
 /* #undef HAVE_DYLD */
 
-/* Define to 1 if the system has the type `error_t'. */
+/* Define to 1 if the system has the type 'error_t'. */
 #define HAVE_ERROR_T 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
@@ -68,13 +68,13 @@
 /* Define to 1 if you have the <mach-o/dyld.h> header file. */
 /* #undef HAVE_MACH_O_DYLD_H */
 
-/* Define to 1 if you have the `opendir' function. */
+/* Define to 1 if you have the 'opendir' function. */
 #define HAVE_OPENDIR 1
 
 /* Define if libtool can extract symbol lists from object files. */
 #define HAVE_PRELOADED_SYMBOLS 1
 
-/* Define to 1 if you have the `readdir' function. */
+/* Define to 1 if you have the 'readdir' function. */
 #define HAVE_READDIR 1
 
 /* Define if you have the shl_load function. */
@@ -95,10 +95,10 @@
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
 
-/* Define to 1 if you have the `strlcat' function. */
+/* Define to 1 if you have the 'strlcat' function. */
 #define HAVE_STRLCAT 1
 
-/* Define to 1 if you have the `strlcpy' function. */
+/* Define to 1 if you have the 'strlcpy' function. */
 #define HAVE_STRLCPY 1
 
 /* Define to 1 if you have the <sys/dl.h> header file. */
@@ -168,7 +168,7 @@
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "2.4.3a"
 
-/* Define to 1 if all of the C90 standard headers exist (not just the ones
+/* Define to 1 if all of the C89 standard headers exist (not just the ones
    required in a freestanding environment). This macro is provided for
    backward compatibility; new code need not use it. */
 #define STDC_HEADERS 1
